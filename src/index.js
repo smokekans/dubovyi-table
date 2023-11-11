@@ -9,7 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter basename="/dybovyi-table">
+      <BrowserRouter basename="/dubovyi-table">
         <App />
       </BrowserRouter>
     </PersistGate>

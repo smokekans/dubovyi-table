@@ -5,7 +5,10 @@ const pages = ["authorization", "admin"];
 
 export default function Header() {
   return (
-    <AppBar position="static">
+    <AppBar
+      position="fixed"
+      sx={{ height: "96px", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Container sx={{ display: "flex", justifyContent: "center" }}>
         <Toolbar>
           <Link to="/">LOGO</Link>

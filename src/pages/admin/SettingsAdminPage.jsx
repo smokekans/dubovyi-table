@@ -1,3 +1,9 @@
+import { Box, Typography } from "@mui/material";
+
 export default function SettingsAdminPage() {
-  return <>Settings</>;
+  return (
+    <Box>
+      <Typography variant="h3">Налаштування</Typography>
+    </Box>
+  );
 }

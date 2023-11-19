@@ -1,3 +1,9 @@
+import { Box, Typography } from "@mui/material";
+
 export default function ReviewAdminPage() {
-  return <>Review</>;
+  return (
+    <Box>
+      <Typography variant="h3">Відгуки користувачів</Typography>
+    </Box>
+  );
 }

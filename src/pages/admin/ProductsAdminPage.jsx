@@ -10,7 +10,7 @@ export default function ProductsAdminPage() {
   const [rows, setRows] = useState([]);
   const [totalPages, setTotalPages] = useState("");
   const [totalItems, setTotalItems] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
 

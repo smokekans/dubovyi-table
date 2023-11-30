@@ -47,7 +47,14 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function ProductList({ rowsdata, rowsPerPage, page, setPage }) {
+function ProductList({
+  rowsdata,
+  totalPages,
+  totalItems,
+  rowsPerPage,
+  page,
+  setPage,
+}) {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("№");
@@ -247,11 +254,11 @@ function ProductList({ rowsdata, rowsPerPage, page, setPage }) {
             }}
           >
             <Typography>
-              Сторінка: {displayedPage} з {}
+              Сторінка: {displayedPage} з {totalPages}
             </Typography>
             <TablePagination
               component="div"
-              count={12}
+              count={totalItems}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}

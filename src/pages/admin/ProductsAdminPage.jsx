@@ -8,6 +8,8 @@ const URL = `http://woodcrafts.eu-north-1.elasticbeanstalk.com`;
 
 export default function ProductsAdminPage() {
   const [rows, setRows] = useState([]);
+  const [totalPages, setTotalPages] = useState("");
+  const [totalItems, setTotalItems] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -19,8 +21,11 @@ export default function ProductsAdminPage() {
         const response = await axios.get(
           URL + `/product/getAllProducts` + `?page=${page}&size=${rowsPerPage}`
         );
-        console.log(response);
         const data = await response.data;
+        const totalPage = response.headers[`x-total-pages`];
+        const totalItem = response.headers[`x-total-items`];
+        setTotalPages(totalPage);
+        setTotalItems(totalItem);
         setRows(data);
         setLoading(false);
       } catch (error) {}
@@ -35,6 +40,8 @@ export default function ProductsAdminPage() {
       {!loading ? (
         <ProductList
           rowsdata={rows}
+          totalPages={totalPages}
+          totalItems={totalItems}
           rowsPerPage={rowsPerPage}
           page={page}
           setPage={setPage}

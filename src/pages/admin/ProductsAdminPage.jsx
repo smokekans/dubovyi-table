@@ -1,10 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { Box, Typography } from "@mui/material";
 import Loader from "components/Loader/Loader";
 import ProductList from "components/admin/products/ProductList";
-import { useEffect, useState } from "react";
-
-const URL = `http://woodcrafts.eu-north-1.elasticbeanstalk.com`;
+import { BASE_URL, PRODUCT_LIST } from "utils/constants/Url";
 
 export default function ProductsAdminPage() {
   const [rows, setRows] = useState([]);
@@ -19,7 +18,7 @@ export default function ProductsAdminPage() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          URL + `/product/getAllProducts` + `?page=${page}&size=${rowsPerPage}`
+          BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
         );
         const data = await response.data;
         const totalPage = response.headers[`x-total-pages`];
@@ -40,11 +39,14 @@ export default function ProductsAdminPage() {
       {!loading ? (
         <ProductList
           rowsdata={rows}
+          setRows={setRows}
           totalPages={totalPages}
           totalItems={totalItems}
           rowsPerPage={rowsPerPage}
           page={page}
           setPage={setPage}
+          setTotalPages={setTotalPages}
+          setTotalItems={setTotalItems}
         />
       ) : (
         <Loader />

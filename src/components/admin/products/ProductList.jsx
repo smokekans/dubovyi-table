@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import axios from "axios";
 import {
   Box,
   Paper,
@@ -10,9 +11,9 @@ import {
 } from "@mui/material";
 
 import TablePaginationActions from "./TablePaginationActions";
-
 import Head from "./table/Head";
 import ProductItem from "./ProductItem";
+import { BASE_URL, DELETE_PRODUCT, PRODUCT_LIST } from "utils/constants/Url";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -44,11 +45,14 @@ function stableSort(array, comparator) {
 
 function ProductList({
   rowsdata,
+  setRows,
   totalPages,
   totalItems,
   rowsPerPage,
   page,
   setPage,
+  setTotalPages,
+  setTotalItems,
 }) {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
@@ -76,12 +80,40 @@ function ProductList({
     setPage(newPage);
   };
 
+  const handleDeleteItem = async (id, setOpen) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
+        );
+        const data = await response.data;
+        const totalPage = response.headers[`x-total-pages`];
+        const totalItem = response.headers[`x-total-items`];
+        setTotalPages(totalPage);
+        setTotalItems(totalItem);
+        setRows(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    try {
+      const response = await axios.delete(
+        BASE_URL + DELETE_PRODUCT + `?id=${id}`
+      );
+      fetchData();
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const currentTableData = useMemo(() => {
     return stableSort(rowsdata, getComparator(order, orderBy)).slice(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage
     );
-  }, [order, orderBy, page]);
+  }, [order, orderBy, page, rowsdata]);
 
   return (
     <>
@@ -105,9 +137,11 @@ function ProductList({
                 {currentTableData.map((row, index) => (
                   <ProductItem
                     row={row}
+                    setRows={setRows}
                     setSelected={setSelected}
                     selected={selected}
                     index={index}
+                    handleDeleteItem={handleDeleteItem}
                   />
                 ))}
               </TableBody>

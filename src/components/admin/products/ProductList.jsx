@@ -53,8 +53,10 @@ function ProductList({
   setPage,
   setTotalPages,
   setTotalItems,
+  selected,
+  setSelected,
 }) {
-  const [selected, setSelected] = useState([]);
+  // const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("№");
   const [dense, setDense] = useState(false);
@@ -86,9 +88,9 @@ function ProductList({
         const response = await axios.get(
           BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
         );
-        const data = await response.data;
-        const totalPage = response.headers[`x-total-pages`];
-        const totalItem = response.headers[`x-total-items`];
+        const data = await response.data.data;
+        const totalPage = response.data.totalPages;
+        const totalItem = response.data.totalItems;
         setTotalPages(totalPage);
         setTotalItems(totalItem);
         setRows(data);

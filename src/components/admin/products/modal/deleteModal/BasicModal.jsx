@@ -3,11 +3,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button } from "@mui/material";
-import { useTheme } from "@mui/system";
 
 function BasicModal({ open, setOpen, handleDeleteItem }) {
   const handleClose = () => setOpen(false);
-  const theme = useTheme();
 
   return (
     <Modal

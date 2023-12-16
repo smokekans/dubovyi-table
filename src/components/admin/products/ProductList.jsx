@@ -98,9 +98,7 @@ function ProductList({
     };
 
     try {
-      const response = await axios.delete(
-        BASE_URL + DELETE_PRODUCT + `?id=${id}`
-      );
+      await axios.delete(BASE_URL + DELETE_PRODUCT + `?id=${id}`);
       fetchData();
       setOpen(false);
     } catch (error) {

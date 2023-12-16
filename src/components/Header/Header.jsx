@@ -47,7 +47,6 @@ export default function Header() {
           focused
           color="secondary"
           placeholder="Пошук"
-          borderRadius={(theme) => theme.shape.borderRadius}
           sx={{
             ".MuiInputBase-root": {
               padding: "8px 24px",

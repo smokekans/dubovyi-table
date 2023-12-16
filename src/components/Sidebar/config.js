@@ -12,6 +12,8 @@ import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import AddProductAdminPage from "pages/admin/AddProductAdminPage";
+
 export const items = [
   {
     title: "Головна",
@@ -54,5 +56,10 @@ export const items = [
     path: "settings",
     content: <SettingsAdminPage />,
     icon: <SettingsOutlinedIcon sx={{ width: 24, height: 24 }} />,
+  },
+  {
+    title: "Новий товар",
+    path: "create-product",
+    content: <AddProductAdminPage />,
   },
 ];

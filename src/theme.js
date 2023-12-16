@@ -4,6 +4,7 @@ const theme = createTheme({
   breakpoints: {
     values: {
       mobile: 320,
+      maxMobile: 480,
       tablet: 768,
       desktop: 1280,
     },
@@ -18,7 +19,7 @@ const theme = createTheme({
       main: "#324EBD",
       dark: "#789DD1",
       light: "#BDCAFF",
-      contrastText: "FAF9FB",
+      contrastText: "#FAF9FB",
     },
     secondary: {
       main: "#030C0D",

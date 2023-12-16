@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Loader from "components/Loader/Loader";
 import ProductList from "components/admin/products/ProductList";
 import { BASE_URL, PRODUCT_LIST } from "utils/constants/Url";
+import { Link } from "react-router-dom";
 
 export default function ProductsAdminPage() {
   const [rows, setRows] = useState([]);
@@ -34,8 +35,50 @@ export default function ProductsAdminPage() {
   }, [page]);
 
   return (
-    <Box>
-      <Typography variant="h3">Товари</Typography>
+    <Box sx={{ width: 1 }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          alignItems: "space-betwwen",
+        }}
+      >
+        <Typography variant="h3" sx={{}}>
+          Товари
+        </Typography>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            columnGap: "24px",
+          }}
+        >
+          <Button
+            sx={{
+              padding: "18px 40px",
+              borderRadius: "25px",
+              backgroundColor: "#324EBD",
+              color: (theme) => theme.palette.primary.dark,
+            }}
+          >
+            Import
+          </Button>
+          <Button
+            component={Link}
+            to="/admin/create-product"
+            sx={{
+              padding: "18px 40px",
+              borderRadius: "25px",
+              border: "1px solid  #324EBD ",
+              textDecoration: "none",
+              cursor: "pointer",
+              width: "100%",
+            }}
+          >
+            Add product
+          </Button>
+        </Box>
+      </Box>
       {!loading ? (
         <ProductList
           rowsdata={rows}

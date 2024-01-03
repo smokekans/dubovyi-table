@@ -11,37 +11,9 @@ import {
 } from "@mui/material";
 
 import TablePaginationActions from "./TablePaginationActions";
-import Head from "./table/Head";
+import Head from "./Table/Head";
 import ProductItem from "./ProductItem";
-import { BASE_URL, DELETE_PRODUCT, PRODUCT_LIST } from "utils/constants/Url";
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+import { BASE_URL, DELETE_PRODUCT, PRODUCT_LIST } from "utils/constants/url";
 
 function ProductList({
   rowsdata,
@@ -55,23 +27,24 @@ function ProductList({
   setTotalItems,
   selected,
   setSelected,
+  order,
+  orderBy,
+  setOrder,
+  setOrderBy,
 }) {
-  // const [selected, setSelected] = useState([]);
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("№");
   const [dense, setDense] = useState(false);
 
   const displayedPage = page + 1;
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === "ASC";
+    setOrder(isAsc ? "DESC" : "ASC");
     setOrderBy(property);
   };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rowsdata.map((n) => n.id);
+      const newSelected = rowsdata.map((n) => ({ id: n.id }));
       setSelected(newSelected);
       return;
     }
@@ -86,7 +59,9 @@ function ProductList({
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
+          BASE_URL +
+            PRODUCT_LIST +
+            `?page=${page}&size=${rowsPerPage}&sortBy=${orderBy}&direction=${order}`
         );
         const data = await response.data.data;
         const totalPage = response.data.totalPages;
@@ -111,11 +86,8 @@ function ProductList({
   };
 
   const currentTableData = useMemo(() => {
-    return stableSort(rowsdata, getComparator(order, orderBy)).slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
-  }, [order, orderBy, page, rowsdata]);
+    return rowsdata.slice(0, rowsPerPage);
+  }, [page, rowsdata, order, orderBy]);
 
   return (
     <>
@@ -154,9 +126,9 @@ function ProductList({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              borderTop: "1px solid #AAA",
+              borderTop: (theme) => `1px solid ${theme.palette.secondary.dark}`,
               marginTop: "60px",
-              paddingTop: "8px",
+              paddingTop: 1,
             }}
           >
             <Typography>

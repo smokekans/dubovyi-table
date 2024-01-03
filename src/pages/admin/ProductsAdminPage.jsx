@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Typography } from "@mui/material";
 import Loader from "components/Loader/Loader";
-import ProductList from "components/admin/products/ProductList";
-import { BASE_URL, DELETE_PRODUCT, PRODUCT_LIST } from "utils/constants/Url";
-import BasicModal from "components/admin/products/modal/deleteModal/BasicModal";
-import DeleteSelectedItems from "components/admin/products/deleteItems/DeleteSelectedItems";
+import ProductList from "components/Admin/Products/ProductList";
+import BasicModal from "components/Admin/Products/Modal/DeleteModal/BasicModal";
+import DeleteSelectedItems from "components/Admin/Products/DeleteItems/DeleteSelectedItems";
+import {
+  BASE_URL,
+  DELETE_PRODUCT_LIST,
+  PRODUCT_LIST,
+} from "utils/constants/url";
 
 export default function ProductsAdminPage() {
   const [rows, setRows] = useState(null);
@@ -13,6 +17,8 @@ export default function ProductsAdminPage() {
   const [totalItems, setTotalItems] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [order, setOrder] = useState("DESC");
+  const [orderBy, setOrderBy] = useState("id");
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
   const [open, setOpen] = useState(false);
@@ -22,7 +28,9 @@ export default function ProductsAdminPage() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
+          BASE_URL +
+            PRODUCT_LIST +
+            `?page=${page}&size=${rowsPerPage}&sortBy=${orderBy}&direction=${order}`
         );
 
         const data = await response.data.data;
@@ -31,17 +39,15 @@ export default function ProductsAdminPage() {
         setTotalPages(totalPage);
         setTotalItems(totalItem);
         setRows(data);
-        setLoading(false);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
-      // finally {
-      //   setLoading(false);
-      // }
     };
 
     fetchData();
-  }, [page]);
+  }, [page, order, orderBy]);
 
   const handleOpenDeleteModal = () => {
     setOpen(true);
@@ -51,7 +57,9 @@ export default function ProductsAdminPage() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
+          BASE_URL +
+            PRODUCT_LIST +
+            `?page=${page}&size=${rowsPerPage}&sortBy=${orderBy}&direction=${order}`
         );
         const data = await response.data.data;
         const totalPage = response.data.totalPages;
@@ -65,11 +73,9 @@ export default function ProductsAdminPage() {
     };
 
     try {
-      await Promise.all(
-        array.map(async (item) => {
-          await axios.delete(BASE_URL + DELETE_PRODUCT + `?id=${item}`);
-        })
-      );
+      const response = await axios.delete(BASE_URL + DELETE_PRODUCT_LIST, {
+        data: array,
+      });
 
       await fetchData();
       setOpen(false);
@@ -88,7 +94,7 @@ export default function ProductsAdminPage() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              marginTop: "32px",
+              marginTop: 4,
             }}
           >
             <Box>
@@ -112,6 +118,10 @@ export default function ProductsAdminPage() {
             setTotalItems={setTotalItems}
             selected={selected}
             setSelected={setSelected}
+            order={order}
+            orderBy={orderBy}
+            setOrder={setOrder}
+            setOrderBy={setOrderBy}
           />
         </Box>
       ) : (
@@ -120,9 +130,7 @@ export default function ProductsAdminPage() {
       <BasicModal
         open={open}
         setOpen={setOpen}
-        handleDeleteSelectedItem={() =>
-          handleDeleteSelectedItem(selected, setOpen)
-        }
+        handleDeleteItem={() => handleDeleteSelectedItem(selected, setOpen)}
       />
     </>
   );

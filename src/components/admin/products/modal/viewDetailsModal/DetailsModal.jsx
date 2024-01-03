@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import {
   Button,
+  Divider,
   List,
   ListItem,
   ListItemText,
@@ -15,6 +16,8 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { useTheme } from "@mui/material/styles";
 import useGetColor from "hook/useGetColor";
+import useGetCategory from "hook/useGetCategory";
+import useGetMaterial from "hook/useGetMaterial";
 
 const keyMessages = {
   quantity: "В наявності",
@@ -22,8 +25,10 @@ const keyMessages = {
   materialId: "Матеріал",
   weight: "Вага",
   colorId: "Колір",
-  wight: "Ширина",
+  width: "Ширина",
   height: "Висота",
+  length: "Довжина",
+  updateDate: "Останнє оновлення",
   warranty: "Гарантія",
 };
 
@@ -33,8 +38,10 @@ const desiredOrder = [
   "materialId",
   "weight",
   "colorId",
-  "wight",
+  "width",
   "height",
+  "length",
+  "updateDate",
   "warranty",
 ];
 
@@ -43,6 +50,8 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
   const [activeStep, setActiveStep] = useState(0);
 
   const color = useGetColor(row.colorId);
+  const category = useGetCategory(row.categoryId);
+  const material = useGetMaterial(row.materialId);
 
   const containerRef = useRef(null);
   const theme = useTheme();
@@ -80,21 +89,33 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
       case "weight":
         text = "кг.";
         break;
-      case "wight":
+      case "width":
         text = "см.";
         break;
       case "height":
         text = "см.";
         break;
+      case "length":
+        text = "см.";
+        break;
       case "colorId":
-        text = color;
+        value = color;
+        break;
+      case "categoryId":
+        value = category;
+        break;
+      case "materialId":
+        value = material;
         break;
     }
 
     return (
       <ListItemText
         primary={`${value} ${text}`}
-        sx={{ flex: "none", "& > span": { color: "#FAF9FB" } }}
+        sx={{
+          flex: "none",
+          "& > span": { color: (theme) => theme.palette.common.white },
+        }}
       ></ListItemText>
     );
   };
@@ -116,39 +137,45 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
       open={openDetails}
       disableScrollLock={true}
       onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
       style={{
         position: "absolute",
         top: "13%",
-        left: "60%",
+        left: "26%",
         overflow: "scroll",
         overflowY: "hidden",
         overflowX: "hidden",
-        // height: "100%",
-        height: "1400px",
+        // height: "content-box",
+        height: "719px",
+        width: "1128px",
         display: "block",
+        // padding: "28px 32px 56px 32px",
+        // backgroundColor: "rgb(50, 78, 189)",
+        // borderRadius: "50px 0px 0px 50px",
       }}
     >
       <Box
         sx={{
-          width: "538px",
-          padding: "56px 48px",
-          bgcolor: "#324EBD",
+          width: "1064px",
+          // height: "719px",
+          // padding: "28px 32px 56px 32px",
+          // bgcolor: "#324EBD",
           borderRadius: "50px 0px 0px 50px",
           display: "flex",
           flexDirection: "column",
-          gap: "32px",
+          backgroundColor: "rgb(50, 78, 189)",
+          padding: "28px 32px 56px 32px",
+
+          // gap: "32px",
           alignItems: "center",
           textAlign: "center",
         }}
       >
-        <Box sx={{ position: "absolute", top: "2%", left: "93%" }}>
+        <Box sx={{ position: "absolute", top: "2%", left: "96%" }}>
           <CloseIcon
             sx={{
               width: "24px",
               height: "24px",
-              color: "white",
+              color: (theme) => theme.palette.text.secondary,
               "&:hover": { cursor: "pointer" },
             }}
             onClick={() => handleClose()}
@@ -156,231 +183,309 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
         </Box>
         <Typography
           id="modal-modal-title"
-          variant="h6"
-          component="h3"
+          variant="h3"
           sx={{
-            fontWeight: "400",
-            fontSize: "40px",
-            lineHeight: "normal",
-            color: "#FAF9FB",
+            color: (theme) => theme.palette.text.secondary,
           }}
         >
           № {row.id}
         </Typography>
 
-        <Box sx={{ width: "538px", height: "302px" }}>
-          <Box
-            sx={{
-              height: "273px",
-              maxWidth: "410px",
-              width: "100%",
-              margin: "0 auto",
-              borderRadius: "25px",
-              background: `url(${row.photos[activeStep]})`,
-            }}
-          ></Box>
-          <MobileStepper
-            // variant="text"
-            steps={maxSteps}
-            position="static"
-            activeStep={activeStep}
-            nextButton={
-              // activeStep === maxSteps - 1 ? null : (
-              <Button
-                size="small"
-                onClick={handleNext}
-                disabled={activeStep === maxSteps - 1}
-                sx={{
-                  width: "48px",
-                  minWidth: 0,
-                  height: "48px",
-                  padding: "16px",
-                  borderRadius: "25px",
-                  border: "1px solid #FAF9FB",
-                }}
-              >
-                {/* {theme.direction === "rtl" ? (
-                  <KeyboardArrowLeft />
-                ) : ( */}
-                <KeyboardArrowRight sx={{ color: "#FAF9FB" }} />
-                {/* )} */}
-              </Button>
-              // )
-            }
-            backButton={
-              // activeStep === 0 ? null : (
-              <Button
-                size="small"
-                onClick={handleBack}
-                disabled={activeStep === 0}
-                style={{
-                  width: "48px",
-                  minWidth: 0,
-                  height: "48px",
-                  padding: "16px",
-                  borderRadius: "25px",
-                  border: "1px solid #FAF9FB",
-                }}
-              >
-                {/* {theme.direction === "rtl" ? (
-                  <KeyboardArrowRight />
-                ) : ( */}
-                <KeyboardArrowLeft sx={{ color: "#FAF9FB" }} />
-                {/* )} */}
-              </Button>
-              // )
-            }
-            sx={{ background: "none" }}
-          />
-        </Box>
-
-        <Typography
-          id="modal-modal-title"
-          variant="h6"
-          component="h3"
-          sx={{
-            fontWeight: "400",
-            fontSize: "40px",
-            lineHeight: "normal",
-            color: "#FAF9FB",
-          }}
-        >
-          {row.name}
-        </Typography>
-        <Typography
-          id="modal-modal-title"
-          variant="h6"
-          component="h4"
-          sx={{
-            fontWeight: "400",
-            fontSize: "24px",
-            lineHeight: "normal",
-            color: "#FAF9FB",
-          }}
-        >
-          {row.price} грн.
-        </Typography>
         <Box
-          ref={containerRef}
           sx={{
             display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            width: "450px",
+            gap: "28px",
+            height: "content-box",
+            marginTop: "17px",
+            height: "567px",
           }}
         >
-          <List>
-            {desiredOrder.map((key) => {
-              if (keyMessages[key] && row[key]) {
-                return (
-                  <ListItem
-                    key={key}
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box
+              sx={{
+                width: "538px",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Typography
+                // id="modal-modal-title"
+                variant="h3"
+                sx={{
+                  color: (theme) => theme.palette.text.secondary,
+                }}
+              >
+                {row.name}
+              </Typography>
+              <Typography
+                // id="modal-modal-title"
+                variant="h4"
+                sx={{
+                  color: (theme) => theme.palette.text.secondary,
+                  marginTop: 3,
+                }}
+              >
+                {row.price} грн.
+              </Typography>
+
+              <Box
+                sx={{
+                  height: "273px",
+                  maxWidth: "410px",
+                  width: "100%",
+                  margin: "0 auto",
+                  marginTop: 4,
+                  borderRadius: 5,
+                  background: `url(${row.photos[activeStep]})`,
+                }}
+              ></Box>
+              <MobileStepper
+                variant="dots"
+                steps={maxSteps}
+                position="static"
+                activeStep={activeStep}
+                nextButton={
+                  // activeStep === maxSteps - 1 ? null : (
+                  <Button
+                    size="small"
+                    onClick={handleNext}
+                    disabled={activeStep === maxSteps - 1}
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
+                      width: "48px",
+                      minWidth: 0,
+                      height: "48px",
+                      padding: 2,
+                      borderRadius: 5,
+                      border: (theme) =>
+                        `1px solid ${theme.palette.common.white}`,
                     }}
                   >
-                    <ListItemText
-                      primary={keyMessages[key]}
-                      sx={{
-                        flex: "none",
-
-                        "& > span": {
-                          fontSize: "13px",
-                          fontWeight: "600",
-                          letterSpacing: "1.3px",
-                          textTransform: "uppercase",
-                          color: "#FAF9FB",
-                        },
-                      }}
+                    {/* {theme.direction === "rtl" ? (
+                  <KeyboardArrowLeft />
+                ) : ( */}
+                    <KeyboardArrowRight
+                      sx={{ color: (theme) => theme.palette.common.white }}
                     />
-                    <ListItemText
-                      sx={{
-                        borderBottom: "1px dashed white",
-                        alignSelf: "end",
-                      }}
+                    {/* )} */}
+                  </Button>
+                  // )
+                }
+                backButton={
+                  // activeStep === 0 ? null : (
+                  <Button
+                    size="small"
+                    onClick={handleBack}
+                    disabled={activeStep === 0}
+                    style={{
+                      width: "48px",
+                      minWidth: 0,
+                      height: "48px",
+                      padding: 2,
+                      borderRadius: 5,
+                      border: (theme) =>
+                        `1px solid ${theme.palette.common.white}`,
+                    }}
+                  >
+                    {/* {theme.direction === "rtl" ? (
+                  <KeyboardArrowRight />
+                ) : ( */}
+                    <KeyboardArrowLeft
+                      sx={{ color: (theme) => theme.palette.common.white }}
                     />
+                    {/* )} */}
+                  </Button>
+                  // )
+                }
+                sx={{ background: "none" }}
+              />
 
-                    {renderListItemText(key, row[key])}
-                  </ListItem>
-                );
-              }
-              return null;
-            })}
-          </List>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            gap: "16px",
-            "& > p": {
-              fontSize: "13px",
-              fontWeight: "600",
-              letterSpacing: "1.3px",
-              textTransform: "uppercase",
-              color: "#FAF9FB",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              textAlign: "left",
-            }}
-          >
-            Опис
-          </Typography>
-          <Box
-            sx={{
-              width: "490px",
-              minHeight: "100px",
-              padding: "16px 24px",
-              borderRadius: "25px",
-              background: "#FAF9FB",
-
-              textAlign: "left",
-              flexWrap: "wrap",
-              overflowWrap: "break-word",
-            }}
-          >
-            <Typography>{row.description}</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 3,
+                  margin: "0 auto",
+                  marginTop: "70px",
+                }}
+              >
+                <Button
+                  sx={{
+                    padding: "18px 40px",
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid  ${theme.palette.common.white}`,
+                    "&:hover": {
+                      border: (theme) =>
+                        `1px solid ${theme.palette.action.disabledBackground}`,
+                      "& > p": {
+                        color: (theme) => theme.palette.secondary.dark,
+                      },
+                    },
+                  }}
+                  // onClick={() => handleClose()}
+                >
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.common.white }}
+                  >
+                    Видалити
+                  </Typography>
+                </Button>
+                <Button
+                  sx={{
+                    padding: "18px 40px",
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid  ${theme.palette.common.white} `,
+                    "&:hover": {
+                      border: (theme) =>
+                        `1px solid ${theme.palette.action.disabledBackground}`,
+                      "& > p": {
+                        color: (theme) => theme.palette.secondary.dark,
+                      },
+                    },
+                  }}
+                  // onClick={() => handleDeleteItem()}
+                >
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.text.secondary }}
+                  >
+                    Редагувати
+                  </Typography>
+                </Button>
+              </Box>
+            </Box>
           </Box>
-        </Box>
+          <Divider
+            orientation="vertical"
+            sx={{
+              border: (theme) => `2px solid ${theme.palette.common.white}`,
+              borderRadius: 5,
+              height: "100%",
+            }}
+          />
+          <Box sx={{ height: "100%" }}>
+            <Box
+              ref={containerRef}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: "450px",
+              }}
+            >
+              <List
+                sx={{
+                  padding: "0",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {desiredOrder.map((key) => {
+                  if (keyMessages[key] && row[key]) {
+                    return (
+                      <ListItem
+                        key={key}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          padding: 0,
+                        }}
+                      >
+                        <ListItemText
+                          primary={keyMessages[key]}
+                          sx={{
+                            flex: "none",
+                            margin: 0,
 
-        <Box sx={{ display: "flex", gap: "24px" }}>
-          <Button
-            sx={{
-              padding: "18px 40px",
-              borderRadius: "25px",
-              border: "1px solid  #FAF9FB ",
-              "&:hover": {
-                border: "1px solid #AAA",
-                "& > p": {
-                  color: "#AAA",
-                },
-              },
-            }}
-            // onClick={() => handleClose()}
-          >
-            <Typography sx={{ color: "#FAF9FB" }}>Видалити</Typography>
-          </Button>
-          <Button
-            sx={{
-              padding: "18px 40px",
-              borderRadius: "25px",
-              border: "1px solid  #FAF9FB ",
-              "&:hover": {
-                border: "1px solid #AAA",
-                "& > p": {
-                  color: "#AAA",
-                },
-              },
-            }}
-            // onClick={() => handleDeleteItem()}
-          >
-            <Typography sx={{ color: "#FAF9FB" }}>Редагувати</Typography>
-          </Button>
+                            "& > span": {
+                              fontSize: "13px",
+                              fontWeight: "600",
+                              letterSpacing: "1.3px",
+                              lineHeight: "normal",
+                              textTransform: "uppercase",
+                              color: (theme) => theme.palette.text.secondary,
+                            },
+                          }}
+                        />
+                        <ListItemText
+                          sx={{
+                            borderBottom: (theme) =>
+                              `1px dashed ${theme.palette.common.white}`,
+                            alignSelf: "end",
+                          }}
+                        />
+
+                        {renderListItemText(key, row[key])}
+                      </ListItem>
+                    );
+                  }
+                  return null;
+                })}
+              </List>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  gap: 2,
+                  marginTop: 4,
+                  "& > p": {
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    letterSpacing: "1.3px",
+                    textTransform: "uppercase",
+                    color: (theme) => theme.palette.text.secondary,
+                  },
+                }}
+              >
+                <Typography
+                  sx={{
+                    textAlign: "left",
+                  }}
+                >
+                  Опис
+                </Typography>
+
+                <Box
+                  sx={{
+                    width: "420px",
+                    height: "154px",
+                    padding: 2,
+                    paddingLeft: 4,
+                    borderRadius: 5,
+                    background: (theme) => theme.palette.background.paper,
+                    textAlign: "left",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      height: "100%",
+                      flexWrap: "wrap",
+                      overflowWrap: "break-word",
+                      overflowY: "auto",
+                      paddingRight: 2,
+                      "&::-webkit-scrollbar": {
+                        width: "8px",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: (theme) =>
+                          theme.palette.secondary.dark,
+                        borderRadius: "5px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        backgroundColor: (theme) =>
+                          theme.palette.secondary.light,
+                        borderRadius: "5px",
+                      },
+                    }}
+                  >
+                    <Typography>{row.description}</Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Modal>

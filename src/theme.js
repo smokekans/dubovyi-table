@@ -67,7 +67,7 @@ const theme = createTheme({
     "none",
     "0px 0px 6px rgba(0, 0, 0, 0.60)",
     "0px 7px 15px rgba(3, 12, 13, 0.10)",
-    "none",
+    "0px 7px 15px 0px rgba(3, 12, 13, 0.10), 0px 27px 27px 0px rgba(3, 12, 13, 0.09), 0px 61px 37px 0px rgba(3, 12, 13, 0.05), 0px 109px 44px 0px rgba(3, 12, 13, 0.01), 0px 171px 48px 0px rgba(3, 12, 13, 0.00)",
     "none",
   ],
   typography: {

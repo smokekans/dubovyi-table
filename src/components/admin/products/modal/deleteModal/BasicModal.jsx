@@ -21,55 +21,53 @@ function BasicModal({ open, setOpen, handleDeleteItem }) {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: 362,
-          padding: "56px",
+          padding: 5,
           bgcolor: "background.paper",
-          borderRadius: "25px",
+          borderRadius: 5,
           display: "flex",
           flexDirection: "column",
-          gap: "56px",
+          gap: 5,
           alignItems: "center",
           textAlign: "center",
-          boxShadow:
-            "0px 7px 15px 0px rgba(3, 12, 13, 0.10), 0px 27px 27px 0px rgba(3, 12, 13, 0.09), 0px 61px 37px 0px rgba(3, 12, 13, 0.05), 0px 109px 44px 0px rgba(3, 12, 13, 0.01), 0px 171px 48px 0px rgba(3, 12, 13, 0.00)",
+          boxShadow: 3,
         }}
       >
-        <Typography
-          id="modal-modal-title"
-          variant="h6"
-          component="h4"
-          sx={{ fontWeight: "400", fontSize: "24px", lineHeight: "normal" }}
-        >
+        <Typography id="modal-modal-title" variant="h4">
           Ви впевнені, що хочете видалити обрані товари?
         </Typography>
-        <Box sx={{ display: "flex", gap: "24px" }}>
+        <Box sx={{ display: "flex", gap: 3 }}>
           <Button
             sx={{
               padding: "18px 40px",
-              borderRadius: "25px",
-              border: "1px solid  #324EBD ",
+              borderRadius: 6,
+              border: (theme) => `1px solid  ${theme.palette.primary.main} `,
               "&:hover": {
-                border: "1px solid #789DD1",
+                border: (theme) => `1px solid ${theme.palette.primary.dark}`,
                 "& > p": {
-                  color: "#789DD1",
+                  color: (theme) => theme.palette.action.hover,
                 },
               },
             }}
             onClick={() => handleClose()}
           >
-            <Typography sx={{ color: "#324EBD" }}>Повернутись</Typography>
+            <Typography sx={{ color: (theme) => theme.palette.primary.main }}>
+              Повернутись
+            </Typography>
           </Button>
           <Button
             sx={{
               padding: "18px 40px",
-              borderRadius: "25px",
-              background: "#324EBD",
+              borderRadius: 5,
+              background: (theme) => theme.palette.primary.main,
               "&:hover": {
-                background: "#789DD1",
+                background: (theme) => theme.palette.action.hover,
               },
             }}
             onClick={() => handleDeleteItem()}
           >
-            <Typography sx={{ color: "#FAF9FB" }}>Видалити</Typography>
+            <Typography sx={{ color: (theme) => theme.palette.text.secondary }}>
+              Видалити
+            </Typography>
           </Button>
         </Box>
       </Box>

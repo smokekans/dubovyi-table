@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+
 import { Box, Checkbox, TableCell, TableRow } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
-import BasicModal from "./modal/deleteModal/BasicModal";
-import DetailsModal from "./modal/viewDetailsModal/DetailsModal";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+
+import BasicModal from "./Modal/DeleteModal/BasicModal";
+import DetailsModal from "./Modal/ViewDetailsModal/DetailsModal";
 
 function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
   const [open, setOpen] = useState(false);
@@ -21,25 +25,20 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
   };
 
   const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+    const isSelected = selected.some((item) => item.id === id);
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+    let newSelected;
+
+    if (isSelected) {
+      newSelected = selected.filter((item) => item.id !== id);
+    } else {
+      newSelected = [...selected, { id }];
     }
+
     setSelected(newSelected);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (id) => selected.some((item) => item.id === id);
 
   const isItemSelected = isSelected(row.id);
   const labelId = `enhanced-table-checkbox-${index}`;
@@ -54,22 +53,44 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
         tabIndex={-1}
         key={row.id}
         selected={isItemSelected}
-        sx={{ cursor: "pointer" }}
+        sx={{
+          cursor: "pointer",
+          "&.MuiTableRow-hover:hover": {
+            backgroundColor: (theme) => theme.palette.action.selected,
+          },
+        }}
       >
         <TableCell
           padding="checkbox"
-          sx={{ borderBottom: "2px solid #BDCAFF" }}
+          sx={{
+            borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
+          }}
         >
           <Checkbox
+            icon={
+              <CheckBoxOutlineBlankOutlinedIcon
+                sx={{ color: (theme) => theme.palette.common.black }}
+              />
+            }
+            checkedIcon={
+              <CheckBoxOutlinedIcon
+                sx={{ color: (theme) => theme.palette.action.active }}
+              />
+            }
             checked={isItemSelected}
             inputProps={{
               "aria-labelledby": labelId,
             }}
-            sx={{ fill: "black", color: "black" }}
+            sx={{
+              fill: (theme) => theme.palette.common.black,
+              color: (theme) => theme.palette.common.black,
+            }}
           />
         </TableCell>
         <TableCell
-          sx={{ borderBottom: "2px solid #BDCAFF" }}
+          sx={{
+            borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
+          }}
           component="th"
           id={labelId}
           scope="row"
@@ -77,13 +98,25 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
         >
           {row.id}
         </TableCell>
-        <TableCell sx={{ borderBottom: "2px solid #BDCAFF" }}>
+        <TableCell
+          sx={{
+            borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
+          }}
+        >
           {row.name}
         </TableCell>
-        <TableCell sx={{ borderBottom: "2px solid #BDCAFF" }}>
+        <TableCell
+          sx={{
+            borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
+          }}
+        >
           {row.price} ₴
         </TableCell>
-        <TableCell sx={{ borderBottom: "2px solid #BDCAFF" }}>
+        <TableCell
+          sx={{
+            borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
+          }}
+        >
           {row.quantity ? (
             <Box
               sx={{
@@ -92,7 +125,7 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
                 maxWidth: "150px",
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: "25px",
+                borderRadius: 5,
                 background: "rgba(124, 167, 95, 0.25)",
                 color: "#7CA75F",
               }}
@@ -107,7 +140,7 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
                 maxWidth: "150px",
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: "25px",
+                borderRadius: 5,
                 background: "rgba(209, 54, 52, 0.25)",
                 color: "#D13634",
               }}
@@ -116,7 +149,11 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
             </Box>
           )}
         </TableCell>
-        <TableCell sx={{ borderBottom: "2px solid #BDCAFF" }}>
+        <TableCell
+          sx={{
+            borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
+          }}
+        >
           <Box
             sx={{
               display: "flex",

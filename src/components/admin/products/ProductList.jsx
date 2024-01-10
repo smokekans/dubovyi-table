@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import axios from "axios";
 import {
   Box,
   Paper,
@@ -9,11 +8,10 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
-
 import TablePaginationActions from "./TablePaginationActions";
 import Head from "./table/Head";
 import ProductItem from "./ProductItem";
-import { BASE_URL, DELETE_PRODUCT, PRODUCT_LIST } from "utils/constants/Url";
+import { deleteProduct } from "redux/products/productsOperations";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -44,22 +42,19 @@ function stableSort(array, comparator) {
 }
 
 function ProductList({
-  rowsdata,
+  rowsData,
   setRows,
   totalPages,
   totalItems,
   rowsPerPage,
   page,
   setPage,
-  setTotalPages,
-  setTotalItems,
+  selected,
+  setSelected,
 }) {
-  const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("№");
   const [dense, setDense] = useState(false);
-
-  const displayedPage = page + 1;
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -69,37 +64,21 @@ function ProductList({
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rowsdata.map((n) => n.id);
+      const newSelected = rowsData.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleChangePage = (event, value) => {
+    setPage(value);
+    console.log(value);
   };
 
   const handleDeleteItem = async (id, setOpen) => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
-        );
-        const data = await response.data;
-        const totalPage = response.headers[`x-total-pages`];
-        const totalItem = response.headers[`x-total-items`];
-        setTotalPages(totalPage);
-        setTotalItems(totalItem);
-        setRows(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     try {
-      await axios.delete(BASE_URL + DELETE_PRODUCT + `?id=${id}`);
-      fetchData();
+      deleteProduct({ id });
       setOpen(false);
     } catch (error) {
       console.log(error);
@@ -107,11 +86,11 @@ function ProductList({
   };
 
   const currentTableData = useMemo(() => {
-    return stableSort(rowsdata, getComparator(order, orderBy)).slice(
+    return stableSort(rowsData, getComparator(order, orderBy)).slice(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage
     );
-  }, [order, orderBy, page, rowsdata]);
+  }, [order, orderBy, page, rowsData, rowsPerPage]);
 
   return (
     <>
@@ -129,11 +108,12 @@ function ProductList({
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rowsdata.length}
+                rowCount={rowsData.length}
               />
               <TableBody>
                 {currentTableData.map((row, index) => (
                   <ProductItem
+                    key={index}
                     row={row}
                     setRows={setRows}
                     setSelected={setSelected}
@@ -156,11 +136,11 @@ function ProductList({
             }}
           >
             <Typography>
-              Сторінка: {displayedPage} з {totalPages}
+              Сторінка: {page + 1} з {totalPages}
             </Typography>
             <TablePagination
               component="div"
-              count={totalItems}
+              count={Number(totalItems)}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}

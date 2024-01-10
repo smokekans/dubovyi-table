@@ -7,25 +7,16 @@ import {
 } from "utils/constants/Url";
 
 axios.defaults.baseURL = "http://woodcrafts.eu-north-1.elasticbeanstalk.com";
-//чи є шанс із http зробити https
-//питання на бек, чому update це post, та де запит на put
-//що значить saveproduct, він же create?
-//які ід у категорії/кольору/material
-//wigth => width
 
 export const getProductList = createAsyncThunk(
   PRODUCT_LIST,
-  async ({ page, rowsPerPage }, { rejectWithValue }) => {
+  async ({ page }, { rejectWithValue }) => {
     try {
-      const { data, headers } = await axios.get(
-        PRODUCT_LIST`?page=${page}&size=${rowsPerPage}`
-      );
-      const totalPage = headers[`x-total-pages`];
-      const totalItem = headers[`x-total-items`];
-      console.log("====================================");
-      console.log(totalPage, totalItem);
-      console.log("====================================");
-      return { data, totalPage, totalItem };
+      const response = await axios.get(`${PRODUCT_LIST}?page=${page}&size=10`);
+      const data = await response.data.data;
+      const totalPages = response.data.totalPages;
+      const totalItems = response.data.totalItems;
+      return { data, totalPages, totalItems };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -46,7 +37,7 @@ export const createProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   DELETE_PRODUCT,
-  async (id, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
       const { data } = await axios.delete(DELETE_PRODUCT`?id=${id}`);
       return data;

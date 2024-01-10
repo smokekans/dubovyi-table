@@ -24,6 +24,7 @@ export default function SharedLayout() {
           width: (theme) => theme.breakpoints.values.desktop,
         },
         mx: "auto",
+        pb: 6,
       })}
     >
       <Header />

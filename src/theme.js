@@ -28,7 +28,7 @@ const theme = createTheme({
     },
     error: {
       main: "rgba(209, 54, 52, 0.25)",
-      contrastText: "#D13634",
+      contrastText: "rgba(209, 54, 52, 0.25)",
     },
     warning: {
       main: "rgba(251, 160, 50, 0.25)",
@@ -42,7 +42,6 @@ const theme = createTheme({
       main: "#FAF9FB",
       contrastText: "rgba(124, 167, 95, 0.25)",
     },
-
     text: {
       primary: "#030C0D",
       secondary: "#FAF9FB",
@@ -60,9 +59,12 @@ const theme = createTheme({
     },
   },
 
-  spacing: [0, 8, 16, 24, 32, 56, 96],
+  spacing: (factor) => {
+    const spacingValues = [0, 8, 16, 24, 32, 56, 96];
+    return spacingValues[factor];
+  },
   shape: {
-    borderRadius: 5,
+    borderRadius: 25,
   },
   shadows: [
     "none",
@@ -95,6 +97,8 @@ const theme = createTheme({
       fontFamily: "Onest",
       fontWeight: 400,
       fontSize: "24px",
+      lineHeight: "30.6px",
+      fontStyle: "normal",
     },
     subtitle1: {
       fontFamily: "Onest",
@@ -107,6 +111,7 @@ const theme = createTheme({
       fontFamily: "Onest",
       fontWeight: 400,
       fontSize: "16px",
+      lineHeight: "20.4px",
       letterSpacing: 0.08,
     },
     button: {

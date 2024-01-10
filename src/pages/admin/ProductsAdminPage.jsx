@@ -1,38 +1,51 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Box, Button, Typography } from "@mui/material";
-import Loader from "components/Loader/Loader";
 import ProductList from "components/admin/products/ProductList";
-import { BASE_URL, PRODUCT_LIST } from "utils/constants/Url";
 import { Link } from "react-router-dom";
+import BasicModal from "components/admin/products/modal/deleteModal/BasicModal";
+import DeleteSelectedItems from "components/admin/products/deleteItems/DeleteSelectedItems";
+import { useDispatch } from "react-redux";
+import {
+  deleteProduct,
+  getProductList,
+} from "redux/products/productsOperations";
+import {
+  getProducts,
+  getTotalItems,
+  getTotalPages,
+} from "redux/products/productsSelectors";
+import { useSelector } from "react-redux";
 
 export default function ProductsAdminPage() {
-  const [rows, setRows] = useState([]);
-  const [totalPages, setTotalPages] = useState("");
-  const [totalItems, setTotalItems] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const dispatch = useDispatch();
+  const rows = useSelector(getProducts);
+  const totalPages = useSelector(getTotalPages);
+  const totalItems = useSelector(getTotalItems);
   const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          BASE_URL + PRODUCT_LIST + `?page=${page}&size=${rowsPerPage}`
-        );
-        const data = await response.data;
-        const totalPage = response.headers[`x-total-pages`];
-        const totalItem = response.headers[`x-total-items`];
-        setTotalPages(totalPage);
-        setTotalItems(totalItem);
-        setRows(data);
-        setLoading(false);
-      } catch (error) {}
-    };
+    dispatch(getProductList({ page }));
+  }, [dispatch, page]);
 
-    fetchData();
-  }, [page]);
+  const handleOpenDeleteModal = () => {
+    setOpen(true);
+  };
+
+  const handleDeleteSelectedItem = async (array, setOpen) => {
+    try {
+      await Promise.all(
+        array.map(async (item) => {
+          deleteProduct({ item });
+        })
+      );
+      dispatch(getProductList(page));
+      setOpen(false);
+    } catch (error) {
+      console.log("Error in deleting selected items:", error);
+    }
+  };
 
   return (
     <Box sx={{ width: 1 }}>
@@ -79,21 +92,41 @@ export default function ProductsAdminPage() {
           </Button>
         </Box>
       </Box>
-      {!loading ? (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "32px",
+        }}
+      >
+        <Box>
+          <Typography>Тут будуть фільтри</Typography>
+        </Box>
+        <DeleteSelectedItems
+          selected={selected}
+          handleOpenDeleteModal={handleOpenDeleteModal}
+        />
+      </Box>
+      {rows && (
         <ProductList
-          rowsdata={rows}
-          setRows={setRows}
+          rowsData={rows}
           totalPages={totalPages}
           totalItems={totalItems}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={10}
           page={page}
           setPage={setPage}
-          setTotalPages={setTotalPages}
-          setTotalItems={setTotalItems}
+          selected={selected}
+          setSelected={setSelected}
         />
-      ) : (
-        <Loader />
       )}
+      <BasicModal
+        open={open}
+        setOpen={setOpen}
+        handleDeleteSelectedItem={() =>
+          handleDeleteSelectedItem(selected, setOpen)
+        }
+      />
     </Box>
   );
 }

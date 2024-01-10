@@ -38,7 +38,7 @@ export default function Sidebar() {
         <List
           sx={{
             background: (theme) => theme.palette.primary.main,
-            borderRadius: (theme) => theme.shape.borderRadius,
+            borderRadius: "25px",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",

@@ -4,13 +4,20 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import BasicModal from "./modal/deleteModal/BasicModal";
+import DetailsModal from "./modal/viewDetailsModal/DetailsModal";
 
 function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
   const [open, setOpen] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
 
-  const handleOpenModal = (e) => {
+  const handleOpenDeleteModal = (e) => {
     e.stopPropagation();
     setOpen(true);
+  };
+
+  const handleOpenDetailsModal = (e) => {
+    e.stopPropagation();
+    setOpenDetails(true);
   };
 
   const handleClick = (event, id) => {
@@ -116,14 +123,17 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ display: "flex" }}>
+            <Box
+              sx={{ display: "flex" }}
+              onClick={(e) => handleOpenDetailsModal(e)}
+            >
               Переглянути
               <ArrowRightOutlinedIcon sx={{ width: "24px", height: "24px" }} />
             </Box>
             <EditOutlinedIcon sx={{ width: "24px", height: "24px" }} />
             <DeleteOutlineOutlinedIcon
               sx={{ width: "24px", height: "24px" }}
-              onClick={(e) => handleOpenModal(e)}
+              onClick={(e) => handleOpenDeleteModal(e)}
             />
           </Box>
         </TableCell>
@@ -133,6 +143,13 @@ function ProductItem({ row, setSelected, selected, index, handleDeleteItem }) {
         setOpen={setOpen}
         handleDeleteItem={() => handleDeleteItem(row.id, setOpen)}
       />
+      {openDetails && (
+        <DetailsModal
+          openDetails={openDetails}
+          setOpenDetails={setOpenDetails}
+          row={row}
+        />
+      )}
     </>
   );
 }

@@ -9,6 +9,6 @@ export const FiltrationSchema = Yup.object().shape({
   maxPrice: Yup.number()
     .typeError("Має бути числом")
     .min(0, "Не може бути менше 0")
-    .max(1000000, "Куди ти лізеш")
+    .max(1000000, "Куди ти лізеш, це багато для тебе!")
     .notRequired(),
 });

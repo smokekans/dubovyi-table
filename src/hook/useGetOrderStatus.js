@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrderStatus } from "redux/enums/enumsSlice";
-import { BASE_URL, GET_CATEGORY_BY_ID } from "utils/constants/url";
+import { BASE_URL, GET_CATEGORY_BY_ID } from "utils/url";
 
 async function loadStatusInfo(statusId, dispatch) {
   try {

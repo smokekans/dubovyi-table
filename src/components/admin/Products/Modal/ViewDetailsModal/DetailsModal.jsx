@@ -14,7 +14,6 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import { useTheme } from "@mui/material/styles";
 import useGetColor from "hook/useGetColor";
 import useGetCategory from "hook/useGetCategory";
 import useGetMaterial from "hook/useGetMaterial";
@@ -46,7 +45,7 @@ const desiredOrder = [
 ];
 
 function DetailsModal({ openDetails, setOpenDetails, row }) {
-  const [containerWidth, setContainerWidth] = useState(0);
+  const [setContainerWidth] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
   const color = useGetColor(row.colorId);
@@ -54,13 +53,13 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
   const material = useGetMaterial(row.materialId);
 
   const containerRef = useRef(null);
-  const theme = useTheme();
   const maxSteps = row.photos.length;
 
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.offsetWidth);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -106,6 +105,8 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
         break;
       case "materialId":
         value = material;
+        break;
+      default:
         break;
     }
 
@@ -195,7 +196,6 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
           sx={{
             display: "flex",
             gap: "28px",
-            height: "content-box",
             marginTop: "17px",
             height: "567px",
           }}

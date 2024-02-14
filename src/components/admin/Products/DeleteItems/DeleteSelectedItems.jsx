@@ -11,7 +11,6 @@ function DeleteSelectedItems({ selected, handleOpenDeleteModal }) {
         gap: 1,
         padding: 1,
         textTransform: "none",
-        borderRadius: 0,
         color:
           selected.length > 0
             ? (theme) => theme.palette.common.black

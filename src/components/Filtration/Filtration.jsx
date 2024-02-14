@@ -6,16 +6,13 @@ import { useSelector } from "react-redux";
 import { getEnums } from "redux/enums/enumsSelectors";
 import { fields } from "utils/fields";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
 import CheckboxFiltration from "components/Filtration/Checkbox/CheckboxFiltration";
 import InputFiltration from "components/Filtration/Intup/InputFiltration";
-import { getProducts } from "redux/products/productsSelectors";
 import { FiltrationSchema } from "./FiltrationSchema";
 import { styles } from "./Intup/InputFiltration.styles";
 
 export default function Filtration({ setActiveFiltration }) {
   const enums = useSelector(getEnums);
-  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +34,6 @@ export default function Filtration({ setActiveFiltration }) {
     validationSchema: FiltrationSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
-      dispatch(getProducts(values));
       resetForm();
       setActiveFiltration(false);
     },

@@ -11,6 +11,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
+import CheckBoxOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 
 const headCells = [
   {
@@ -94,7 +95,7 @@ function Head(props) {
               />
             }
             checkedIcon={
-              <SelectAllOutlinedIcon
+              <CheckBoxOutlinedIcon
                 sx={{ color: (theme) => theme.palette.primary.main }}
               />
             }

@@ -247,34 +247,31 @@ export default function ProductsAdminPage() {
             </Box>
           </Box>
         )}
-        {activeFiltration ? (
+        {activeFiltration && (
           <Filtration
             setActiveFiltration={setActiveFiltration}
             setItemsFiltration={setItemsFiltration}
           />
-        ) : !loading && rows ? (
-          <ProductList
-            rowsdata={rows}
-            setRows={setRows}
-            totalPages={totalPages}
-            totalItems={totalItems}
-            rowsPerPage="10"
-            page={page}
-            setPage={setPage}
-            setTotalPages={setTotalPages}
-            setTotalItems={setTotalItems}
-            selected={selected}
-            setSelected={setSelected}
-            order={order}
-            orderBy={orderBy}
-            setOrder={setOrder}
-            setOrderBy={setOrderBy}
-            loading={loading}
-            error={error}
-          />
-        ) : (
-          <Loader />
         )}
+        <ProductList
+          rowsdata={rows}
+          setRows={setRows}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          rowsPerPage="10"
+          page={page}
+          setPage={setPage}
+          setTotalPages={setTotalPages}
+          setTotalItems={setTotalItems}
+          selected={selected}
+          setSelected={setSelected}
+          order={order}
+          orderBy={orderBy}
+          setOrder={setOrder}
+          setOrderBy={setOrderBy}
+          loading={loading}
+          error={error}
+        />
 
         <BasicModal
           open={open}

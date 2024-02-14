@@ -52,6 +52,7 @@ export default function CalendarFiltration({ formik }) {
           onChange={(newValue) => setEndDate(newValue)}
           format="DD.MM.YYYY"
           views={["year", "month", "day"]}
+          disableFuture
           minDate={startDate}
           dayOfWeekFormatter={(_day, weekday) => `${weekday.format("dd")}`}
           slots={{ openPickerIcon: CalendarTodayIcon }}

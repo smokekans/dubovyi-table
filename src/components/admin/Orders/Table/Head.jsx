@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 
@@ -61,7 +62,7 @@ function Head(props) {
 
   const CustomSortIcon = ({ direction, columnId, ...props }) => {
     return orderBy === columnId ? (
-      direction === "desc" ? (
+      direction === "DESC" ? (
         <ArrowUpwardIcon sx={{ width: 24, height: 24, marginLeft: 1 }} />
       ) : (
         <ArrowDownwardIcon
@@ -94,6 +95,9 @@ function Head(props) {
               />
             }
             checkedIcon={
+              // <CheckBoxOutlinedIcon
+              //   sx={{ color: (theme) => theme.palette.primary.main }}
+              // />
               <SelectAllOutlinedIcon
                 sx={{ color: (theme) => theme.palette.primary.main }}
               />
@@ -114,9 +118,7 @@ function Head(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            sortDirection={
-              orderBy === headCell.id ? order.toLowerCase() : false
-            }
+            sortDirection={orderBy === headCell.id ? order : false}
             sx={{
               padding: headCell.id === "id" ? "0" : "24px",
               borderBottom: (theme) =>
@@ -125,7 +127,7 @@ function Head(props) {
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order.toLowerCase() : "asc"}
+              direction={orderBy === headCell.id ? order : "ASC"}
               sx={{
                 "&.MuiTableSortLabel-root": {
                   color: (theme) => theme.palette.common.black,

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategories } from "redux/enums/enumsSlice";
-import { BASE_URL, GET_CATEGORY_BY_ID } from "utils/url";
+import { BASE_URL, GET_CATEGORY_BY_ID } from "utils/constants/url";
 
 async function loadCategoryInfo(categoryId, dispatch) {
   try {

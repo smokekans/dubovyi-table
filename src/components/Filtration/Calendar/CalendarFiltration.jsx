@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import "dayjs/locale/uk";
 import * as xDatePickers from "@mui/x-date-pickers";
@@ -39,6 +39,13 @@ export default function CalendarFiltration({ formik }) {
           minDate={firstDayOfYear}
           slots={{ openPickerIcon: CalendarTodayIcon }}
           sx={styles.datePicker}
+        />
+        <Divider
+          orientation="horizontal"
+          sx={{
+            width: "16px",
+            borderColor: (theme) => theme.palette.common.black,
+          }}
         />
         <xDatePickers.DatePicker
           value={endDate}

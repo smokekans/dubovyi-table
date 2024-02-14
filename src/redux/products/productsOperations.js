@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CREATE_PRODUCT, DELETE_PRODUCT, PRODUCTS } from "utils/url";
+import { PRODUCTS } from "utils/url";
 
 axios.defaults.baseURL = "http://woodcrafts.eu-north-1.elasticbeanstalk.com";
 
@@ -22,22 +22,10 @@ export const getProductList = createAsyncThunk(
 );
 
 export const createProduct = createAsyncThunk(
-  CREATE_PRODUCT,
+  PRODUCTS,
   async (newProduct, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(CREATE_PRODUCT, newProduct);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-export const deleteProduct = createAsyncThunk(
-  DELETE_PRODUCT,
-  async ({ id }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.delete(DELETE_PRODUCT`?id=${id}`);
+      const { data } = await axios.post(PRODUCTS, newProduct);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

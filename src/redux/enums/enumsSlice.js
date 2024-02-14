@@ -12,6 +12,7 @@ const InitialState = {
     { id: 4, name: "6 місяців" },
     { id: 5, name: "1 рік" },
   ],
+  EOrderStatus: [],
 };
 
 const enumsSlice = createSlice({
@@ -26,6 +27,9 @@ const enumsSlice = createSlice({
     },
     setMaterials(state, action) {
       state.EMaterials = [...state.EMaterials, action.payload];
+    },
+    setOrderStatus(state, action) {
+      state.EOrderStatus = [...state.EOrderStatus, action.payload];
     },
   },
   extraReducers: (builder) => {
@@ -45,6 +49,7 @@ const enumsSlice = createSlice({
   },
 });
 
-export const { setCategories, setColors, setMaterials } = enumsSlice.actions;
+export const { setCategories, setColors, setMaterials, setOrderStatus } =
+  enumsSlice.actions;
 
 export const enumsReducer = enumsSlice.reducer;

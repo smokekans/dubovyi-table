@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -8,23 +8,22 @@ import {
 } from "@mui/material";
 import BasicModal from "components/Admin/Products/Modal/DeleteModal/BasicModal";
 import DeleteSelectedItems from "components/Admin/Products/DeleteItems/DeleteSelectedItems";
-import { BASE_URL, PRODUCTS } from "utils/url";
 import { Link } from "react-router-dom";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Loader from "components/Loader/Loader";
-import axios from "axios";
-import ProductList from "components/Admin/Products/ProductList";
 import { useDispatch } from "react-redux";
 import { getEnumsList } from "redux/enums/enumsOperations";
 import Filtration from "components/Filtration/Filtration";
 import SearchIcon from "@mui/icons-material/Search";
+import ProductList from "components/Admin/Products/ProductList";
+import { deleteProduct, getProductList } from "services/fetchData";
 
 export default function ProductsAdminPage() {
-  const [rows, setRows] = useState(null);
-  const [activeFiltration, setActiveFiltration] = useState(true);
+  const [activeFiltration, setActiveFiltration] = useState(false);
   const [itemsFiltration, setItemsFiltration] = useState(null);
+  const [rows, setRows] = useState([]);
   const [totalPages, setTotalPages] = useState("");
   const [totalItems, setTotalItems] = useState("");
   const [page, setPage] = useState(0);
@@ -33,25 +32,34 @@ export default function ProductsAdminPage() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState();
+  const abortControllerRef = useRef(null);
   const dispatch = useDispatch();
   dispatch(getEnumsList());
 
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          BASE_URL +
-            PRODUCTS +
-            `?page=${page}&size=10&sortBy=${orderBy}&direction=${order}`
-        );
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
 
-        const { data, totalPages, totalItems } = response.data;
-        setTotalPages(totalPages);
-        setTotalItems(totalItems);
-        setRows(data);
+      setLoading(true);
+      try {
+        const response = await getProductList(
+          page,
+          orderBy,
+          order,
+          abortControllerRef
+        );
+        setTotalPages(response.totalPage);
+        setTotalItems(response.totalItem);
+        setRows(response.data);
+        setError("");
       } catch (error) {
-        console.log(error);
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+          return;
+        }
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -66,28 +74,34 @@ export default function ProductsAdminPage() {
 
   const handleDeleteSelectedItem = async (array, setOpen) => {
     const fetchData = async () => {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
       try {
-        const response = await axios.get(
-          BASE_URL +
-            PRODUCTS +
-            `?page=${page}&size=10&sortBy=${orderBy}&direction=${order}`
+        const response = await getProductList(
+          page,
+          orderBy,
+          order,
+          abortControllerRef
         );
-        const { data, totalPages, totalItems } = response.data;
-        setTotalPages(totalPages);
-        setTotalItems(totalItems);
-        setRows(data);
+        setTotalPages(response.totalPage);
+        setTotalItems(response.totalItem);
+        setRows(response.data);
+        setError("");
       } catch (error) {
-        console.log(error);
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+          return;
+        }
+        setError(error);
       }
     };
 
     try {
-      await axios.delete(BASE_URL + PRODUCTS, {
-        data: array,
-      });
-
+      await deleteProduct(selected);
       await fetchData();
       setOpen(false);
+      setSelected([]);
+      setError("");
     } catch (error) {
       console.log(error);
     }
@@ -201,7 +215,7 @@ export default function ProductsAdminPage() {
                   Усі товари
                 </Button>
               ) : (
-                <Button>slkgls;knls</Button>
+                <Button>Буде перелік</Button>
               )}
               <Box
                 sx={{
@@ -255,6 +269,8 @@ export default function ProductsAdminPage() {
             orderBy={orderBy}
             setOrder={setOrder}
             setOrderBy={setOrderBy}
+            loading={loading}
+            error={error}
           />
         ) : (
           <Loader />

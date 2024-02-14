@@ -43,7 +43,7 @@ export default function Filtration({ setActiveFiltration }) {
     },
   });
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", mt: 4 }}>
       <Box component="form" onSubmit={formik.handleSubmit}>
         <CalendarFiltration formik={formik} />
         <Box

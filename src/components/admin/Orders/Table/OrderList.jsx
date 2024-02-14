@@ -1,4 +1,5 @@
 import React, { useMemo, useRef } from "react";
+
 import {
   Box,
   Button,
@@ -9,19 +10,19 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import TablePaginationActions from "./TablePaginationActions";
-import Head from "./Table/Head";
-import ProductItem from "./ProductItem";
+
+import TablePaginationAction from "./TablePaginationAction";
+import Head from "./Head";
+import OrderItem from "./OrderItem";
 import {
-  deleteProduct,
-  getAllProductsForSelect,
-  getProductList,
+  deleteOrder,
+  getAllOrdersForSelect,
+  getOrderList,
 } from "services/fetchData";
 import Loader from "components/Loader/Loader";
 import EmptyTableRow from "./EmptyTableRow";
 
-function ProductList(props) {
+function OrderList(props) {
   const {
     rowsdata,
     setRows,
@@ -40,8 +41,8 @@ function ProductList(props) {
     loading,
     error,
   } = props;
-
   const abortControllerRef = useRef(null);
+
   const displayedPage = page + 1;
 
   const handleRequestSort = (event, property) => {
@@ -53,20 +54,12 @@ function ProductList(props) {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const fetchData = async () => {
-        abortControllerRef.current?.abort();
-        abortControllerRef.current = new AbortController();
         try {
-          const response = await getAllProductsForSelect(
-            totalItems,
-            abortControllerRef
-          );
+          const response = await getAllOrdersForSelect(totalItems);
           const newSelected = response.map((n) => ({ id: n.id }));
           setSelected(newSelected);
         } catch (error) {
-          if (error.name === "AbortError") {
-            console.log("Aborted");
-            return;
-          }
+          console.log(error);
         }
       };
       fetchData();
@@ -79,12 +72,12 @@ function ProductList(props) {
     setPage(newPage);
   };
 
-  const handleDeleteItem = async (id, setOpen) => {
+  const handleDelete = async (id) => {
     const fetchData = async () => {
       abortControllerRef.current?.abort();
       abortControllerRef.current = new AbortController();
       try {
-        const response = await getProductList(
+        const response = await getOrderList(
           page,
           orderBy,
           order,
@@ -102,23 +95,23 @@ function ProductList(props) {
     };
 
     try {
-      await deleteProduct(id ? id : selected);
+      await deleteOrder(id ? id : selected);
       await fetchData();
-      setOpen(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const currentTableData = useMemo(() => {
-    return rowsdata.slice(0, 10);
-  }, [rowsdata]);
+    if (rowsdata) return rowsdata.slice(0, 10);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, rowsdata, order, orderBy]);
 
   return (
     <>
       <Box sx={{ width: "100%", marginTop: "60px" }}>
         <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
-          <TableContainer sx={{ overflow: "hidden" }}>
+          <TableContainer>
             <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
               <Head
                 numSelected={selected.length}
@@ -133,13 +126,13 @@ function ProductList(props) {
                 <TableBody>
                   {currentTableData.length > 0 && !error ? (
                     currentTableData.map((row, index) => (
-                      <ProductItem
+                      <OrderItem
                         row={row}
+                        setRows={setRows}
                         setSelected={setSelected}
                         selected={selected}
                         index={index}
-                        key={index}
-                        handleDeleteItem={handleDeleteItem}
+                        handleDelete={handleDelete}
                       />
                     ))
                   ) : (
@@ -151,21 +144,26 @@ function ProductList(props) {
               )}
             </Table>
           </TableContainer>
-          <Button
-            startIcon={<FileUploadIcon />}
-            sx={{
-              p: "18px 40px",
-              mt: 5,
-              borderRadius: 5,
-              height: "56px",
-              backgroundColor: "#324EBD",
-              textDecoration: "none",
-              color: (theme) => theme.palette.common.white,
-              textTransform: "none",
-            }}
-          >
-            Експортувати
-          </Button>
+          <Box sx={{ marginTop: "60px", display: "flex", gap: "24px" }}>
+            <Button
+              sx={{
+                padding: "18px 40px",
+                borderRadius: 5,
+                border: (theme) => `1px solid  ${theme.palette.primary.main} `,
+                "&:hover": {
+                  border: (theme) => `1px solid ${theme.palette.primary.dark}`,
+                  "& > p": {
+                    color: (theme) => theme.palette.action.hover,
+                  },
+                },
+              }}
+              onClick={() => handleDelete(selected)}
+            >
+              <Typography sx={{ color: (theme) => theme.palette.primary.main }}>
+                Архівувати
+              </Typography>
+            </Button>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -184,10 +182,10 @@ function ProductList(props) {
               count={totalItems}
               page={page}
               onPageChange={handleChangePage}
-              rowsPerPage={10}
+              rowsPerPage="10"
               rowsPerPageOptions={[]}
               labelDisplayedRows={() => ""}
-              ActionsComponent={TablePaginationActions}
+              ActionsComponent={TablePaginationAction}
             />
           </Box>
         </Paper>
@@ -196,4 +194,4 @@ function ProductList(props) {
   );
 }
 
-export default ProductList;
+export default OrderList;

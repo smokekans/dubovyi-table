@@ -1,22 +1,49 @@
 import React, { useState } from "react";
+
 import { Box, Checkbox, TableCell, TableRow } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
-import BasicModal from "./Modal/DeleteModal/BasicModal";
-import DetailsModal from "./Modal/ViewDetailsModal/DetailsModal";
 
-function ProductItem(props) {
-  const { row, index, handleDeleteItem, selected, setSelected } = props;
-  const [open, setOpen] = useState(false);
-  const [openDetails, setOpenDetails] = useState(false);
+const getStatusStyles = (status) => {
+  switch (status) {
+    case "Нове":
+      return {
+        background: "#324EBD",
+        color: "#FAF9FB",
+      };
+    case "Відправлене":
+      return {
+        background: "#789DD1",
+        color: "#FAF9FB",
+      };
+    case "Отримане":
+      return {
+        background: "#7CA75F",
+        color: "#030C0D",
+      };
+    case "Скасоване":
+      return {
+        background: "rgba(209, 54, 52, 0.25)",
+        color: "#D13634",
+      };
+    case "В обробці":
+      return {
+        background: "#FBA032",
+        color: "#030C0D",
+      };
+    default:
+      return {};
+  }
+};
 
-  const handleOpenDeleteModal = (e) => {
-    e.stopPropagation();
-    setOpen(true);
-  };
+function OrderItem(props) {
+  const { row, setSelected, selected, index, handleDelete } = props;
+  const [setOpenDetails] = useState(false);
+
+  const statusStyles = getStatusStyles(row.status);
 
   const handleOpenDetailsModal = (e) => {
     e.stopPropagation();
@@ -102,51 +129,33 @@ function ProductItem(props) {
             borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
           }}
         >
-          {row.name}
+          {row.orderDate}
         </TableCell>
         <TableCell
           sx={{
             borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
           }}
         >
-          {row.price} ₴
+          {row.totalPrice} ₴
         </TableCell>
         <TableCell
           sx={{
             borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
           }}
         >
-          {row.quantity ? (
-            <Box
-              sx={{
-                display: "flex",
-                minWidth: "130px",
-                maxWidth: "150px",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 5,
-                background: "rgba(124, 167, 95, 0.25)",
-                color: "#7CA75F",
-              }}
-            >
-              Кількість: {row.quantity}
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                display: "flex",
-                minWidth: "130px",
-                maxWidth: "150px",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 5,
-                background: "rgba(209, 54, 52, 0.25)",
-                color: "#D13634",
-              }}
-            >
-              Відсутнє
-            </Box>
-          )}
+          <Box
+            sx={{
+              display: "flex",
+              minWidth: "130px",
+              maxWidth: "150px",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 5,
+              ...statusStyles,
+            }}
+          >
+            {row.status}
+          </Box>
         </TableCell>
         <TableCell
           sx={{
@@ -167,29 +176,27 @@ function ProductItem(props) {
               <ArrowRightOutlinedIcon sx={{ width: "24px", height: "24px" }} />
             </Box>
             <EditOutlinedIcon sx={{ width: "24px", height: "24px" }} />
-            <DeleteOutlineOutlinedIcon
+            <ArchiveOutlinedIcon
               sx={{ width: "24px", height: "24px" }}
-              onClick={(e) => handleOpenDeleteModal(e)}
+              onClick={(e) => {
+                e.stopPropagation();
+                const newSelected = [{ id: row.id }];
+                handleDelete(newSelected);
+              }}
             />
           </Box>
         </TableCell>
       </TableRow>
-      <BasicModal
-        open={open}
-        setOpen={setOpen}
-        // handleDeleteItem={() => handleDeleteItem([{ id: row.id }], setOpen)}
-        handleDeleteItem={handleDeleteItem}
-        id={row.id}
-      />
-      {openDetails && (
+
+      {/* {openDetails ? (
         <DetailsModal
           openDetails={openDetails}
           setOpenDetails={setOpenDetails}
           row={row}
         />
-      )}
+      ) : null} */}
     </>
   );
 }
 
-export default ProductItem;
+export default OrderItem;

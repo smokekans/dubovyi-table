@@ -1,32 +1,32 @@
-// import axios from "axios";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setColors } from "redux/enums/enumsSlice";
-// import { BASE_URL, GET_COLOR_BY_ID } from "utils/url";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setColors } from "redux/enums/enumsSlice";
+import { BASE_URL, GET_COLOR_BY_ID } from "utils/url";
 
-// async function loadColorInfo(colorId, dispatch) {
-//   try {
-//     const response = await axios.get(
-//       BASE_URL + GET_COLOR_BY_ID + `?id=${colorId}`
-//     );
-//     const data = response.data;
-//     dispatch(setColors(data));
-//     return data.name;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+async function loadColorInfo(colorId, dispatch) {
+  try {
+    const response = await axios.get(
+      BASE_URL + GET_COLOR_BY_ID + `?id=${colorId}`
+    );
+    const data = response.data;
+    dispatch(setColors(data));
+    return data.name;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-// function useGetColor(colorId) {
-//   const { EColors } = useSelector((store) => store.enums);
-//   const dispatch = useDispatch();
+function useGetColor(colorId) {
+  const { EColors } = useSelector((store) => store.enums);
+  const dispatch = useDispatch();
 
-//   let color = EColors.find((color) => color.id === colorId);
+  let color = EColors.find((color) => color.id === colorId);
 
-//   if (color === undefined) {
-//     return loadColorInfo(colorId, dispatch);
-//   }
+  if (color === undefined) {
+    return loadColorInfo(colorId, dispatch);
+  }
 
-//   return color.name;
-// }
+  return color.name;
+}
 
-// export default useGetColor;
+export default useGetColor;

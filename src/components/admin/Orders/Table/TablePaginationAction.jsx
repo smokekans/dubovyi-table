@@ -1,8 +1,11 @@
 import { Box, IconButton } from "@mui/material";
+
+import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-function TablePaginationActions(props) {
+function TablePaginationAction(props) {
+  const theme = useTheme();
   const { count, page, onPageChange } = props;
 
   const handleBackButtonClick = (event) => {
@@ -41,11 +44,18 @@ function TablePaginationActions(props) {
           cursor: page === 0 ? "default" : "pointer",
           pointerEvents: page === 0 ? "none" : "auto",
           "&:hover": {
-            backgroundColor: "transparent",
+            backgroundColor:
+              page >= Math.ceil(count / 10) - 1
+                ? "transparent"
+                : (theme) => theme.palette.primary.main,
+            color:
+              page >= Math.ceil(count / 10) - 1
+                ? (theme) => theme.palette.action.disabledBackground
+                : (theme) => theme.palette.common.white,
           },
         }}
       >
-        <ArrowBackIcon />
+        {theme.direction === "rtl" ? <ArrowForwardIcon /> : <ArrowBackIcon />}
       </IconButton>
       <IconButton
         onClick={() => {
@@ -80,10 +90,10 @@ function TablePaginationActions(props) {
           },
         }}
       >
-        <ArrowForwardIcon />
+        {theme.direction === "rtl" ? <ArrowBackIcon /> : <ArrowForwardIcon />}
       </IconButton>
     </Box>
   );
 }
 
-export default TablePaginationActions;
+export default TablePaginationAction;

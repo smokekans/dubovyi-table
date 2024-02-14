@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import OrderList from "components/Admin/Orders/Table/OrderList";
+import OrderList from "components/admin/Orders/Table/OrderList";
 import { useEffect, useRef, useState } from "react";
 import { getOrderList } from "services/fetchData";
 import { ROWS_PER_PAGE } from "utils/constans";

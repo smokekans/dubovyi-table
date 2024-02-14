@@ -1,10 +1,9 @@
 export const BASE_URL = `http://woodcrafts.eu-north-1.elasticbeanstalk.com`;
-export const PRODUCT_LIST = `/products/getAllProducts`;
-export const DELETE_PRODUCT = `/products/deleteById`;
-export const DELETE_PRODUCT_LIST = `/products/deleteProductList`;
+export const PRODUCT_LIST = `/products`;
 export const GET_ALL_CATEGORIES = `/categories/getAll`;
 export const GET_ALL_COLORS = `/colors/getAllColors`;
 export const GET_ALL_MATERIALS = `/materials/getAllMaterials`;
 export const GET_COLOR_BY_ID = `/colors/findById`;
 export const GET_CATEGORY_BY_ID = `/categories/findById`;
 export const GET_MATERIAL_BY_ID = `/materials/findById`;
+export const ORDER_LIST = `/orders`;

@@ -21,22 +21,22 @@ const headCells = [
     label: "№",
   },
   {
-    id: "name",
+    id: "orderDate",
     numeric: false,
     disablePadding: false,
-    label: "Назва",
+    label: "Дата і час",
   },
   {
-    id: "price",
+    id: "totalPrice",
     numeric: true,
     disablePadding: false,
-    label: "Ціна",
+    label: "Сума",
   },
   {
-    id: "quantity",
+    id: "status",
     numeric: true,
     disablePadding: false,
-    label: "Кількість",
+    label: "Статус",
   },
   {
     id: "details",

@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import Loader from "components/Loader/Loader";
 import ProductList from "components/Admin/Products/ProductList";
 import BasicModal from "components/Admin/Products/Modal/DeleteModal/BasicModal";
 import DeleteSelectedItems from "components/Admin/Products/DeleteItems/DeleteSelectedItems";
-import {
-  BASE_URL,
-  DELETE_PRODUCT_LIST,
-  PRODUCT_LIST,
-} from "utils/constants/url";
+import { deleteProduct, getProductList } from "services/fetchData";
 
 export default function ProductsAdminPage() {
-  const [rows, setRows] = useState(null);
+  const [rows, setRows] = useState([]);
   const [totalPages, setTotalPages] = useState("");
   const [totalItems, setTotalItems] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -22,25 +16,34 @@ export default function ProductsAdminPage() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState();
+
+  const abortControllerRef = useRef(null);
 
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          BASE_URL +
-            PRODUCT_LIST +
-            `?page=${page}&size=${rowsPerPage}&sortBy=${orderBy}&direction=${order}`
-        );
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
 
-        const data = await response.data.data;
-        const totalPage = response.data.totalPages;
-        const totalItem = response.data.totalItems;
-        setTotalPages(totalPage);
-        setTotalItems(totalItem);
-        setRows(data);
+      setLoading(true);
+      try {
+        const response = await getProductList(
+          page,
+          rowsPerPage,
+          orderBy,
+          order,
+          abortControllerRef
+        );
+        setTotalPages(response.totalPage);
+        setTotalItems(response.totalItem);
+        setRows(response.data);
+        setError("");
       } catch (error) {
-        console.log(error);
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+          return;
+        }
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -55,30 +58,35 @@ export default function ProductsAdminPage() {
 
   const handleDeleteSelectedItem = async (array, setOpen) => {
     const fetchData = async () => {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
       try {
-        const response = await axios.get(
-          BASE_URL +
-            PRODUCT_LIST +
-            `?page=${page}&size=${rowsPerPage}&sortBy=${orderBy}&direction=${order}`
+        const response = await getProductList(
+          page,
+          rowsPerPage,
+          orderBy,
+          order,
+          abortControllerRef
         );
-        const data = await response.data.data;
-        const totalPage = response.data.totalPages;
-        const totalItem = response.data.totalItems;
-        setTotalPages(totalPage);
-        setTotalItems(totalItem);
-        setRows(data);
+        setTotalPages(response.totalPage);
+        setTotalItems(response.totalItem);
+        setRows(response.data);
+        setError("");
       } catch (error) {
-        console.log(error);
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+          return;
+        }
+        setError(error);
       }
     };
 
     try {
-      const response = await axios.delete(BASE_URL + DELETE_PRODUCT_LIST, {
-        data: array,
-      });
-
+      await deleteProduct(selected);
       await fetchData();
       setOpen(false);
+      setSelected([]);
+      setError("");
     } catch (error) {
       console.log(error);
     }
@@ -86,47 +94,45 @@ export default function ProductsAdminPage() {
 
   return (
     <>
-      {!loading && rows ? (
-        <Box>
-          <Typography variant="h3">Товари</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: 4,
-            }}
-          >
-            <Box>
-              <Typography>Тут будуть фільтри</Typography>
-            </Box>
-            <DeleteSelectedItems
-              selected={selected}
-              handleOpenDeleteModal={handleOpenDeleteModal}
-            />
+      <Box>
+        <Typography variant="h3">Товари</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 4,
+          }}
+        >
+          <Box>
+            <Typography>Тут будуть фільтри</Typography>
           </Box>
-
-          <ProductList
-            rowsdata={rows}
-            setRows={setRows}
-            totalPages={totalPages}
-            totalItems={totalItems}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            setPage={setPage}
-            setTotalPages={setTotalPages}
-            setTotalItems={setTotalItems}
+          <DeleteSelectedItems
             selected={selected}
-            setSelected={setSelected}
-            order={order}
-            orderBy={orderBy}
-            setOrder={setOrder}
-            setOrderBy={setOrderBy}
+            handleOpenDeleteModal={handleOpenDeleteModal}
           />
         </Box>
-      ) : (
-        <Loader />
-      )}
+
+        <ProductList
+          rowsdata={rows}
+          setRows={setRows}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          setPage={setPage}
+          setTotalPages={setTotalPages}
+          setTotalItems={setTotalItems}
+          selected={selected}
+          setSelected={setSelected}
+          order={order}
+          orderBy={orderBy}
+          setOrder={setOrder}
+          setOrderBy={setOrderBy}
+          loading={loading}
+          error={error}
+        />
+      </Box>
       <BasicModal
         open={open}
         setOpen={setOpen}

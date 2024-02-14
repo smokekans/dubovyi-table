@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import ProductList from "components/Admin/Products/ProductList";
-import BasicModal from "components/Admin/Products/Modal/DeleteModal/BasicModal";
-import DeleteSelectedItems from "components/Admin/Products/DeleteItems/DeleteSelectedItems";
+import BasicModal from "components/admin/products/Modal/DeleteModal/BasicModal";
+import DeleteSelectedItems from "components/admin/products/DeleteItems/DeleteSelectedItems";
 import { deleteProduct, getProductList } from "services/fetchData";
 
 export default function ProductsAdminPage() {

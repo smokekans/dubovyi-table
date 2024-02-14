@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 
 import {
   Box,
@@ -28,7 +28,6 @@ function OrderList(props) {
     setRows,
     totalPages,
     totalItems,
-    rowsPerPage,
     page,
     setPage,
     setTotalPages,
@@ -42,7 +41,6 @@ function OrderList(props) {
     loading,
     error,
   } = props;
-  const [dense, setDense] = useState(false);
   const abortControllerRef = useRef(null);
 
   const displayedPage = page + 1;
@@ -81,7 +79,6 @@ function OrderList(props) {
       try {
         const response = await getOrderList(
           page,
-          rowsPerPage,
           orderBy,
           order,
           abortControllerRef
@@ -106,7 +103,8 @@ function OrderList(props) {
   };
 
   const currentTableData = useMemo(() => {
-    if (rowsdata) return rowsdata.slice(0, rowsPerPage);
+    if (rowsdata) return rowsdata.slice(0, 10);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsdata, order, orderBy]);
 
   return (
@@ -114,11 +112,7 @@ function OrderList(props) {
       <Box sx={{ width: "100%", marginTop: "60px" }}>
         <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
           <TableContainer>
-            <Table
-              sx={{ minWidth: 870 }}
-              aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
-            >
+            <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
               <Head
                 numSelected={selected.length}
                 order={order}
@@ -188,7 +182,7 @@ function OrderList(props) {
               count={totalItems}
               page={page}
               onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
+              rowsPerPage="10"
               rowsPerPageOptions={[]}
               labelDisplayedRows={() => ""}
               ActionsComponent={TablePaginationAction}

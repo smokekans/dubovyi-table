@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const productsInitialState = {};
+const productsInitialState = {
+  data: [],
+  totalPages: "",
+  totalItems: "",
+  isLoading: false,
+};
 
 const productsSlice = createSlice({
   name: "products",

@@ -41,7 +41,7 @@ const getStatusStyles = (status) => {
 
 function OrderItem(props) {
   const { row, setSelected, selected, index, handleDelete } = props;
-  const [openDetails, setOpenDetails] = useState(false);
+  const [setOpenDetails] = useState(false);
 
   const statusStyles = getStatusStyles(row.status);
 

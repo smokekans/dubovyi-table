@@ -1,6 +1,7 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -8,7 +9,7 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
-
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import TablePaginationActions from "./TablePaginationActions";
 import Head from "./Table/Head";
 import ProductItem from "./ProductItem";
@@ -26,7 +27,6 @@ function ProductList(props) {
     setRows,
     totalPages,
     totalItems,
-    rowsPerPage,
     page,
     setPage,
     setTotalPages,
@@ -41,9 +41,7 @@ function ProductList(props) {
     error,
   } = props;
 
-  const [dense, setDense] = useState(false);
   const abortControllerRef = useRef(null);
-
   const displayedPage = page + 1;
 
   const handleRequestSort = (event, property) => {
@@ -88,7 +86,6 @@ function ProductList(props) {
       try {
         const response = await getProductList(
           page,
-          rowsPerPage,
           orderBy,
           order,
           abortControllerRef
@@ -114,19 +111,15 @@ function ProductList(props) {
   };
 
   const currentTableData = useMemo(() => {
-    return rowsdata.slice(0, rowsPerPage);
-  }, [page, rowsdata, order, orderBy]);
+    return rowsdata.slice(0, 10);
+  }, [rowsdata]);
 
   return (
     <>
       <Box sx={{ width: "100%", marginTop: "60px" }}>
         <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
           <TableContainer sx={{ overflow: "hidden" }}>
-            <Table
-              sx={{ minWidth: 870 }}
-              aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
-            >
+            <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
               <Head
                 numSelected={selected.length}
                 order={order}
@@ -142,10 +135,10 @@ function ProductList(props) {
                     currentTableData.map((row, index) => (
                       <ProductItem
                         row={row}
-                        // setRows={setRows}
                         setSelected={setSelected}
                         selected={selected}
                         index={index}
+                        key={index}
                         handleDeleteItem={handleDeleteItem}
                       />
                     ))
@@ -158,6 +151,21 @@ function ProductList(props) {
               )}
             </Table>
           </TableContainer>
+          <Button
+            startIcon={<FileUploadIcon />}
+            sx={{
+              p: "18px 40px",
+              mt: 5,
+              borderRadius: 5,
+              height: "56px",
+              backgroundColor: "#324EBD",
+              textDecoration: "none",
+              color: (theme) => theme.palette.common.white,
+              textTransform: "none",
+            }}
+          >
+            Експортувати
+          </Button>
           <Box
             sx={{
               display: "flex",
@@ -176,7 +184,7 @@ function ProductList(props) {
               count={totalItems}
               page={page}
               onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
+              rowsPerPage={10}
               rowsPerPageOptions={[]}
               labelDisplayedRows={() => ""}
               ActionsComponent={TablePaginationActions}

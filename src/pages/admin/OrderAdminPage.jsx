@@ -7,13 +7,11 @@ export default function OrderAdminPage() {
   const [rows, setRows] = useState(null);
   const [totalPages, setTotalPages] = useState("");
   const [totalItems, setTotalItems] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState("DESC");
   const [orderBy, setOrderBy] = useState("id");
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
-  const [open, setOpen] = useState(false);
   const [error, setError] = useState();
 
   const abortControllerRef = useRef(null);
@@ -24,7 +22,6 @@ export default function OrderAdminPage() {
       try {
         const response = await getOrderList(
           page,
-          rowsPerPage,
           orderBy,
           order,
           abortControllerRef
@@ -55,7 +52,7 @@ export default function OrderAdminPage() {
         setRows={setRows}
         totalPages={totalPages}
         totalItems={totalItems}
-        rowsPerPage={rowsPerPage}
+        rowsPerPage="10"
         page={page}
         setPage={setPage}
         setTotalPages={setTotalPages}

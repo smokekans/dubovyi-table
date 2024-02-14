@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-
 import { Box, Checkbox, TableCell, TableRow } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
-
 import BasicModal from "./Modal/DeleteModal/BasicModal";
 import DetailsModal from "./Modal/ViewDetailsModal/DetailsModal";
 
@@ -183,13 +181,13 @@ function ProductItem(props) {
         handleDeleteItem={handleDeleteItem}
         id={row.id}
       />
-      {openDetails ? (
+      {openDetails && (
         <DetailsModal
           openDetails={openDetails}
           setOpenDetails={setOpenDetails}
           row={row}
         />
-      ) : null}
+      )}
     </>
   );
 }

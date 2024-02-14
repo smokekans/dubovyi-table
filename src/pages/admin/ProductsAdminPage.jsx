@@ -6,8 +6,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import BasicModal from "components/Admin/Products/Modal/DeleteModal/BasicModal";
-import DeleteSelectedItems from "components/Admin/Products/DeleteItems/DeleteSelectedItems";
+import BasicModal from "components/admin/Products/Modal/DeleteModal/BasicModal";
+import DeleteSelectedItems from "components/admin/Products/DeleteItems/DeleteSelectedItems";
 import { Link } from "react-router-dom";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { getEnumsList } from "redux/enums/enumsOperations";
 import Filtration from "components/Filtration/Filtration";
 import SearchIcon from "@mui/icons-material/Search";
-import ProductList from "components/Admin/Products/ProductList";
+import ProductList from "components/admin/Products/ProductList";
 import { deleteProduct, getProductList } from "services/fetchData";
 import { ROWS_PER_PAGE } from "utils/constans";
 

@@ -1,3 +1,4 @@
+import DashboardAdminPage from "../../pages/admin/DashboardAdminPage";
 import MainAdminPage from "../../pages/admin/MainAdminPage";
 import OrderAdminPage from "../../pages/admin/OrderAdminPage";
 import ProductsAdminPage from "../../pages/admin/ProductsAdminPage";
@@ -5,18 +6,24 @@ import ReviewAdminPage from "../../pages/admin/ReviewAdminPage";
 import SettingsAdminPage from "../../pages/admin/SettingsAdminPage";
 import UsersAdminPage from "../../pages/admin/UsersAdminPage";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import LayersOutlinedIcon from "@mui/icons-material/LayersOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-
 export const items = [
   {
     title: "Головна",
     path: "main",
     content: <MainAdminPage />,
     icon: <HomeOutlinedIcon sx={{ width: 24, height: 24 }} />,
+  },
+  {
+    title: "Dashboard",
+    path: "dashboard",
+    content: <DashboardAdminPage />,
+    icon: <DashboardOutlinedIcon sx={{ width: 24, height: 24 }} />,
   },
   {
     title: "Товари",

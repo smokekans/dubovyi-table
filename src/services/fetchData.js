@@ -1,8 +1,9 @@
 import axios from "axios";
-import { BASE_URL, ORDER_LIST, PRODUCTS } from "utils/url";
+import { BASE_URL, ORDER_LIST, PRODUCT_LIST } from "utils/constants/url";
 
 export const getOrderList = async (
   page,
+  rowsPerPage,
   orderBy,
   order,
   abortControllerRef
@@ -10,7 +11,7 @@ export const getOrderList = async (
   const response = await axios.get(
     BASE_URL +
       ORDER_LIST +
-      `?page=${page}&size=10&sortBy=${orderBy}&direction=${order}`,
+      `?page=${page}&size=${rowsPerPage}&sortBy=${orderBy}&direction=${order}`,
     {
       signal: abortControllerRef.current?.signal,
     }
@@ -24,7 +25,7 @@ export const getOrderList = async (
 };
 
 export const deleteOrder = async (array) => {
-  await axios.delete(BASE_URL + ORDER_LIST, {
+  const response = await axios.delete(BASE_URL + ORDER_LIST, {
     data: array,
   });
 };
@@ -44,7 +45,7 @@ export const getAllProductsForSelect = async (
   abortControllerRef
 ) => {
   const response = await axios.get(
-    BASE_URL + PRODUCTS + `?size=${totalItems}`,
+    BASE_URL + PRODUCT_LIST + `?size=${totalItems}`,
     {
       signal: abortControllerRef.current?.signal,
     }
@@ -56,21 +57,22 @@ export const getAllProductsForSelect = async (
 };
 
 export const deleteProduct = async (array) => {
-  await axios.delete(BASE_URL + PRODUCTS, {
+  const response = await axios.delete(BASE_URL + PRODUCT_LIST, {
     data: array,
   });
 };
 
 export const getProductList = async (
   page,
+  rowsPerPage,
   orderBy,
   order,
   abortControllerRef
 ) => {
   const response = await axios.get(
     BASE_URL +
-      PRODUCTS +
-      `?page=${page}&size=10&sortBy=${orderBy}&direction=${order}`,
+      PRODUCT_LIST +
+      `?page=${page}&size=${rowsPerPage}&sortBy=${orderBy}&direction=${order}`,
     {
       signal: abortControllerRef.current?.signal,
     }

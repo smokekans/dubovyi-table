@@ -4,7 +4,7 @@ import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-function TablePaginationActions(props) {
+function TablePaginationAction(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 
@@ -44,7 +44,14 @@ function TablePaginationActions(props) {
           cursor: page === 0 ? "default" : "pointer",
           pointerEvents: page === 0 ? "none" : "auto",
           "&:hover": {
-            backgroundColor: "transparent",
+            backgroundColor:
+              page >= Math.ceil(count / rowsPerPage) - 1
+                ? "transparent"
+                : (theme) => theme.palette.primary.main,
+            color:
+              page >= Math.ceil(count / rowsPerPage) - 1
+                ? (theme) => theme.palette.action.disabledBackground
+                : (theme) => theme.palette.common.white,
           },
         }}
       >
@@ -90,4 +97,4 @@ function TablePaginationActions(props) {
   );
 }
 
-export default TablePaginationActions;
+export default TablePaginationAction;

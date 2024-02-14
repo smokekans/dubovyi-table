@@ -4,6 +4,7 @@ const InitialState = {
   ECategories: [],
   EColors: [],
   EMaterials: [],
+  EOrderStatus: [],
 };
 
 const enumsSlice = createSlice({
@@ -19,10 +20,14 @@ const enumsSlice = createSlice({
     setMaterials(state, action) {
       state.EMaterials = [...state.EMaterials, action.payload];
     },
+    setOrderStatus(state, action) {
+      state.EOrderStatus = [...state.EOrderStatus, action.payload];
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setCategories, setColors, setMaterials } = enumsSlice.actions;
+export const { setCategories, setColors, setMaterials, setOrderStatus } =
+  enumsSlice.actions;
 
 export const enumsReducer = enumsSlice.reducer;

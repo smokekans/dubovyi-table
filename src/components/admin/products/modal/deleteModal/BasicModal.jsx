@@ -4,8 +4,13 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button } from "@mui/material";
 
-function BasicModal({ open, setOpen, handleDeleteItem }) {
+function BasicModal({ open, setOpen, handleDeleteItem, id }) {
   const handleClose = () => setOpen(false);
+
+  const handleClick = () => {
+    const newSelected = [{ id: id }];
+    handleDeleteItem(newSelected, setOpen);
+  };
 
   return (
     <Modal
@@ -63,7 +68,7 @@ function BasicModal({ open, setOpen, handleDeleteItem }) {
                 background: (theme) => theme.palette.action.hover,
               },
             }}
-            onClick={() => handleDeleteItem()}
+            onClick={handleClick}
           >
             <Typography sx={{ color: (theme) => theme.palette.text.secondary }}>
               Видалити

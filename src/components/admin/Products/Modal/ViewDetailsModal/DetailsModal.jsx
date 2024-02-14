@@ -17,7 +17,6 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import useGetColor from "hook/useGetColor";
 import useGetCategory from "hook/useGetCategory";
 import useGetMaterial from "hook/useGetMaterial";
-import { Link } from "react-router-dom";
 
 const keyMessages = {
   quantity: "В наявності",
@@ -46,6 +45,7 @@ const desiredOrder = [
 ];
 
 function DetailsModal({ openDetails, setOpenDetails, row }) {
+  const [setContainerWidth] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
   const color = useGetColor(row.colorId);
@@ -54,6 +54,13 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
 
   const containerRef = useRef(null);
   const maxSteps = row.photos.length;
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setContainerWidth(containerRef.current.offsetWidth);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const handleScroll = (event) => {
@@ -68,8 +75,6 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [openDetails]);
-
-  console.log(row);
 
   const renderListItemText = (key, value) => {
     let text = "";
@@ -241,6 +246,7 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                 position="static"
                 activeStep={activeStep}
                 nextButton={
+                  // activeStep === maxSteps - 1 ? null : (
                   <Button
                     size="small"
                     onClick={handleNext}
@@ -255,12 +261,18 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                         `1px solid ${theme.palette.common.white}`,
                     }}
                   >
+                    {/* {theme.direction === "rtl" ? (
+                  <KeyboardArrowLeft />
+                ) : ( */}
                     <KeyboardArrowRight
                       sx={{ color: (theme) => theme.palette.common.white }}
                     />
+                    {/* )} */}
                   </Button>
+                  // )
                 }
                 backButton={
+                  // activeStep === 0 ? null : (
                   <Button
                     size="small"
                     onClick={handleBack}
@@ -275,10 +287,15 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                         `1px solid ${theme.palette.common.white}`,
                     }}
                   >
+                    {/* {theme.direction === "rtl" ? (
+                  <KeyboardArrowRight />
+                ) : ( */}
                     <KeyboardArrowLeft
                       sx={{ color: (theme) => theme.palette.common.white }}
                     />
+                    {/* )} */}
                   </Button>
+                  // )
                 }
                 sx={{ background: "none" }}
               />
@@ -314,8 +331,6 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                   </Typography>
                 </Button>
                 <Button
-                  component={Link}
-                  to="/admin/create-product?update"
                   sx={{
                     padding: "18px 40px",
                     borderRadius: 5,
@@ -399,6 +414,7 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                             alignSelf: "end",
                           }}
                         />
+
                         {renderListItemText(key, row[key])}
                       </ListItem>
                     );
@@ -455,12 +471,12 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       "&::-webkit-scrollbar-thumb": {
                         backgroundColor: (theme) =>
                           theme.palette.secondary.dark,
-                        borderRadius: 5,
+                        borderRadius: "5px",
                       },
                       "&::-webkit-scrollbar-track": {
                         backgroundColor: (theme) =>
                           theme.palette.secondary.light,
-                        borderRadius: 5,
+                        borderRadius: "5px",
                       },
                     }}
                   >

@@ -1,7 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import {
   Box,
-  Button,
   Paper,
   Table,
   TableBody,
@@ -9,7 +8,7 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
+
 import TablePaginationActions from "./TablePaginationActions";
 import Head from "./Table/Head";
 import ProductItem from "./ProductItem";
@@ -18,8 +17,9 @@ import {
   getAllProductsForSelect,
   getProductList,
 } from "services/fetchData";
-import Loader from "components/Loader/Loader";
 import EmptyTableRow from "./EmptyTableRow";
+import { ROWS_PER_PAGE } from "utils/constans";
+import Loader from "components/Loader/Loader";
 
 function ProductList(props) {
   const {
@@ -42,6 +42,7 @@ function ProductList(props) {
   } = props;
 
   const abortControllerRef = useRef(null);
+
   const displayedPage = page + 1;
 
   const handleRequestSort = (event, property) => {
@@ -111,34 +112,36 @@ function ProductList(props) {
   };
 
   const currentTableData = useMemo(() => {
-    return rowsdata.slice(0, 10);
-  }, [rowsdata]);
+    return rowsdata.slice(0, ROWS_PER_PAGE);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, rowsdata, order, orderBy]);
 
   return (
     <>
       <Box sx={{ width: "100%", marginTop: "60px" }}>
         <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
           <TableContainer sx={{ overflow: "hidden" }}>
-            <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
-              <Head
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rowsdata?.length}
-                totalItems={totalItems}
-              />
-              {!loading ? (
+            {!loading ? (
+              <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
+                <Head
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rowsdata?.length}
+                  totalItems={totalItems}
+                />
                 <TableBody>
                   {currentTableData.length > 0 && !error ? (
                     currentTableData.map((row, index) => (
                       <ProductItem
                         row={row}
+                        // setRows={setRows}
                         setSelected={setSelected}
                         selected={selected}
-                        index={index}
                         key={index}
+                        index={index}
                         handleDeleteItem={handleDeleteItem}
                       />
                     ))
@@ -146,26 +149,13 @@ function ProductList(props) {
                     <EmptyTableRow />
                   )}
                 </TableBody>
-              ) : (
+              </Table>
+            ) : (
+              <>
                 <Loader />
-              )}
-            </Table>
+              </>
+            )}
           </TableContainer>
-          <Button
-            startIcon={<FileUploadIcon />}
-            sx={{
-              p: "18px 40px",
-              mt: 5,
-              borderRadius: 5,
-              height: "56px",
-              backgroundColor: "#324EBD",
-              textDecoration: "none",
-              color: (theme) => theme.palette.common.white,
-              textTransform: "none",
-            }}
-          >
-            Експортувати
-          </Button>
           <Box
             sx={{
               display: "flex",
@@ -181,10 +171,10 @@ function ProductList(props) {
             </Typography>
             <TablePagination
               component="div"
-              count={totalItems}
+              count={Number(totalItems)}
               page={page}
               onPageChange={handleChangePage}
-              rowsPerPage={10}
+              rowsPerPage={ROWS_PER_PAGE}
               rowsPerPageOptions={[]}
               labelDisplayedRows={() => ""}
               ActionsComponent={TablePaginationActions}

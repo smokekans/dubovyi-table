@@ -21,6 +21,7 @@ import {
 } from "services/fetchData";
 import Loader from "components/Loader/Loader";
 import EmptyTableRow from "./EmptyTableRow";
+import { ROWS_PER_PAGE } from "utils/constans";
 
 function OrderList(props) {
   const {
@@ -79,6 +80,7 @@ function OrderList(props) {
       try {
         const response = await getOrderList(
           page,
+          ROWS_PER_PAGE,
           orderBy,
           order,
           abortControllerRef
@@ -103,7 +105,7 @@ function OrderList(props) {
   };
 
   const currentTableData = useMemo(() => {
-    if (rowsdata) return rowsdata.slice(0, 10);
+    if (rowsdata) return rowsdata.slice(0, ROWS_PER_PAGE);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsdata, order, orderBy]);
 
@@ -182,7 +184,7 @@ function OrderList(props) {
               count={totalItems}
               page={page}
               onPageChange={handleChangePage}
-              rowsPerPage="10"
+              rowsPerPage={ROWS_PER_PAGE}
               rowsPerPageOptions={[]}
               labelDisplayedRows={() => ""}
               ActionsComponent={TablePaginationAction}

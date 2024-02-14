@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ROWS_PER_PAGE } from "utils/constans";
 import { BASE_URL, ORDER_LIST, PRODUCTS } from "utils/url";
 
 export const getOrderList = async (
@@ -10,7 +11,7 @@ export const getOrderList = async (
   const response = await axios.get(
     BASE_URL +
       ORDER_LIST +
-      `?page=${page}&size=10&sortBy=${orderBy}&direction=${order}`,
+      `?page=${page}&size=${ROWS_PER_PAGE}&sortBy=${orderBy}&direction=${order}`,
     {
       signal: abortControllerRef.current?.signal,
     }
@@ -70,7 +71,7 @@ export const getProductList = async (
   const response = await axios.get(
     BASE_URL +
       PRODUCTS +
-      `?page=${page}&size=10&sortBy=${orderBy}&direction=${order}`,
+      `?page=${page}&size=${ROWS_PER_PAGE}&sortBy=${orderBy}&direction=${order}`,
     {
       signal: abortControllerRef.current?.signal,
     }

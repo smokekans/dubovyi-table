@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+// import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 
@@ -94,6 +95,9 @@ function Head(props) {
               />
             }
             checkedIcon={
+              // <CheckBoxOutlinedIcon
+              //   sx={{ color: (theme) => theme.palette.primary.main }}
+              // />
               <SelectAllOutlinedIcon
                 sx={{ color: (theme) => theme.palette.primary.main }}
               />

@@ -1,17 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEnumsList } from "./enumsOperations";
 
 const InitialState = {
   ECategories: [],
   EColors: [],
   EMaterials: [],
-  EWarranties: [
-    { id: 1, name: "14 днів" },
-    { id: 2, name: "1 місяць" },
-    { id: 3, name: "3 місяці" },
-    { id: 4, name: "6 місяців" },
-    { id: 5, name: "1 рік" },
-  ],
   EOrderStatus: [],
 };
 
@@ -32,21 +24,7 @@ const enumsSlice = createSlice({
       state.EOrderStatus = [...state.EOrderStatus, action.payload];
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(getEnumsList.fulfilled, (state, { payload }) => {
-      if (payload && typeof payload === "object") {
-        if (Array.isArray(payload.categories)) {
-          state.ECategories = payload.categories;
-        }
-        if (Array.isArray(payload.colors)) {
-          state.EColors = payload.colors;
-        }
-        if (Array.isArray(payload.materials)) {
-          state.EMaterials = payload.materials;
-        }
-      }
-    });
-  },
+  extraReducers: (builder) => {},
 });
 
 export const { setCategories, setColors, setMaterials, setOrderStatus } =

@@ -3,6 +3,7 @@ import { Box, IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { ROWS_PER_PAGE } from "utils/constans";
 
 function TablePaginationAction(props) {
   const theme = useTheme();
@@ -45,11 +46,11 @@ function TablePaginationAction(props) {
           pointerEvents: page === 0 ? "none" : "auto",
           "&:hover": {
             backgroundColor:
-              page >= Math.ceil(count / 10) - 1
+              page >= Math.ceil(count / ROWS_PER_PAGE) - 1
                 ? "transparent"
                 : (theme) => theme.palette.primary.main,
             color:
-              page >= Math.ceil(count / 10) - 1
+              page >= Math.ceil(count / ROWS_PER_PAGE) - 1
                 ? (theme) => theme.palette.action.disabledBackground
                 : (theme) => theme.palette.common.white,
           },
@@ -59,32 +60,33 @@ function TablePaginationAction(props) {
       </IconButton>
       <IconButton
         onClick={() => {
-          if (page < Math.ceil(count / 10) - 1) {
+          if (page < Math.ceil(count / ROWS_PER_PAGE) - 1) {
             handleNextButtonClick();
           }
         }}
         aria-label="next page"
         sx={{
           color:
-            page >= Math.ceil(count / 10) - 1
+            page >= Math.ceil(count / ROWS_PER_PAGE) - 1
               ? (theme) => theme.palette.action.disabledBackground
               : (theme) => theme.palette.primary.main,
           width: "48px",
           height: "48px",
           borderRadius: 5,
           border:
-            page >= Math.ceil(count / 10) - 1
+            page >= Math.ceil(count / ROWS_PER_PAGE) - 1
               ? (theme) =>
                   `1px solid  ${theme.palette.action.disabledBackground}`
               : (theme) => `1px solid  ${theme.palette.primary.main}`,
-          pointerEvents: page >= Math.ceil(count / 10) - 1 ? "none" : "auto",
+          pointerEvents:
+            page >= Math.ceil(count / ROWS_PER_PAGE) - 1 ? "none" : "auto",
           "&:hover": {
             backgroundColor:
-              page >= Math.ceil(count / 10) - 1
+              page >= Math.ceil(count / ROWS_PER_PAGE) - 1
                 ? "transparent"
                 : (theme) => theme.palette.primary.main,
             color:
-              page >= Math.ceil(count / 10) - 1
+              page >= Math.ceil(count / ROWS_PER_PAGE) - 1
                 ? (theme) => theme.palette.action.disabledBackground
                 : (theme) => theme.palette.common.white,
           },

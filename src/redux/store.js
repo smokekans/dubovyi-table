@@ -11,7 +11,6 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "./auth/authSlice";
-import { productsReducer } from "./products/productsSlice";
 import { enumsReducer } from "./enums/enumsSlice";
 
 const authPersistConfig = {
@@ -24,7 +23,6 @@ const persistedReducer = persistReducer(authPersistConfig, authReducer);
 
 const rootReducer = combineReducers({
   auth: persistedReducer,
-  products: productsReducer,
   enums: enumsReducer,
 });
 

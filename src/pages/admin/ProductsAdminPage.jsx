@@ -12,13 +12,13 @@ import { Link } from "react-router-dom";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import Loader from "components/Loader/Loader";
 import { useDispatch } from "react-redux";
 import { getEnumsList } from "redux/enums/enumsOperations";
 import Filtration from "components/Filtration/Filtration";
 import SearchIcon from "@mui/icons-material/Search";
 import ProductList from "components/Admin/Products/ProductList";
 import { deleteProduct, getProductList } from "services/fetchData";
+import { ROWS_PER_PAGE } from "utils/constans";
 
 export default function ProductsAdminPage() {
   const [activeFiltration, setActiveFiltration] = useState(false);
@@ -258,7 +258,7 @@ export default function ProductsAdminPage() {
           setRows={setRows}
           totalPages={totalPages}
           totalItems={totalItems}
-          rowsPerPage="10"
+          rowsPerPage={ROWS_PER_PAGE}
           page={page}
           setPage={setPage}
           setTotalPages={setTotalPages}

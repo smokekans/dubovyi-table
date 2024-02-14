@@ -17,8 +17,6 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getEnums } from "redux/enums/enumsSelectors";
-import { useDispatch } from "react-redux";
-import { createProduct } from "redux/products/productsOperations";
 import { Link, useNavigate } from "react-router-dom";
 import UniversalSelectAddProduct from "components/СreateProduct/Autocompete/UniversalSelectAddProduct";
 import UniversalInputAddProduct from "components/СreateProduct/Input/UniversalIntupAddProduct";
@@ -38,7 +36,6 @@ export default function FormCreateProduct() {
   ]);
   const [activeImage, setActiveImage] = React.useState(images[0]);
   const enums = useSelector(getEnums);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -61,7 +58,6 @@ export default function FormCreateProduct() {
     validationSchema: ProductSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
-      dispatch(createProduct(values));
       resetForm();
       navigate("/admin/products");
     },

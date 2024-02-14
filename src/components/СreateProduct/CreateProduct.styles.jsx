@@ -1,23 +1,24 @@
 export const styles = {
   formControl: {
-    borderRadius: (theme) => theme.shape.borderRadius,
-    height: "91px",
-    ".css-gk4fn5-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused, .MuiOutlinedInput-notchedOutline":
+    height: "100px",
+    ".css-gk4fn5-MuiInputBase-root-MuiOutlinedInput-root, .MuiOutlinedInput-notchedOutline":
       {
         borderColor: (theme) => theme.palette.common.black,
+        borderRadius: 5,
       },
+    ".MuiFormHelperText-root": {
+      ml: 0,
+    },
   },
   formControlMultiline: {
-    borderRadius: "50px",
-  },
-  inputLabel: { color: "black", transform: "none" },
-  autocomplete: {
-    ".MuiAutocomplete-popupIndicator, .MuiAutocomplete-popupIndicatorOpen, .MuiAutocomplete-clearIndicator":
+    borderRadius: 5 * 2,
+    ".css-1n0e13w-MuiInputBase-root-MuiOutlinedInput-root, .MuiOutlinedInput-notchedOutline":
       {
-        color: (theme) => theme.palette.common.black,
+        borderColor: (theme) => theme.palette.common.black,
+        borderRadius: 5,
       },
-    ".MuiAutocomplete-endAdornment": {
-      top: "auto",
+    ".MuiFormHelperText-root": {
+      ml: 0,
     },
   },
   textField: {
@@ -25,7 +26,7 @@ export const styles = {
       p: 2,
       height: "20px",
     },
-    "& .MuiOutlinedInput-root": {
+    "& .MuiOutlinedInput-root, .MuiInputBase-root": {
       "&.Mui-focused fieldset": {
         borderColor: (theme) => theme.palette.common.black,
         borderWidth: "1px",
@@ -35,17 +36,29 @@ export const styles = {
   },
   textFieldMultiline: {
     ".MuiInputBase-root": {
-      p: 0,
+      px: 4,
+      py: 4,
     },
     ".MuiInputBase-input": {
-      p: 2,
+      height: "100px",
     },
     mt: "39px",
-    "& .MuiOutlinedInput-root": {
+    "& .MuiOutlinedInput-root, .MuiInputBase-inputMultiline": {
       "&.Mui-focused fieldset": {
         borderColor: (theme) => theme.palette.common.black,
         borderWidth: "1px",
       },
+    },
+  },
+
+  inputLabel: { color: "black", transform: "none" },
+  autocomplete: {
+    ".MuiAutocomplete-popupIndicator, .MuiAutocomplete-popupIndicatorOpen, .MuiAutocomplete-clearIndicator":
+      {
+        color: (theme) => theme.palette.common.black,
+      },
+    ".MuiAutocomplete-endAdornment": {
+      top: "auto",
     },
   },
 };

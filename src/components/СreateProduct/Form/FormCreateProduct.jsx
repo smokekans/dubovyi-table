@@ -10,17 +10,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ProductSchema } from "./ProductSchema";
-import { fields } from "./UniversalIntup";
-import UniversalInput from "./UniversalIntup";
+import { ProductSchema } from "../ProductSchema";
+import { fields } from "utils/fields";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getEnums } from "redux/enums/enumsSelectors";
-import { getTotalItems } from "redux/products/productsSelectors";
 import { useDispatch } from "react-redux";
-import { getProductList } from "redux/products/productsOperations";
+import { createProduct } from "redux/products/productsOperations";
+import { Link, useNavigate } from "react-router-dom";
+import UniversalSelectAddProduct from "components/СreateProduct/Autocompete/UniversalSelectAddProduct";
+import UniversalInputAddProduct from "components/СreateProduct/Input/UniversalIntupAddProduct";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -30,53 +31,41 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 export default function FormCreateProduct() {
-  const [images, setImages] = React.useState([null, null, null]);
-  const [activeImage, setActiveImage] = React.useState(null);
-  const totalItems = useSelector(getTotalItems) + 1;
+  const [images, setImages] = React.useState([
+    "https://content.rozetka.com.ua/goods/images/big/247962715.jpg",
+    "https://content2.rozetka.com.ua/goods/images/big/247962723.jpg",
+    "https://content.rozetka.com.ua/goods/images/big/247962730.jpg",
+  ]);
+  const [activeImage, setActiveImage] = React.useState(images[0]);
   const enums = useSelector(getEnums);
   const dispatch = useDispatch();
-  const page = 1;
-
-  React.useEffect(() => {
-    dispatch(getProductList({ page }));
-  }, [dispatch]);
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      id: totalItems,
       categoryId: null,
       colorId: null,
       materialId: null,
-      deleted: true,
+      deleted: false,
       name: "",
       description: "",
-      photos: [null, null, null],
+      photos: images,
       height: null,
       length: null,
       price: null,
       quantity: null,
-      warranty: null,
       weight: null,
       width: null,
+      warranty: null,
     },
     validationSchema: ProductSchema,
-    onSubmit: (values, { resetForm, setSubmitting }) => {
-      setSubmitting(false);
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (values, { resetForm }) => {
+      console.log(values);
+      dispatch(createProduct(values));
       resetForm();
+      navigate("/admin/products");
     },
   });
-
-  const handleImageLoaded = (imageData) => {
-    const updatedImages = [...images];
-    if (updatedImages[0] === null) {
-      updatedImages[0] = imageData;
-    } else {
-      updatedImages.push(imageData);
-    }
-    setImages(updatedImages);
-    setActiveImage(imageData);
-  };
 
   const handleFileChange = (index) => (event) => {
     if (!event.target.files[0]) return;
@@ -116,6 +105,38 @@ export default function FormCreateProduct() {
     }
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    const newImages = files
+      .filter((file) => file.type.startsWith("image/"))
+      .slice(0, 3)
+      .map((file) => URL.createObjectURL(file));
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      let newImageIndex = 0;
+      for (let i = 0; i < updatedImages.length; i++) {
+        if (updatedImages[i] === null && newImageIndex < newImages.length) {
+          updatedImages[i] = newImages[newImageIndex++];
+        }
+      }
+      return updatedImages;
+    });
+  };
+
+  const handleCardDrop = (index) => (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const updatedImages = [...images];
+      updatedImages[index] = reader.result;
+      setImages(updatedImages);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const renderImagePreview = (image, index) => (
     <Draggable key={index} draggableId={`image-${index}`} index={index}>
       {(provided) => (
@@ -123,13 +144,15 @@ export default function FormCreateProduct() {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={handleCardDrop(index)}
           sx={{
             display: "flex",
             alignItems: "center",
             width: "150px",
             "&:hover": {
               backgroundColor: "#f0f0f0",
-              borderRadius: "5px",
+              borderRadius: 5,
             },
           }}
         >
@@ -144,22 +167,18 @@ export default function FormCreateProduct() {
                 sx={{
                   marginRight: 2,
                   objectFit: "cover",
-                  borderRadius: "5px",
-                  boxShadow:
-                    "0px 7px 15px 0px rgba(3, 12, 13, 0.1), 0px 27px 27px 0px rgba(3, 12, 13, 0.09), 0px 61px 37px 0px rgba(3, 12, 13, 0.05), 0px 109px 44px 0px rgba(3, 12, 13, 0.01), 0px 171px 48px 0px rgba(3, 12, 13, 0);",
+                  borderRadius: 5,
+                  boxShadow: 3,
                 }}
               />
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
+                  justifyContent: "center",
                 }}
               >
-                <IconButton
-                  component="span"
-                  onClick={() => handleFileChange(index)}
-                  sx={{}}
-                >
+                <IconButton onClick={() => handleFileChange(index)}>
                   <CachedOutlinedIcon
                     sx={{
                       width: "24px",
@@ -168,7 +187,7 @@ export default function FormCreateProduct() {
                     }}
                   />
                 </IconButton>
-                <IconButton component="span" onClick={() => removeImage(index)}>
+                <IconButton onClick={() => removeImage(index)}>
                   <DeleteOutlinedIcon
                     sx={{
                       width: "24px",
@@ -186,10 +205,9 @@ export default function FormCreateProduct() {
                 width: "150px",
                 height: "100px",
                 bgcolor: (theme) => theme.palette.info.main,
-                borderRadius: "5px",
+                borderRadius: 5,
                 cursor: "pointer",
-                boxShadow:
-                  "0px 7px 15px 0px rgba(3, 12, 13, 0.1), 0px 27px 27px 0px rgba(3, 12, 13, 0.09), 0px 61px 37px 0px rgba(3, 12, 13, 0.05), 0px 109px 44px 0px rgba(3, 12, 13, 0.01), 0px 171px 48px 0px rgba(3, 12, 13, 0);",
+                boxShadow: 3,
               }}
             >
               <IconButton
@@ -197,7 +215,7 @@ export default function FormCreateProduct() {
                 sx={{
                   width: "150px",
                   height: "100px",
-                  borderRadius: "5px",
+                  borderRadius: 5,
                   color: (theme) => theme.palette.common.black,
                 }}
               >
@@ -210,6 +228,7 @@ export default function FormCreateProduct() {
             type="file"
             accept=".png, .jpg, .jpeg, .webp"
             style={{ display: "none" }}
+            multiple
             onChange={handleFileChange(index)}
           />
         </Box>
@@ -217,38 +236,21 @@ export default function FormCreateProduct() {
     </Draggable>
   );
 
-  function DropZone({ onFileLoaded }) {
-    const handleDragOver = (e) => {
-      e.preventDefault();
-    };
-
-    const handleDrop = (e) => {
-      e.preventDefault();
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        const file = e.dataTransfer.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          onFileLoaded(reader.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-
+  const DropZone = () => {
     return (
       <Box
-        onDragOver={handleDragOver}
+        onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         sx={{
           width: "572px",
           height: "348px",
           bgcolor: (theme) => theme.palette.info.main,
-          borderRadius: "25px",
+          borderRadius: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow:
-            "0px 7px 15px 0px rgba(3, 12, 13, 0.1), 0px 27px 27px 0px rgba(3, 12, 13, 0.09), 0px 61px 37px 0px rgba(3, 12, 13, 0.05), 0px 109px 44px 0px rgba(3, 12, 13, 0.01), 0px 171px 48px 0px rgba(3, 12, 13, 0);",
+          boxShadow: 3,
         }}
       >
         <AttachFileIcon />
@@ -257,11 +259,11 @@ export default function FormCreateProduct() {
         <Typography variant="h4">перетягніть з робочого стола</Typography>
       </Box>
     );
-  }
+  };
 
   return (
     <Box>
-      <Typography variant="h3">Новий товар №{totalItems}</Typography>
+      <Typography variant="h3">Новий товар</Typography>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
@@ -271,7 +273,12 @@ export default function FormCreateProduct() {
           mt: "55px",
         }}
       >
-        <Box sx={{ display: "flex" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="images">
               {(provided) => (
@@ -293,7 +300,7 @@ export default function FormCreateProduct() {
               )}
             </Droppable>
           </DragDropContext>
-          <Box sx={{ ml: "108px" }}>
+          <Box>
             {activeImage ? (
               <Box
                 component="img"
@@ -303,22 +310,21 @@ export default function FormCreateProduct() {
                   width: "572px",
                   height: "348px",
                   objectFit: "cover",
-                  borderRadius: "5px",
-                  boxShadow:
-                    "0px 7px 15px 0px rgba(3, 12, 13, 0.1), 0px 27px 27px 0px rgba(3, 12, 13, 0.09), 0px 61px 37px 0px rgba(3, 12, 13, 0.05), 0px 109px 44px 0px rgba(3, 12, 13, 0.01), 0px 171px 48px 0px rgba(3, 12, 13, 0);",
+                  borderRadius: 5,
+                  boxShadow: 3,
                 }}
               />
             ) : (
-              <DropZone onFileLoaded={handleImageLoaded} />
+              <DropZone />
             )}
-            <Typography variant="body1" sx={{ width: "460px", mt: 4 }}>
+            <Typography variant="body1" sx={{ width: "460px", mt: 3 }}>
               Перше фото це обкладинка для товару. Щоб змінити порядок -
               поретягніть зображення.
             </Typography>
           </Box>
         </Box>
         <Box sx={{ mt: 4, gap: 3, display: "flex", flexDirection: "column" }}>
-          <UniversalInput fields={fields.name} formik={formik} />
+          <UniversalInputAddProduct fields={fields.name} formik={formik} />
           <Box sx={{ display: "flex", flexDirection: "row", gap: "100px" }}>
             <Box
               sx={{
@@ -328,19 +334,22 @@ export default function FormCreateProduct() {
                 gap: 3,
               }}
             >
-              <UniversalInput fields={fields.price} formik={formik} />
-              <UniversalInput fields={fields.quantity} formik={formik} />
-              <UniversalInput
+              <UniversalInputAddProduct fields={fields.price} formik={formik} />
+              <UniversalInputAddProduct
+                fields={fields.quantity}
+                formik={formik}
+              />
+              <UniversalSelectAddProduct
                 fields={fields.category}
                 options={enums.ECategories}
                 formik={formik}
               />
-              <UniversalInput
+              <UniversalSelectAddProduct
                 fields={fields.material}
                 options={enums.EMaterials}
                 formik={formik}
               />
-              <UniversalInput
+              <UniversalSelectAddProduct
                 fields={fields.color}
                 options={enums.EColors}
                 formik={formik}
@@ -354,37 +363,54 @@ export default function FormCreateProduct() {
                 gap: 3,
               }}
             >
-              <UniversalInput fields={fields.weight} formik={formik} />
-              <UniversalInput fields={fields.height} formik={formik} />
-              <UniversalInput fields={fields.length} formik={formik} />
-              <UniversalInput fields={fields.width} formik={formik} />
-              <UniversalInput
+              <UniversalInputAddProduct
+                fields={fields.weight}
+                formik={formik}
+              />
+              <UniversalInputAddProduct
+                fields={fields.height}
+                formik={formik}
+              />
+              <UniversalInputAddProduct
+                fields={fields.length}
+                formik={formik}
+              />
+              <UniversalInputAddProduct fields={fields.width} formik={formik} />
+              <UniversalSelectAddProduct
                 fields={fields.warranty}
                 options={enums.EWarranties}
                 formik={formik}
               />
             </Box>
           </Box>
-          <UniversalInput fields={fields.description} formik={formik} />
+          <UniversalInputAddProduct
+            fields={fields.description}
+            formik={formik}
+          />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "end", gap: 3, mt: 5 }}>
           <Button
+            component={Link}
             variant="outlined"
+            to="/admin/products"
             sx={{
               p: "18px 40px",
+              borderRadius: 5,
+              textTransform: "none",
             }}
           >
-            Назад
+            Скасувати
           </Button>
           <Button
-            disabled={formik.isSubmitting}
             type="submit"
             variant="contained"
             sx={{
               p: "18px 40px",
+              borderRadius: 5,
+              textTransform: "none",
             }}
           >
-            Відправити
+            Створити
           </Button>
         </Box>
       </Box>

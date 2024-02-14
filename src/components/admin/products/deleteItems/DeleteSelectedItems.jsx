@@ -8,15 +8,23 @@ function DeleteSelectedItems({ selected, handleOpenDeleteModal }) {
       disabled={selected.length > 0 ? false : true}
       sx={{
         display: "flex",
-        gap: "8px",
-        padding: "8px",
+        gap: 1,
+        padding: 1,
         textTransform: "none",
-        color: selected.length > 0 ? "#030C0D" : "#AAA",
-        borderRadius: selected.length > 0 ? "25px" : 0,
+        color:
+          selected.length > 0
+            ? (theme) => theme.palette.common.black
+            : (theme) => theme.palette.secondary.dark,
+        borderRadius: selected.length > 0 ? 5 : 0,
         cursor: selected.length > 0 ? "pointer" : "default",
-        "&:disabled": { color: "#AAA" },
+        "&:disabled": {
+          color: (theme) => theme.palette.action.disabledBackground,
+        },
         "&:hover": {
-          background: selected.length > 0 ? "#D9D9D9" : "none",
+          background:
+            selected.length > 0
+              ? (theme) => theme.palette.secondary.light
+              : "none",
         },
       }}
       onClick={() => handleOpenDeleteModal()}

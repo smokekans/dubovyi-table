@@ -6,10 +6,11 @@ const InitialState = {
   EColors: [],
   EMaterials: [],
   EWarranties: [
-    { id: 1, name: "1 month" },
-    { id: 2, name: "2 months" },
-    { id: 3, name: "3 months" },
-    { id: 4, name: "4 months" },
+    { id: 1, name: "14 днів" },
+    { id: 2, name: "1 місяць" },
+    { id: 3, name: "3 місяці" },
+    { id: 4, name: "6 місяців" },
+    { id: 5, name: "1 рік" },
   ],
 };
 
@@ -17,19 +18,14 @@ const enumsSlice = createSlice({
   name: "enums",
   initialState: InitialState,
   reducers: {
-    getCategories(state, action) {
-      state.ECategories = action.payload;
+    setCategories(state, action) {
+      state.ECategories = [...state.ECategories, action.payload];
     },
-    getColors(state, action) {
-      switch (action.type) {
-        case "COLOR_INFO_LOADED":
-          return [...state.EColors, action.payload];
-        default:
-          return state;
-      }
+    setColors(state, action) {
+      state.EColors = [...state.EColors, action.payload];
     },
-    getMaterials(state, action) {
-      state.EMaterials = action.payload;
+    setMaterials(state, action) {
+      state.EMaterials = [...state.EMaterials, action.payload];
     },
   },
   extraReducers: (builder) => {
@@ -49,6 +45,6 @@ const enumsSlice = createSlice({
   },
 });
 
-export const { getCategories, getColors, getMaterials } = enumsSlice.actions;
+export const { setCategories, setColors, setMaterials } = enumsSlice.actions;
 
 export const enumsReducer = enumsSlice.reducer;

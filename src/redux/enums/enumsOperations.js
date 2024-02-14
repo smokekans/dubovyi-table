@@ -4,7 +4,7 @@ import {
   GET_ALL_CATEGORIES,
   GET_ALL_COLORS,
   GET_ALL_MATERIALS,
-} from "utils/constants/Url";
+} from "utils/url";
 
 axios.defaults.baseURL = "http://woodcrafts.eu-north-1.elasticbeanstalk.com";
 
@@ -27,6 +27,7 @@ export const getEnumsList = createAsyncThunk(
     }
   }
 );
+
 export const getColorsList = createAsyncThunk(
   GET_ALL_COLORS,
   async (_, { rejectWithValue }) => {

@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -8,77 +9,68 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import TablePaginationActions from "./TablePaginationActions";
-import Head from "./table/Head";
+import Head from "./Table/Head";
 import ProductItem from "./ProductItem";
-import { deleteProduct } from "redux/products/productsOperations";
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+import { BASE_URL, PRODUCTS } from "utils/url";
+import axios from "axios";
 
 function ProductList({
-  rowsData,
+  rowsdata,
   setRows,
   totalPages,
   totalItems,
-  rowsPerPage,
   page,
   setPage,
+  setTotalPages,
+  setTotalItems,
   selected,
   setSelected,
+  order,
+  orderBy,
+  setOrder,
+  setOrderBy,
 }) {
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("№");
-  const [dense, setDense] = useState(false);
-
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === "ASC";
+    setOrder(isAsc ? "DESC" : "ASC");
     setOrderBy(property);
   };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rowsData.map((n) => n.id);
+      const newSelected = rowsdata.map((n) => ({ id: n.id }));
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleChangePage = (event, value) => {
-    setPage(value);
-    console.log(value);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
   const handleDeleteItem = async (id, setOpen) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          BASE_URL +
+            PRODUCTS +
+            `?page=${page}&size=10&sortBy=${orderBy}&direction=${order}`
+        );
+        const { data, totalPages, totalItems } = response.data;
+        setTotalPages(totalPages);
+        setTotalItems(totalItems);
+        setRows(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     try {
-      deleteProduct({ id });
+      await axios.delete(BASE_URL + PRODUCTS + `?id=${id}`);
+      fetchData();
       setOpen(false);
     } catch (error) {
       console.log(error);
@@ -86,29 +78,22 @@ function ProductList({
   };
 
   const currentTableData = useMemo(() => {
-    return stableSort(rowsData, getComparator(order, orderBy)).slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
-  }, [order, orderBy, page, rowsData, rowsPerPage]);
+    return rowsdata.slice(0, 10);
+  }, [rowsdata]);
 
   return (
     <>
       <Box sx={{ width: "100%", marginTop: "60px" }}>
         <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
           <TableContainer>
-            <Table
-              sx={{ minWidth: 870 }}
-              aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
-            >
+            <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
               <Head
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rowsData.length}
+                rowCount={rowsdata.length}
               />
               <TableBody>
                 {currentTableData.map((row, index) => (
@@ -125,14 +110,29 @@ function ProductList({
               </TableBody>
             </Table>
           </TableContainer>
+          <Button
+            startIcon={<FileUploadIcon />}
+            sx={{
+              p: "18px 40px",
+              mt: "60px",
+              borderRadius: 5,
+              height: "56px",
+              backgroundColor: "#324EBD",
+              textDecoration: "none",
+              color: (theme) => theme.palette.common.white,
+              textTransform: "none",
+            }}
+          >
+            Експортувати
+          </Button>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              borderTop: "1px solid #AAA",
+              borderTop: (theme) => `1px solid ${theme.palette.secondary.dark}`,
               marginTop: "60px",
-              paddingTop: "8px",
+              paddingTop: 1,
             }}
           >
             <Typography>
@@ -140,10 +140,10 @@ function ProductList({
             </Typography>
             <TablePagination
               component="div"
-              count={Number(totalItems)}
+              count={totalItems}
               page={page}
               onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
+              rowsPerPage={10}
               rowsPerPageOptions={[]}
               labelDisplayedRows={() => ""}
               ActionsComponent={TablePaginationActions}

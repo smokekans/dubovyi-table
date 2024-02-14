@@ -14,7 +14,7 @@ function TablePaginationActions(props) {
   };
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5, display: "flex", gap: "32px" }}>
+    <Box sx={{ flexShrink: 0, ml: 2.5, display: "flex", gap: 4 }}>
       <IconButton
         onClick={() => {
           if (page > 0) {
@@ -25,12 +25,19 @@ function TablePaginationActions(props) {
         sx={{
           alignItems: "center",
           justifyContent: "center",
-          color: page === 0 ? "#AAA" : "#030C0D",
+          color:
+            page === 0
+              ? (theme) => theme.palette.action.disabledBackground
+              : (theme) => theme.palette.common.black,
           backgroundColor: "transparent",
           width: "48px",
           height: "48px",
-          borderRadius: "25px",
-          border: page === 0 ? "1px solid  #AAA" : "1px solid  #030C0D",
+          borderRadius: 5,
+          border:
+            page === 0
+              ? (theme) =>
+                  `1px solid  ${theme.palette.action.disabledBackground}`
+              : (theme) => `1px solid  ${theme.palette.common.black}`,
           cursor: page === 0 ? "default" : "pointer",
           pointerEvents: page === 0 ? "none" : "auto",
           "&:hover": {
@@ -49,14 +56,17 @@ function TablePaginationActions(props) {
         aria-label="next page"
         sx={{
           color:
-            page >= Math.ceil(count / rowsPerPage) - 1 ? "#AAA" : "#030C0D",
+            page >= Math.ceil(count / rowsPerPage) - 1
+              ? (theme) => theme.palette.action.disabledBackground
+              : (theme) => theme.palette.common.black,
           width: "48px",
           height: "48px",
-          borderRadius: "25px",
+          borderRadius: 5,
           border:
             page >= Math.ceil(count / rowsPerPage) - 1
-              ? "1px solid  #AAA"
-              : "1px solid  #030C0D",
+              ? (theme) =>
+                  `1px solid  ${theme.palette.action.disabledBackground}`
+              : (theme) => `1px solid  ${theme.palette.common.black}`,
           pointerEvents:
             page >= Math.ceil(count / rowsPerPage) - 1 ? "none" : "auto",
           "&:hover": {

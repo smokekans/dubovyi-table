@@ -8,10 +8,20 @@ import {
   Typography,
 } from "@mui/material";
 import { Outlet } from "react-router";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
 import { items } from "./config";
 
 export default function Sidebar() {
+  const activeStyle = {
+    backgroundColor: "#789DD1",
+    textDecoration: "none",
+    cursor: "pointer",
+    width: "100%",
+    borderRadius: 25,
+    padding: "0",
+  };
+
   return (
     <Box
       sx={{
@@ -28,8 +38,9 @@ export default function Sidebar() {
           "& .MuiDrawer-paper": {
             position: "static",
             width: "330px",
-            borderRight: (theme) => `2px solid ${theme.palette.primary.main}`,
-            mb: "322px",
+            maxHeight: "100%",
+            borderRight: 0,
+            mb: "510px",
           },
         }}
         variant="permanent"
@@ -38,30 +49,29 @@ export default function Sidebar() {
         <List
           sx={{
             background: (theme) => theme.palette.primary.main,
-            borderRadius: "25px",
+            borderRadius: 5,
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            gap: "24px",
-            display: "inline-flex",
+            display: "flex",
             mx: 5,
             p: 4,
+            gap: 4,
           }}
         >
           {items.map((item, index) => (
-            <ListItem
-              disablePadding
-              key={index}
-              sx={{ height: "24px", gap: 2 }}
-            >
-              <Link
-                key={index}
+            <ListItem disablePadding key={index} sx={{ height: "20px" }}>
+              <NavLink
                 to={item.path}
-                style={{
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  width: "100%",
-                }}
+                style={({ isActive }) =>
+                  isActive
+                    ? activeStyle
+                    : {
+                        textDecoration: "none",
+                        cursor: "pointer",
+                        width: "100%",
+                      }
+                }
               >
                 <Button
                   startIcon={item.icon}
@@ -69,6 +79,10 @@ export default function Sidebar() {
                     color: (theme) => theme.palette.text.secondary,
                     display: "inline-flex",
                     alignItems: "center",
+                    justifyContent: "start",
+                    width: "100%",
+                    textAlign: "start",
+                    p: "4px 8px",
                   }}
                 >
                   <Typography
@@ -80,7 +94,7 @@ export default function Sidebar() {
                     {item.title}
                   </Typography>
                 </Button>
-              </Link>
+              </NavLink>
             </ListItem>
           ))}
         </List>

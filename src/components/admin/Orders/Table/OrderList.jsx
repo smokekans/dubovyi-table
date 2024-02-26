@@ -147,10 +147,14 @@ function OrderList(props) {
           </TableContainer>
           <Box sx={{ marginTop: "60px", display: "flex", gap: "24px" }}>
             <Button
+              disabled={selected.length > 0 ? false : true}
               sx={{
                 padding: "18px 40px",
                 borderRadius: 5,
-                border: (theme) => `1px solid  ${theme.palette.primary.main} `,
+                border:
+                  selected.length > 0
+                    ? (theme) => `1px solid  ${theme.palette.primary.main} `
+                    : (theme) => `1px solid ${theme.palette.secondary.light}`,
                 "&:hover": {
                   border: (theme) => `1px solid ${theme.palette.primary.dark}`,
                   "& > p": {
@@ -160,7 +164,14 @@ function OrderList(props) {
               }}
               onClick={() => handleDelete(selected)}
             >
-              <Typography sx={{ color: (theme) => theme.palette.primary.main }}>
+              <Typography
+                sx={{
+                  color:
+                    selected.length > 0
+                      ? (theme) => theme.palette.primary.main
+                      : (theme) => theme.palette.text.disabled,
+                }}
+              >
                 Архівувати
               </Typography>
             </Button>

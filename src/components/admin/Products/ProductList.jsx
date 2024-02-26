@@ -50,12 +50,24 @@ function ProductList(props) {
   }, [page]);
 
   const goToPage = (e) => {
-    if (e.key === "Enter") {
-      const IntPage = parseInt(e.target.value);
-      if (IntPage >= 1 && IntPage <= totalPages) {
-        const newPage = e.target.value - 1;
-        setPage(newPage);
+    const keyCode = e.keyCode || e.which;
+
+    if (
+      (keyCode >= 48 && keyCode <= 57) ||
+      (keyCode >= 96 && keyCode <= 105) ||
+      keyCode === 8 ||
+      keyCode === 46 ||
+      keyCode === 13
+    ) {
+      if (keyCode === 13) {
+        const IntPage = parseInt(e.target.value);
+        if (IntPage >= 1 && IntPage <= totalPages) {
+          const newPage = IntPage - 1;
+          setPage(newPage);
+        }
       }
+    } else {
+      e.preventDefault();
     }
   };
 

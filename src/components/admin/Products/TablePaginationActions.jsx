@@ -45,7 +45,14 @@ function TablePaginationActions(props) {
           cursor: page === 0 ? "default" : "pointer",
           pointerEvents: page === 0 ? "none" : "auto",
           "&:hover": {
-            backgroundColor: "transparent",
+            backgroundColor:
+              page >= Math.ceil(count / ROWS_PER_PAGE) - 1
+                ? "transparent"
+                : (theme) => theme.palette.primary.main,
+            color:
+              page >= Math.ceil(count / ROWS_PER_PAGE) - 1
+                ? (theme) => theme.palette.action.disabledBackground
+                : (theme) => theme.palette.common.white,
           },
         }}
       >

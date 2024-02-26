@@ -1,6 +1,7 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
+  Input,
   Paper,
   Table,
   TableBody,
@@ -42,8 +43,21 @@ function ProductList(props) {
   } = props;
 
   const abortControllerRef = useRef(null);
+  const [displayedPage, setDisplayedPage] = useState(1);
 
-  const displayedPage = page + 1;
+  useEffect(() => {
+    setDisplayedPage(page + 1);
+  }, [page]);
+
+  const goToPage = (e) => {
+    if (e.key === "Enter") {
+      const IntPage = parseInt(e.target.value);
+      if (IntPage >= 1 && IntPage <= totalPages) {
+        const newPage = e.target.value - 1;
+        setPage(newPage);
+      }
+    }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "ASC";
@@ -167,7 +181,37 @@ function ProductList(props) {
             }}
           >
             <Typography>
-              Сторінка: {displayedPage} з {totalPages ? totalPages : "1"}
+              Сторінка
+              <Input
+                type="number"
+                value={displayedPage}
+                onChange={(e) => setDisplayedPage(e.target.value)}
+                onKeyDown={(e) => goToPage(e)}
+                sx={{
+                  width: "45px",
+                  height: "24px",
+                  padding: "4px 8px 0px 8px",
+                  margin: "0 8px",
+                  borderRadius: "4px",
+                  border: "1px solid #030C0D",
+                  "& input[type=number]::-webkit-outer-spin-button": {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                  "& input[type=number]::-webkit-inner-spin-button": {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                  "& input": { textAlign: "center", padding: 0 },
+                  "&.MuiInput-underline:before": {
+                    borderBottom: "none !important",
+                  },
+                  "&.MuiInput-underline:after": {
+                    borderBottom: "none !important",
+                  },
+                }}
+              />{" "}
+              з {totalPages ? totalPages : "1"}
             </Typography>
             <TablePagination
               component="div"

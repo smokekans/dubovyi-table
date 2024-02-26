@@ -80,7 +80,6 @@ function OrderList(props) {
       try {
         const response = await getOrderList(
           page,
-          ROWS_PER_PAGE,
           orderBy,
           order,
           abortControllerRef

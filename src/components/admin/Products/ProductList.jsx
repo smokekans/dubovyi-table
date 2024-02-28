@@ -1,7 +1,8 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
   Button,
+  Input,
   Paper,
   Table,
   TableBody,
@@ -44,8 +45,33 @@ function ProductList(props) {
   } = props;
 
   const abortControllerRef = useRef(null);
+  const [displayedPage, setDisplayedPage] = useState(1);
 
-  const displayedPage = page + 1;
+  useEffect(() => {
+    setDisplayedPage(page + 1);
+  }, [page]);
+
+  const goToPage = (e) => {
+    const keyCode = e.keyCode || e.which;
+
+    if (
+      (keyCode >= 48 && keyCode <= 57) ||
+      (keyCode >= 96 && keyCode <= 105) ||
+      keyCode === 8 ||
+      keyCode === 46 ||
+      keyCode === 13
+    ) {
+      if (keyCode === 13) {
+        const IntPage = parseInt(e.target.value);
+        if (IntPage >= 1 && IntPage <= totalPages) {
+          const newPage = IntPage - 1;
+          setPage(newPage);
+        }
+      }
+    } else {
+      e.preventDefault();
+    }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "ASC";
@@ -135,103 +161,130 @@ function ProductList(props) {
   console.log("====================================");
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
-        <TableContainer sx={{ overflow: "hidden", my: 5 }}>
-          {!loading ? (
-            <Table
-              sx={{
-                minWidth: 870,
-              }}
-              aria-labelledby="tableTitle"
-            >
-              <Head
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rowsdata?.length}
-                totalItems={totalItems}
-              />
-              <TableBody>
-                {currentTableData.length > 0 && !error ? (
-                  currentTableData.map((row, index) => (
-                    <ProductItem
-                      row={row}
-                      // setRows={setRows}
-                      setSelected={setSelected}
-                      selected={selected}
-                      key={index}
-                      index={index}
-                      handleDeleteItem={handleDeleteItem}
-                    />
-                  ))
-                ) : (
-                  <EmptyTableRow />
-                )}
-              </TableBody>
-            </Table>
-          ) : (
-            <>
-              <Loader />
-            </>
-          )}
-        </TableContainer>
-
-        <Button
-          disabled={!selected.length > 0}
-          startIcon={
-            <FileUploadOutlinedIcon sx={{ width: "24px", height: "24px" }} />
-          }
-          onClick={handleExportSelectedItems}
-          sx={{
-            p: "18px 40px",
-            borderRadius: 5,
-            height: "56px",
-            backgroundColor: (theme) => theme.palette.primary.main,
-            textDecoration: "none",
-            color: (theme) => theme.palette.common.white,
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: (theme) => theme.palette.common.white,
-              color: (theme) => theme.palette.primary.main,
-              border: (theme) => `1px solid ${theme.palette.primary.main}`,
-            },
-            "&:disabled": {
-              backgroundColor: (theme) => theme.palette.common.gray,
+    <>
+      <Box sx={{ width: "100%", marginTop: "60px" }}>
+        <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
+          <TableContainer sx={{ overflow: "hidden" }}>
+            {!loading ? (
+              <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
+                <Head
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rowsdata?.length}
+                  totalItems={totalItems}
+                />
+                <TableBody>
+                  {currentTableData.length > 0 && !error ? (
+                    currentTableData.map((row, index) => (
+                      <ProductItem
+                        row={row}
+                        // setRows={setRows}
+                        setSelected={setSelected}
+                        selected={selected}
+                        key={index}
+                        index={index}
+                        handleDeleteItem={handleDeleteItem}
+                      />
+                    ))
+                  ) : (
+                    <EmptyTableRow />
+                  )}
+                </TableBody>
+              </Table>
+            ) : (
+              <>
+                <Loader />
+              </>
+            )}
+          </TableContainer>
+          <Button
+            disabled={!selected.length > 0}
+            startIcon={
+              <FileUploadOutlinedIcon sx={{ width: "24px", height: "24px" }} />
+            }
+            onClick={handleExportSelectedItems}
+            sx={{
+              mt: 5,
+              p: "18px 40px",
+              borderRadius: 5,
+              height: "56px",
+              backgroundColor: (theme) => theme.palette.primary.main,
+              textDecoration: "none",
               color: (theme) => theme.palette.common.white,
-            },
-          }}
-        >
-          Експортувати
-        </Button>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderTop: (theme) => `1px solid ${theme.palette.secondary.dark}`,
-            marginTop: "60px",
-            paddingTop: 1,
-          }}
-        >
-          <Typography>
-            Сторінка: {displayedPage} з {totalPages ? totalPages : "1"}
-          </Typography>
-          <TablePagination
-            component="div"
-            count={Number(totalItems)}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={ROWS_PER_PAGE}
-            rowsPerPageOptions={[]}
-            labelDisplayedRows={() => ""}
-            ActionsComponent={TablePaginationActions}
-          />
-        </Box>
-      </Paper>
-    </Box>
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.common.white,
+                color: (theme) => theme.palette.primary.main,
+                border: (theme) => `1px solid ${theme.palette.primary.main}`,
+              },
+              "&:disabled": {
+                backgroundColor: (theme) => theme.palette.common.gray,
+                color: (theme) => theme.palette.common.white,
+              },
+            }}
+          >
+            Експортувати
+          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderTop: (theme) => `1px solid ${theme.palette.secondary.dark}`,
+              marginTop: "60px",
+              paddingTop: 1,
+            }}
+          >
+            <Typography>
+              Сторінка
+              <Input
+                type="number"
+                value={displayedPage}
+                onChange={(e) => setDisplayedPage(e.target.value)}
+                onKeyDown={(e) => goToPage(e)}
+                sx={{
+                  width: "45px",
+                  height: "24px",
+                  padding: "4px 8px 0px 8px",
+                  margin: "0 8px",
+                  borderRadius: "4px",
+                  border: "1px solid #030C0D",
+                  "& input[type=number]::-webkit-outer-spin-button": {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                  "& input[type=number]::-webkit-inner-spin-button": {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                  "& input": { textAlign: "center", padding: 0 },
+                  "&.MuiInput-underline:before": {
+                    borderBottom: "none !important",
+                  },
+                  "&.MuiInput-underline:after": {
+                    borderBottom: "none !important",
+                  },
+                }}
+              />{" "}
+              з {totalPages ? totalPages : "1"}
+            </Typography>
+            <TablePagination
+              component="div"
+              count={Number(totalItems)}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={ROWS_PER_PAGE}
+              rowsPerPageOptions={[]}
+              labelDisplayedRows={() => ""}
+              ActionsComponent={TablePaginationActions}
+            />
+          </Box>
+        </Paper>
+      </Box>
+    </>
   );
 }
 

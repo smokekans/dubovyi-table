@@ -13,7 +13,7 @@ export default function Filtration({ setActiveFiltration, formik }) {
   const enums = useSelector(getEnums);
 
   return (
-    <Box sx={{ width: "100%", mt: 4 }}>
+    <Box sx={{ width: "870px", mt: 4 }}>
       <Box component="form" onSubmit={formik.handleSubmit}>
         <CalendarFiltration formik={formik} />
         <Box

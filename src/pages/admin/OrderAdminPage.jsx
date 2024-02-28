@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import OrderList from "components/admin/Orders/Table/OrderList";
 import { useEffect, useRef, useState } from "react";
-import { getOrderList } from "services/fetchData";
+import { getOrderList } from "services/fetchOrdersData";
 import { ROWS_PER_PAGE } from "utils/constans";
 
 export default function OrderAdminPage() {

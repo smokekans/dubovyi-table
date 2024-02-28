@@ -1,5 +1,4 @@
 import React, { useMemo, useRef } from "react";
-
 import {
   Box,
   Button,
@@ -8,9 +7,9 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
+  TableRow,
   Typography,
 } from "@mui/material";
-
 import TablePaginationAction from "./TablePaginationAction";
 import Head from "./Head";
 import OrderItem from "./OrderItem";
@@ -18,7 +17,7 @@ import {
   deleteOrder,
   getAllOrdersForSelect,
   getOrderList,
-} from "services/fetchData";
+} from "services/fetchOrdersData";
 import Loader from "components/Loader/Loader";
 import EmptyTableRow from "./EmptyTableRow";
 import { ROWS_PER_PAGE } from "utils/constans";
@@ -124,26 +123,31 @@ function OrderList(props) {
                 rowCount={rowsdata?.length}
                 totalItems={totalItems}
               />
-              {!loading ? (
-                <TableBody>
-                  {currentTableData.length > 0 && !error ? (
-                    currentTableData.map((row, index) => (
-                      <OrderItem
-                        row={row}
-                        setRows={setRows}
-                        setSelected={setSelected}
-                        selected={selected}
-                        index={index}
-                        handleDelete={handleDelete}
-                      />
-                    ))
-                  ) : (
-                    <EmptyTableRow />
-                  )}
-                </TableBody>
-              ) : (
-                <Loader />
-              )}
+              <TableBody>
+                {loading ? (
+                  <TableRow>
+                    <Loader />
+                  </TableRow>
+                ) : (
+                  <>
+                    {currentTableData.length > 0 && !error ? (
+                      currentTableData.map((row, index) => (
+                        <OrderItem
+                          row={row}
+                          setRows={setRows}
+                          setSelected={setSelected}
+                          selected={selected}
+                          key={index}
+                          index={index}
+                          handleDelete={handleDelete}
+                        />
+                      ))
+                    ) : (
+                      <EmptyTableRow />
+                    )}
+                  </>
+                )}
+              </TableBody>
             </Table>
           </TableContainer>
           <Box sx={{ marginTop: "60px", display: "flex", gap: "24px" }}>
@@ -181,7 +185,7 @@ function OrderList(props) {
             </Typography>
             <TablePagination
               component="div"
-              count={totalItems}
+              count={Number(totalItems)}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={ROWS_PER_PAGE}

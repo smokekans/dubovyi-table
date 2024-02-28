@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ProductSchema } from "../ProductSchema";
+import { ProductSchema } from "./ProductSchema";
 import { fields } from "utils/fields";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
@@ -20,6 +20,7 @@ import { getEnums } from "redux/enums/enumsSelectors";
 import { Link, useNavigate } from "react-router-dom";
 import UniversalSelectAddProduct from "components/СreateProduct/Autocompete/UniversalSelectAddProduct";
 import UniversalInputAddProduct from "components/СreateProduct/Input/UniversalIntupAddProduct";
+import { createProduct } from "services/fetchProductsData";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -58,6 +59,7 @@ export default function FormCreateProduct() {
     validationSchema: ProductSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
+      createProduct(values);
       resetForm();
       navigate("/admin/products");
     },
@@ -390,9 +392,17 @@ export default function FormCreateProduct() {
             variant="outlined"
             to="/admin/products"
             sx={{
-              p: "18px 40px",
+              padding: "18px 40px",
               borderRadius: 5,
+              border: (theme) => `1px solid ${theme.palette.primary.main}`,
+              textDecoration: "none",
+              cursor: "pointer",
+              height: "56px",
               textTransform: "none",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.primary.main,
+                color: (theme) => theme.palette.common.white,
+              },
             }}
           >
             Скасувати
@@ -401,10 +411,23 @@ export default function FormCreateProduct() {
             type="submit"
             variant="contained"
             sx={{
-              p: "18px 40px",
+              padding: "18px 40px",
               borderRadius: 5,
+              border: (theme) => `1px solid ${theme.palette.primary.main}`,
+              textDecoration: "none",
+              cursor: "pointer",
+              height: "56px",
               textTransform: "none",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.common.white,
+                color: (theme) => theme.palette.primary.main,
+              },
+              "&:disabled": {
+                borderColor: "transparent",
+                color: (theme) => theme.palette.common.white,
+              },
             }}
+            disabled={!(formik.isValid && formik.dirty)}
           >
             Створити
           </Button>

@@ -465,19 +465,6 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       overflowWrap: "break-word",
                       overflowY: "auto",
                       paddingRight: 2,
-                      "&::-webkit-scrollbar": {
-                        width: "8px",
-                      },
-                      "&::-webkit-scrollbar-thumb": {
-                        backgroundColor: (theme) =>
-                          theme.palette.secondary.dark,
-                        borderRadius: "5px",
-                      },
-                      "&::-webkit-scrollbar-track": {
-                        backgroundColor: (theme) =>
-                          theme.palette.secondary.light,
-                        borderRadius: "5px",
-                      },
                     }}
                   >
                     <Typography>{row.description}</Typography>

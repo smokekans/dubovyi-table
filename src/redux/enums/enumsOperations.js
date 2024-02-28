@@ -1,22 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {
-  GET_ALL_CATEGORIES,
-  GET_ALL_COLORS,
-  GET_ALL_MATERIALS,
-} from "utils/url";
+import { CATEGORIES, COLORS, MATERIALS } from "utils/url";
 
-axios.defaults.baseURL = "http://woodcrafts.eu-north-1.elasticbeanstalk.com";
+axios.defaults.baseURL = "https://woodcrafts.pp.ua";
 
 export const getEnumsList = createAsyncThunk(
-  GET_ALL_COLORS,
+  COLORS,
   async (_, { rejectWithValue }) => {
     try {
       const [colorsResponse, categoriesResponse, materialsResponse] =
         await Promise.all([
-          axios.get(`${GET_ALL_COLORS}`),
-          axios.get(`${GET_ALL_CATEGORIES}`),
-          axios.get(`${GET_ALL_MATERIALS}`),
+          axios.get(`${COLORS}`),
+          axios.get(`${CATEGORIES}`),
+          axios.get(`${MATERIALS}`),
         ]);
       const colors = colorsResponse.data;
       const categories = categoriesResponse.data;
@@ -29,10 +25,10 @@ export const getEnumsList = createAsyncThunk(
 );
 
 export const getColorsList = createAsyncThunk(
-  GET_ALL_COLORS,
+  COLORS,
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${GET_ALL_COLORS}`);
+      const { data } = await axios.get(`${COLORS}`);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -40,10 +36,10 @@ export const getColorsList = createAsyncThunk(
   }
 );
 export const getMaterialList = createAsyncThunk(
-  GET_ALL_MATERIALS,
+  MATERIALS,
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${GET_ALL_MATERIALS}`);
+      const { data } = await axios.get(`${MATERIALS}`);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -51,10 +47,10 @@ export const getMaterialList = createAsyncThunk(
   }
 );
 export const getCategoriesList = createAsyncThunk(
-  GET_ALL_CATEGORIES,
+  CATEGORIES,
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${GET_ALL_CATEGORIES}`);
+      const { data } = await axios.get(`${CATEGORIES}`);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setColors } from "redux/enums/enumsSlice";
-import { BASE_URL, GET_COLOR_BY_ID } from "utils/url";
+import { BASE_URL, COLOR_BY_ID } from "utils/url";
 
 async function loadColorInfo(colorId, dispatch) {
   try {
-    const response = await axios.get(
-      BASE_URL + GET_COLOR_BY_ID + `?id=${colorId}`
-    );
+    const response = await axios.get(BASE_URL + COLOR_BY_ID + `?id=${colorId}`);
     const data = response.data;
     dispatch(setColors(data));
     return data.name;

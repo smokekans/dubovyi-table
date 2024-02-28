@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrderStatus } from "redux/enums/enumsSlice";
-import { BASE_URL, GET_CATEGORY_BY_ID } from "utils/url";
+import { BASE_URL, CATEGORIES_BY_ID } from "utils/url";
 
 async function loadStatusInfo(statusId, dispatch) {
   try {
     const response = await axios.get(
-      BASE_URL + GET_CATEGORY_BY_ID + `?id=${statusId}`
+      BASE_URL + CATEGORIES_BY_ID + `?id=${statusId}`
     );
     const data = response.data;
     dispatch(setOrderStatus(data));

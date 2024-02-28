@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setMaterials } from "redux/enums/enumsSlice";
-import { BASE_URL, GET_MATERIAL_BY_ID } from "utils/url";
+import { BASE_URL, MATERIAL_BY_ID } from "utils/url";
 
 async function loadCategoryInfo(materialId, dispatch) {
   try {
     const response = await axios.get(
-      BASE_URL + GET_MATERIAL_BY_ID + `?id=${materialId}`
+      BASE_URL + MATERIAL_BY_ID + `?id=${materialId}`
     );
     const data = response.data;
     dispatch(setMaterials(data));

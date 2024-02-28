@@ -17,7 +17,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getEnums } from "redux/enums/enumsSelectors";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import UniversalSelectAddProduct from "components/СreateProduct/Autocompete/UniversalSelectAddProduct";
 import UniversalInputAddProduct from "components/СreateProduct/Input/UniversalIntupAddProduct";
 import { createProduct } from "services/fetchProductsData";
@@ -30,6 +30,15 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 export default function FormCreateProduct() {
+  const location = useLocation();
+  console.log("====================================");
+  console.log(location);
+  console.log(location.hash);
+  console.log(location.key);
+  console.log(location.pathname);
+  console.log(location.search);
+  console.log(location.state);
+  console.log("====================================");
   const [images, setImages] = React.useState([
     "https://content.rozetka.com.ua/goods/images/big/247962715.jpg",
     "https://content2.rozetka.com.ua/goods/images/big/247962723.jpg",

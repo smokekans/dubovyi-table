@@ -46,6 +46,20 @@ export const getProductList = async (
   return { data, totalPage, totalItem };
 };
 
+// export const getProductById = async () => {
+//   const response = await axios.get(
+//     BASE_URL +
+//       PRODUCTS +
+//       `?page=${page}&size=${ROWS_PER_PAGE}&sortBy=${orderBy}&direction=${order}`
+//   );
+
+//   const data = await response.data.data;
+//   const totalPage = response.data.totalPages;
+//   const totalItem = response.data.totalItems;
+
+//   return { data, totalPage, totalItem };
+// };
+
 export const createProduct = async (newProduct) => {
   try {
     const { data } = await axios.post(PRODUCTS, newProduct);

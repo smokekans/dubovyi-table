@@ -205,7 +205,10 @@ function ProductList(props) {
                   padding: "4px 8px 0px 8px",
                   margin: "0 8px",
                   borderRadius: "4px",
-                  border: "1px solid #030C0D",
+                  border:
+                    displayedPage <= totalPages
+                      ? "1px solid #030C0D"
+                      : "1px solid #D13634",
                   "& input[type=number]::-webkit-outer-spin-button": {
                     "-webkit-appearance": "none",
                     margin: 0,

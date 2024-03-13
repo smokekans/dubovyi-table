@@ -49,15 +49,17 @@ export default function AutocompleteFiltration({ fields, formik, options }) {
             name={fields.name}
             focused
             placeholder={fields.placeholder}
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <>
-                  {params.InputProps.endAdornment}
-                  <CheckBoxOutlineBlankOutlinedIcon sx={{ display: "none" }} />
-                </>
-              ),
-            }}
+            // InputProps={{
+            //   ...params.InputProps,
+            //   endAdornment: (
+            //     <>
+            //       {params.InputProps.endAdornment}
+            //       <CheckBoxOutlineBlankOutlinedIcon
+            //         sx={{ overflow: "hidden" }}
+            //       />
+            //     </>
+            //   ),
+            // }}
             sx={styles.textField}
           />
         )}
@@ -109,7 +111,20 @@ export default function AutocompleteFiltration({ fields, formik, options }) {
         PaperComponent={({ children }) => (
           <Paper
             sx={{
-              overflow: "auto",
+              overflowY: "scroll",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "transparent",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "#D9D9D9",
+                borderRadius: 1,
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                background: "#AAA",
+              },
               boxShadow: "none",
               mt: "16px",
               borderRadius: 0,
@@ -117,6 +132,7 @@ export default function AutocompleteFiltration({ fields, formik, options }) {
               "& .MuiAutocomplete-listbox": {
                 gap: "16px",
                 p: 0,
+                overflowY: "auto",
               },
               "& .MuiAutocomplete-option": {
                 height: "auto",

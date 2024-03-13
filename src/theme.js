@@ -14,6 +14,7 @@ const theme = createTheme({
     common: {
       black: "#030C0D",
       white: "#FAF9FB",
+      gray: "#AAAAAA",
     },
     primary: {
       main: "#324EBD",
@@ -326,9 +327,11 @@ const theme = createTheme({
           lineHeight: "20.4px",
           letterSpacing: 0.08,
         },
-        root: {
-          ".MuiOutlinedInput-root": {
-            ".MuiAutocomplete-input": {},
+        hasPopupIcon: {
+          "&.MuiAutocomplete-hasClearIcon": {
+            "&.MuiAutocomplete-root .MuiOutlinedInput-root": {
+              paddingRight: 0,
+            },
           },
         },
       },

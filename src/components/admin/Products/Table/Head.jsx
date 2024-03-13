@@ -118,9 +118,7 @@ function Head(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            sortDirection={
-              orderBy === headCell.id ? order.toLowerCase() : false
-            }
+            sortDirection={orderBy === headCell.id ? order : false}
             sx={{
               padding: headCell.id === "id" ? "0" : "24px",
               borderBottom: (theme) =>
@@ -129,7 +127,7 @@ function Head(props) {
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order.toLowerCase() : "asc"}
+              direction={orderBy === headCell.id ? order : "asc"}
               sx={{
                 "&.MuiTableSortLabel-root": {
                   color: (theme) => theme.palette.common.black,

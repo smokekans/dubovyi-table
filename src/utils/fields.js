@@ -20,6 +20,13 @@ export const fields = {
     model: "input",
     id: "price",
   },
+  quantity: {
+    name: "quantity",
+    placeholder: "5",
+    label: "Кількість",
+    model: "input",
+    id: "quantity",
+  },
   category: {
     name: "categoryId",
     placeholder: "Столи",
@@ -27,13 +34,6 @@ export const fields = {
     type: "search",
     model: "select",
     id: "categoryId",
-  },
-  quantity: {
-    name: "quantity",
-    placeholder: "5",
-    label: "Кількість",
-    model: "input",
-    id: "quantity",
   },
   material: {
     name: "materialId",

@@ -17,6 +17,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import useGetColor from "hook/useGetColor";
 import useGetCategory from "hook/useGetCategory";
 import useGetMaterial from "hook/useGetMaterial";
+import { Link } from "react-router-dom";
 
 const keyMessages = {
   quantity: "В наявності",
@@ -48,6 +49,7 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
   const [setContainerWidth] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
+  const updateLink = `/admin/create-product?${row.id}`;
   const color = useGetColor(row.colorId);
   const category = useGetCategory(row.categoryId);
   const material = useGetMaterial(row.materialId);
@@ -344,6 +346,8 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       },
                     },
                   }}
+                  component={Link}
+                  to={updateLink}
                   // onClick={() => handleDeleteItem()}
                 >
                   <Typography
@@ -465,19 +469,6 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       overflowWrap: "break-word",
                       overflowY: "auto",
                       paddingRight: 2,
-                      "&::-webkit-scrollbar": {
-                        width: "8px",
-                      },
-                      "&::-webkit-scrollbar-thumb": {
-                        backgroundColor: (theme) =>
-                          theme.palette.secondary.dark,
-                        borderRadius: "5px",
-                      },
-                      "&::-webkit-scrollbar-track": {
-                        backgroundColor: (theme) =>
-                          theme.palette.secondary.light,
-                        borderRadius: "5px",
-                      },
                     }}
                   >
                     <Typography>{row.description}</Typography>

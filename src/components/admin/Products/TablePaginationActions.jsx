@@ -1,12 +1,9 @@
 import { Box, IconButton } from "@mui/material";
-
-import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { ROWS_PER_PAGE } from "utils/constans";
 
 function TablePaginationActions(props) {
-  const theme = useTheme();
   const { count, page, onPageChange } = props;
 
   const handleBackButtonClick = (event) => {
@@ -56,7 +53,7 @@ function TablePaginationActions(props) {
           },
         }}
       >
-        {theme.direction === "rtl" ? <ArrowForwardIcon /> : <ArrowBackIcon />}
+        <ArrowBackIcon />
       </IconButton>
       <IconButton
         onClick={() => {
@@ -92,7 +89,7 @@ function TablePaginationActions(props) {
           },
         }}
       >
-        {theme.direction === "rtl" ? <ArrowBackIcon /> : <ArrowForwardIcon />}
+        <ArrowForwardIcon />
       </IconButton>
     </Box>
   );

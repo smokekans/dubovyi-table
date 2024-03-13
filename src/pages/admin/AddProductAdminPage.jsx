@@ -1,4 +1,4 @@
-import FormCreateProduct from "components/СreateProduct/Form/FormCreateProduct";
+import FormCreateProduct from "components/СreateProduct/FormCreateProduct";
 
 export default function AddProductAdminPage() {
   return <FormCreateProduct />;

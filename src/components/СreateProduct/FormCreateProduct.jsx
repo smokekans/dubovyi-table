@@ -20,7 +20,12 @@ import { getEnums } from "redux/enums/enumsSelectors";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import UniversalSelectAddProduct from "components/СreateProduct/Autocompete/UniversalSelectAddProduct";
 import UniversalInputAddProduct from "components/СreateProduct/Input/UniversalIntupAddProduct";
-import { createProduct } from "services/fetchProductsData";
+import {
+  createProduct,
+  getProductById,
+  updateProduct,
+} from "services/fetchProductsData";
+import Loader from "components/Loader/Loader";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -37,6 +42,7 @@ export default function FormCreateProduct() {
   console.log(location.key);
   console.log(location.pathname);
   console.log(location.search);
+  console.log(location.search.slice(1));
   console.log(location.state);
   console.log("====================================");
   const [images, setImages] = React.useState([
@@ -45,8 +51,26 @@ export default function FormCreateProduct() {
     "https://content.rozetka.com.ua/goods/images/big/247962730.jpg",
   ]);
   const [activeImage, setActiveImage] = React.useState(images[0]);
+  const [loading, setLoading] = React.useState(false);
+
   const enums = useSelector(getEnums);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    setLoading(true);
+    const currentProductById = async () => {
+      try {
+        const data = await getProductById(location.search.slice(1));
+        formik.setValues(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    location.search ? currentProductById() : setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
 
   const formik = useFormik({
     initialValues: {
@@ -68,7 +92,9 @@ export default function FormCreateProduct() {
     validationSchema: ProductSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
-      createProduct(values);
+      location.search
+        ? updateProduct(location.search.slice(1), values)
+        : createProduct(values);
       resetForm();
       navigate("/admin/products");
     },
@@ -270,178 +296,286 @@ export default function FormCreateProduct() {
 
   return (
     <Box>
-      <Typography variant="h3">Новий товар</Typography>
-      <Box
-        component="form"
-        onSubmit={formik.handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          mt: "55px",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="images">
-              {(provided) => (
+      {loading ? (
+        <Loader />
+      ) : (
+        <Box>
+          {location.search ? (
+            <Typography variant="h3">
+              Редагування Товару №{formik.values.id}
+            </Typography>
+          ) : (
+            <Typography variant="h3">Новий товар</Typography>
+          )}
+          <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              mt: "55px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="images">
+                  {(provided) => (
+                    <Box
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "24px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {images.map((image, index) =>
+                        renderImagePreview(image, index)
+                      )}
+                      {provided.placeholder}
+                    </Box>
+                  )}
+                </Droppable>
+              </DragDropContext>
+              <Box>
+                {activeImage ? (
+                  <Box
+                    component="img"
+                    src={activeImage}
+                    alt="active img"
+                    sx={{
+                      width: "572px",
+                      height: "348px",
+                      objectFit: "cover",
+                      borderRadius: 5,
+                      boxShadow: 3,
+                    }}
+                  />
+                ) : (
+                  <DropZone />
+                )}
+                <Typography variant="body1" sx={{ width: "460px", mt: 3 }}>
+                  Перше фото це обкладинка для товару. Щоб змінити порядок -
+                  поретягніть зображення.
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              sx={{ mt: 4, gap: 3, display: "flex", flexDirection: "column" }}
+            >
+              <UniversalInputAddProduct fields={fields.name} formik={formik} />
+              <Box sx={{ display: "flex", flexDirection: "row", gap: "100px" }}>
                 <Box
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "24px",
-                    cursor: "pointer",
+                    width: "400px",
+                    gap: 3,
                   }}
                 >
-                  {images.map((image, index) =>
-                    renderImagePreview(image, index)
-                  )}
-                  {provided.placeholder}
+                  <UniversalInputAddProduct
+                    fields={fields.price}
+                    formik={formik}
+                  />
+                  <UniversalInputAddProduct
+                    fields={fields.quantity}
+                    formik={formik}
+                  />
+                  <UniversalSelectAddProduct
+                    fields={fields.category}
+                    options={enums.ECategories}
+                    formik={formik}
+                  />
+                  <UniversalSelectAddProduct
+                    fields={fields.material}
+                    options={enums.EMaterials}
+                    formik={formik}
+                  />
+                  <UniversalSelectAddProduct
+                    fields={fields.color}
+                    options={enums.EColors}
+                    formik={formik}
+                  />
                 </Box>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <Box>
-            {activeImage ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "400px",
+                    gap: 3,
+                  }}
+                >
+                  <UniversalInputAddProduct
+                    fields={fields.weight}
+                    formik={formik}
+                  />
+                  <UniversalInputAddProduct
+                    fields={fields.height}
+                    formik={formik}
+                  />
+                  <UniversalInputAddProduct
+                    fields={fields.length}
+                    formik={formik}
+                  />
+                  <UniversalInputAddProduct
+                    fields={fields.width}
+                    formik={formik}
+                  />
+                  <UniversalSelectAddProduct
+                    fields={fields.warranty}
+                    options={enums.EWarranties}
+                    formik={formik}
+                  />
+                </Box>
+              </Box>
+              <UniversalInputAddProduct
+                fields={fields.description}
+                formik={formik}
+              />
+            </Box>
+            {location.search ? (
               <Box
-                component="img"
-                src={activeImage}
-                alt="active img"
                 sx={{
-                  width: "572px",
-                  height: "348px",
-                  objectFit: "cover",
-                  borderRadius: 5,
-                  boxShadow: 3,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 3,
+                  mt: 5,
                 }}
-              />
+              >
+                <Button
+                  variant="contained"
+                  sx={{
+                    padding: "18px 40px",
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid ${theme.palette.primary.main}`,
+                    textDecoration: "none",
+                    cursor: "pointer",
+                    height: "56px",
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: (theme) => theme.palette.common.white,
+                      color: (theme) => theme.palette.primary.main,
+                    },
+                  }}
+                >
+                  Видалити
+                </Button>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 3,
+                  }}
+                >
+                  <Button
+                    component={Link}
+                    variant="outlined"
+                    to="/admin/products"
+                    sx={{
+                      padding: "18px 40px",
+                      borderRadius: 5,
+                      border: (theme) =>
+                        `1px solid ${theme.palette.primary.main}`,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                      height: "56px",
+                      textTransform: "none",
+                      "&:hover": {
+                        backgroundColor: (theme) => theme.palette.primary.main,
+                        color: (theme) => theme.palette.common.white,
+                      },
+                    }}
+                  >
+                    Скасувати
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      padding: "18px 40px",
+                      borderRadius: 5,
+                      border: (theme) =>
+                        `1px solid ${theme.palette.primary.main}`,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                      height: "56px",
+                      textTransform: "none",
+                      "&:hover": {
+                        backgroundColor: (theme) => theme.palette.common.white,
+                        color: (theme) => theme.palette.primary.main,
+                      },
+                      "&:disabled": {
+                        borderColor: "transparent",
+                        color: (theme) => theme.palette.common.white,
+                      },
+                    }}
+                    disabled={!(formik.isValid && formik.dirty)}
+                  >
+                    Зберегти
+                  </Button>
+                </Box>
+              </Box>
             ) : (
-              <DropZone />
+              <Box
+                sx={{ display: "flex", justifyContent: "end", gap: 3, mt: 5 }}
+              >
+                <Button
+                  component={Link}
+                  variant="outlined"
+                  to="/admin/products"
+                  sx={{
+                    padding: "18px 40px",
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid ${theme.palette.primary.main}`,
+                    textDecoration: "none",
+                    cursor: "pointer",
+                    height: "56px",
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: (theme) => theme.palette.primary.main,
+                      color: (theme) => theme.palette.common.white,
+                    },
+                  }}
+                >
+                  Скасувати
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    padding: "18px 40px",
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid ${theme.palette.primary.main}`,
+                    textDecoration: "none",
+                    cursor: "pointer",
+                    height: "56px",
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: (theme) => theme.palette.common.white,
+                      color: (theme) => theme.palette.primary.main,
+                    },
+                    "&:disabled": {
+                      borderColor: "transparent",
+                      color: (theme) => theme.palette.common.white,
+                    },
+                  }}
+                  disabled={!(formik.isValid && formik.dirty)}
+                >
+                  Створити
+                </Button>
+              </Box>
             )}
-            <Typography variant="body1" sx={{ width: "460px", mt: 3 }}>
-              Перше фото це обкладинка для товару. Щоб змінити порядок -
-              поретягніть зображення.
-            </Typography>
           </Box>
         </Box>
-        <Box sx={{ mt: 4, gap: 3, display: "flex", flexDirection: "column" }}>
-          <UniversalInputAddProduct fields={fields.name} formik={formik} />
-          <Box sx={{ display: "flex", flexDirection: "row", gap: "100px" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "400px",
-                gap: 3,
-              }}
-            >
-              <UniversalInputAddProduct fields={fields.price} formik={formik} />
-              <UniversalInputAddProduct
-                fields={fields.quantity}
-                formik={formik}
-              />
-              <UniversalSelectAddProduct
-                fields={fields.category}
-                options={enums.ECategories}
-                formik={formik}
-              />
-              <UniversalSelectAddProduct
-                fields={fields.material}
-                options={enums.EMaterials}
-                formik={formik}
-              />
-              <UniversalSelectAddProduct
-                fields={fields.color}
-                options={enums.EColors}
-                formik={formik}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "400px",
-                gap: 3,
-              }}
-            >
-              <UniversalInputAddProduct
-                fields={fields.weight}
-                formik={formik}
-              />
-              <UniversalInputAddProduct
-                fields={fields.height}
-                formik={formik}
-              />
-              <UniversalInputAddProduct
-                fields={fields.length}
-                formik={formik}
-              />
-              <UniversalInputAddProduct fields={fields.width} formik={formik} />
-              <UniversalSelectAddProduct
-                fields={fields.warranty}
-                options={enums.EWarranties}
-                formik={formik}
-              />
-            </Box>
-          </Box>
-          <UniversalInputAddProduct
-            fields={fields.description}
-            formik={formik}
-          />
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "end", gap: 3, mt: 5 }}>
-          <Button
-            component={Link}
-            variant="outlined"
-            to="/admin/products"
-            sx={{
-              padding: "18px 40px",
-              borderRadius: 5,
-              border: (theme) => `1px solid ${theme.palette.primary.main}`,
-              textDecoration: "none",
-              cursor: "pointer",
-              height: "56px",
-              textTransform: "none",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.primary.main,
-                color: (theme) => theme.palette.common.white,
-              },
-            }}
-          >
-            Скасувати
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              padding: "18px 40px",
-              borderRadius: 5,
-              border: (theme) => `1px solid ${theme.palette.primary.main}`,
-              textDecoration: "none",
-              cursor: "pointer",
-              height: "56px",
-              textTransform: "none",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.common.white,
-                color: (theme) => theme.palette.primary.main,
-              },
-              "&:disabled": {
-                borderColor: "transparent",
-                color: (theme) => theme.palette.common.white,
-              },
-            }}
-            disabled={!(formik.isValid && formik.dirty)}
-          >
-            Створити
-          </Button>
-        </Box>
-      </Box>
+      )}
     </Box>
   );
 }

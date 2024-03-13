@@ -1,6 +1,8 @@
 export const BASE_URL = `https://woodcrafts.pp.ua`;
 
 export const PRODUCTS = `/products`;
+export const PRODUCT_BY_ID = `/products/byId`;
+export const PRODUCT_BY_NAME = `/products/byName`;
 export const ORDERS = `/orders`;
 export const CATEGORIES = `/categories`;
 export const MATERIALS = `/materials`;

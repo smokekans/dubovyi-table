@@ -22,7 +22,6 @@ import {
 import EmptyTableRow from "./EmptyTableRow";
 import { ROWS_PER_PAGE } from "utils/constans";
 import Loader from "components/Loader/Loader";
-import { jsPDF } from "jspdf";
 
 function ProductList(props) {
   const {
@@ -144,17 +143,7 @@ function ProductList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsdata, order, orderBy]);
 
-  const handleExportSelectedItems = () => {
-    const doc = new jsPDF();
-    selected.forEach((item, index) => {
-      doc.text(
-        `${index + 1}. ${item.id} - ${item.price}₴`,
-        10,
-        10 + index * 10
-      );
-    });
-    doc.save("selected_items.pdf");
-  };
+  const handleExportSelectedItems = () => {};
 
   console.log("====================================");
   console.log(selected);

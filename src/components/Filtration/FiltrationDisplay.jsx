@@ -3,7 +3,12 @@ import { Box } from "@mui/material";
 import ButtonCurrentFiltration from "./Button/ButtonCurrentFiltration";
 import dayjs from "dayjs";
 
-function FiltrationDisplay({ itemsFiltration, enums, formik }) {
+function FiltrationDisplay({
+  itemsFiltration,
+  setItemsFiltration,
+  enums,
+  formik,
+}) {
   const {
     startDate,
     endDate,
@@ -17,13 +22,20 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
     colorId,
   } = itemsFiltration;
   const today = dayjs();
-  const formattedDate = startDate && endDate && `${startDate} - ${endDate}`;
+
+  const formattedDate = `${startDate} - ${endDate}`;
+  const formattedStartDate = `від ${startDate}`;
+  const formattedEndDate = `до ${endDate}`;
+  const sameDates = `за ${startDate}`;
+  const allDates = `за весь час`;
+
   const inStockStatus = inStock && "В наявності";
   const missingStatus = missing && "Відсутні";
   const isDeletedStatus = isDeleted && "Видалені";
 
-  const formattedPrice =
-    minPrice && maxPrice && `від ${minPrice}₴ до ${maxPrice}₴`;
+  const formattedPrice = `від ${minPrice}₴ до ${maxPrice}₴`;
+  const formattedMinPrice = `від ${minPrice}₴`;
+  const formattedMaxPrice = `до ${maxPrice}₴`;
 
   const getCategoryNameById = (id) =>
     enums.ECategories.find((category) => category.id === id)?.name;
@@ -35,7 +47,18 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
   const getButtonText = (type) => {
     switch (type) {
       case "date":
-        return formattedDate;
+        return startDate === endDate
+          ? sameDates
+          : startDate === formik.initialValues.startDate &&
+            endDate === formik.initialValues.endDate
+          ? allDates
+          : startDate === formik.initialValues.startDate
+          ? formattedEndDate
+          : endDate === today
+          ? formattedStartDate
+          : startDate && endDate
+          ? formattedDate
+          : null;
       case "inStock":
         return inStockStatus;
       case "missing":
@@ -43,7 +66,13 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
       case "isDeleted":
         return isDeletedStatus;
       case "price":
-        return formattedPrice;
+        return minPrice !== "" && maxPrice !== ""
+          ? formattedPrice
+          : minPrice !== ""
+          ? formattedMinPrice
+          : maxPrice !== ""
+          ? formattedMaxPrice
+          : null;
       case "category":
         return getCategoryNameById(categoryId[type]);
       case "material":
@@ -56,8 +85,8 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
   };
 
   const removeDateFromFormik = () => {
-    formik.setFieldValue(startDate, formik.initialValue(startDate));
-    formik.setFieldValue(endDate, formik.initialValue(endDate));
+    formik.setFieldValue("startDate", formik.initialValues.startDate);
+    formik.setFieldValue("endDate", formik.initialValues.endDate);
     formik.handleSubmit();
   };
 
@@ -67,8 +96,8 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
   };
 
   const removePriceFromFormik = () => {
-    formik.setFieldValue(minPrice, 1);
-    formik.setFieldValue(maxPrice, 999999);
+    formik.setFieldValue("minPrice", formik.initialValues.minPrice);
+    formik.setFieldValue("maxPrice", formik.initialValues.maxPrice);
     formik.handleSubmit();
   };
 
@@ -89,9 +118,14 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
         maxWidth: "478px",
       }}
     >
-      {startDate !== "01.01.2024" && endDate !== today && (
+      {startDate && endDate ? (
         <ButtonCurrentFiltration
           text={getButtonText("date")}
+          onClick={() => removeDateFromFormik()}
+        />
+      ) : (
+        <ButtonCurrentFiltration
+          text="Увесь час"
           onClick={() => removeDateFromFormik()}
         />
       )}
@@ -113,7 +147,7 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
           onClick={() => removeAvailabilityFromFormik("isDeleted")}
         />
       )}
-      {(minPrice !== 1 || maxPrice !== 999999) && (
+      {(minPrice || maxPrice !== "") && (
         <ButtonCurrentFiltration
           text={getButtonText("price")}
           onClick={() => removePriceFromFormik()}
@@ -132,7 +166,7 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
         return (
           <ButtonCurrentFiltration
             key={item}
-            text={getCategoryNameById(item)}
+            text={getMaterialNameById(item)}
             onClick={() => removeParametersFromFormik("materialId", item)}
           />
         );
@@ -141,7 +175,7 @@ function FiltrationDisplay({ itemsFiltration, enums, formik }) {
         return (
           <ButtonCurrentFiltration
             key={item}
-            text={getCategoryNameById(item)}
+            text={getColorNameById(item)}
             onClick={() => removeParametersFromFormik("colorId", item)}
           />
         );

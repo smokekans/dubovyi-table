@@ -33,11 +33,8 @@ export default function ProductsAdminPage() {
   const today = dayjs();
   const firstDayOfYear = dayjs("01.01.2023", "DD.MM.YYYY");
   const [rows, setRows] = useState([]);
-  const [totalPages, setTotalPages] = useState("");
-  const [totalItems, setTotalItems] = useState("");
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState("DESC");
-  const [orderBy, setOrderBy] = useState("id");
+  const [totalPage, setTotalPage] = useState("");
+  const [totalItem, setTotalItem] = useState("");
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
   const [open, setOpen] = useState(false);
@@ -45,6 +42,35 @@ export default function ProductsAdminPage() {
   const abortControllerRef = useRef(null);
   const dispatch = useDispatch();
   const enums = useSelector(getEnums);
+
+  const formik = useFormik({
+    initialValues: {
+      page: 0,
+      size: ROWS_PER_PAGE,
+      sortBy: "id",
+      direction: "DESC",
+      categoryId: null,
+      materialId: null,
+      colorId: null,
+      inStock: false,
+      isDeleted: false,
+      missing: false,
+      minPrice: "",
+      maxPrice: "",
+      startDate: firstDayOfYear.format("DD.MM.YYYY"),
+      endDate: today.format("DD.MM.YYYY"),
+    },
+    validationSchema: FiltrationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      setActiveFiltration(false);
+      setItemsFiltration(values);
+    },
+  });
+
+  console.log("===================itemsFiltration=================");
+  console.log(itemsFiltration);
+  console.log("====================================");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,13 +80,11 @@ export default function ProductsAdminPage() {
       setLoading(true);
       try {
         const response = await getProductList(
-          page,
-          orderBy,
-          order,
+          formik.values,
           abortControllerRef
         );
-        setTotalPages(response.totalPage);
-        setTotalItems(response.totalItem);
+        setTotalPage(response.totalPages);
+        setTotalItem(response.totalItems);
         setRows(response.data);
         dispatch(getEnumsList());
 
@@ -78,7 +102,7 @@ export default function ProductsAdminPage() {
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, order, orderBy]);
+  }, [formik.values]);
 
   const handleOpenDeleteModal = () => {
     setOpen(true);
@@ -90,13 +114,11 @@ export default function ProductsAdminPage() {
       abortControllerRef.current = new AbortController();
       try {
         const response = await getProductList(
-          page,
-          orderBy,
-          order,
+          formik.values,
           abortControllerRef
         );
-        setTotalPages(response.totalPage);
-        setTotalItems(response.totalItem);
+        setTotalPage(response.totalPages);
+        setTotalItem(response.totalItems);
         setRows(response.data);
         setError("");
       } catch (error) {
@@ -119,35 +141,14 @@ export default function ProductsAdminPage() {
     }
   };
 
-  const formik = useFormik({
-    initialValues: {
-      direction: "DESC",
-      page: 1,
-      size: 10,
-      sortBy: "id",
-      categoryId: null,
-      materialId: null,
-      colorId: null,
-      inStock: false,
-      isDeleted: false,
-      missing: false,
-      minPrice: 1,
-      maxPrice: 999999,
-      startDate: firstDayOfYear.format("DD.MM.YYYY"),
-      endDate: today.format("DD.MM.YYYY"),
-    },
-    validationSchema: FiltrationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      setActiveFiltration(false);
-      setItemsFiltration(values);
-    },
-  });
-
   const handleClear = () => {
     formik.resetForm(formik.initialValues);
     setItemsFiltration(null);
   };
+
+  console.log("====================================");
+  console.log(itemsFiltration);
+  console.log("====================================");
 
   return (
     <Box>
@@ -286,6 +287,7 @@ export default function ProductsAdminPage() {
                 ) : (
                   <FiltrationDisplay
                     itemsFiltration={itemsFiltration}
+                    setItemsFiltration={setItemsFiltration}
                     enums={enums}
                     formik={formik}
                   />
@@ -300,7 +302,10 @@ export default function ProductsAdminPage() {
                     startIcon={
                       <FilterListIcon sx={{ width: "24px", height: "24px" }} />
                     }
-                    onClick={() => setActiveFiltration(true)}
+                    onClick={() => {
+                      formik.setFieldValue("page", 0);
+                      setActiveFiltration(true);
+                    }}
                     sx={{
                       padding: "8px",
                       borderRadius: 5,
@@ -359,19 +364,19 @@ export default function ProductsAdminPage() {
           <ProductList
             rowsdata={rows}
             setRows={setRows}
-            totalPages={totalPages}
-            totalItems={totalItems}
-            rowsPerPage={ROWS_PER_PAGE}
-            page={page}
-            setPage={setPage}
-            setTotalPages={setTotalPages}
-            setTotalItems={setTotalItems}
+            totalPages={totalPage}
+            totalItems={totalItem}
+            rowsPerPage={formik.values.size}
+            page={formik.values.page}
+            setPage={(value) => formik.setFieldValue("page", value)}
+            setTotalPages={setTotalPage}
+            setTotalItems={setTotalItem}
             selected={selected}
             setSelected={setSelected}
-            order={order}
-            orderBy={orderBy}
-            setOrder={setOrder}
-            setOrderBy={setOrderBy}
+            order={formik.values.order}
+            setOrder={(value) => formik.setFieldValue("direction", value)}
+            orderBy={formik.values.sortBy}
+            setOrderBy={(value) => formik.setFieldValue("sortBy", value)}
             loading={loading}
             error={error}
           />

@@ -366,6 +366,7 @@ export default function ProductsAdminPage() {
             setRows={setRows}
             totalPages={totalPage}
             totalItems={totalItem}
+            formikValues={formik.values}
             rowsPerPage={formik.values.size}
             page={formik.values.page}
             setPage={(value) => formik.setFieldValue("page", value)}

@@ -27,7 +27,7 @@ function FiltrationDisplay({
   const formattedStartDate = `від ${startDate}`;
   const formattedEndDate = `до ${endDate}`;
   const sameDates = `за ${startDate}`;
-  const allDates = `за весь час`;
+  const allDates = `за увесь час`;
 
   const inStockStatus = inStock && "В наявності";
   const missingStatus = missing && "Відсутні";

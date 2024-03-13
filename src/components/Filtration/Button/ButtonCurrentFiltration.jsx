@@ -21,7 +21,11 @@ function ButtonCurrentFiltration({ text, onClick }) {
           background: (theme) => theme.palette.secondary.light,
         },
       }}
-      endIcon={<CloseOutlinedIcon sx={{ width: "24px", height: "24px" }} />}
+      endIcon={
+        text !== "за увесь час" ? (
+          <CloseOutlinedIcon sx={{ width: "24px", height: "24px" }} />
+        ) : null
+      }
       onClick={onClick}
     >
       {text}

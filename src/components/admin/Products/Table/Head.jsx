@@ -57,7 +57,7 @@ function Head(props) {
     totalItems,
   } = props;
   const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
+    if (property !== "details") onRequestSort(event, property);
   };
 
   const CustomSortIcon = ({ direction, columnId, ...props }) => {

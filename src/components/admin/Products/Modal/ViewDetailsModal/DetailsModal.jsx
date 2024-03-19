@@ -207,6 +207,8 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                 height: "100%",
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Typography
@@ -231,113 +233,95 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
 
               <Box
                 sx={{
-                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   height: "273px",
                   width: "538px",
-                  marginTop: 4,
+                  // marginTop: 4,
                 }}
               >
+                <Button
+                  size="small"
+                  onClick={handleBack}
+                  sx={{
+                    width: "48px",
+                    minWidth: 0,
+                    height: "48px",
+                    padding: 2,
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid ${theme.palette.common.white}`,
+                    "&:hover": { border: "1px solid transparent" },
+                    visibility: activeStep === 0 ? "hidden" : "visible",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <KeyboardArrowLeft
+                    sx={{ color: (theme) => theme.palette.common.white }}
+                  />
+                </Button>
+
                 <Box
                   sx={{
-                    // height: "273px",
-                    // maxWidth: "410px",
-                    // width: "100%",
-                    // margin: "0 auto",
-                    // marginTop: 4,
-                    // borderRadius: 5,
-                    // background: `url(${row.photos[activeStep]})`,
-                    // backgroundSize: "cover",
+                    width: "410px",
                     height: "273px",
-                    maxWidth: "410px",
-                    width: "100%",
                     margin: "0 auto",
                     // marginTop: 4,
                     borderRadius: 5,
                     background: `url(${row.photos[activeStep]})`,
                     backgroundSize: "cover",
-                    position: "relative",
                   }}
                 ></Box>
-                <MobileStepper
-                  variant="dots"
-                  steps={maxSteps}
-                  position="static"
-                  activeStep={activeStep}
-                  nextButton={
-                    // activeStep === maxSteps - 1 ? null : (
-                    <Button
-                      size="small"
-                      onClick={handleNext}
-                      disabled={activeStep === maxSteps - 1}
-                      sx={{
-                        width: "48px",
-                        minWidth: 0,
-                        height: "48px",
-                        padding: 2,
-                        borderRadius: 5,
-                        border: (theme) =>
-                          `1px solid ${theme.palette.common.white}`,
-                        position: "absolute",
-                        right: 0,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                      }}
-                    >
-                      {/* {theme.direction === "rtl" ? (
-                  <KeyboardArrowLeft />
-                ) : ( */}
-                      <KeyboardArrowRight
-                        sx={{ color: (theme) => theme.palette.common.white }}
-                      />
-                      {/* )} */}
-                    </Button>
-                    // )
-                  }
-                  backButton={
-                    // activeStep === 0 ? null : (
-                    <Button
-                      size="small"
-                      onClick={handleBack}
-                      disabled={activeStep === 0}
-                      style={{
-                        width: "48px",
-                        minWidth: 0,
-                        height: "48px",
-                        padding: 2,
-                        borderRadius: 5,
-                        border: (theme) =>
-                          `1px solid ${theme.palette.common.white}`,
-                        position: "absolute",
-                        left: 0,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                      }}
-                    >
-                      {/* {theme.direction === "rtl" ? (
-                  <KeyboardArrowRight />
-                ) : ( */}
-                      <KeyboardArrowLeft
-                        sx={{ color: (theme) => theme.palette.common.white }}
-                      />
-                      {/* )} */}
-                    </Button>
-                    // )
-                  }
+
+                <Button
+                  size="small"
+                  onClick={handleNext}
                   sx={{
-                    background: "transparent",
-                    position: "absolute",
-                    bottom: "50%",
-                    left: 0,
-                    right: 0,
-                    "&.MuiMobileStepper-dot": {
-                      width: "34px",
-                      height: "5px",
-                      borderRadius: "5px",
-                      background: "grey",
-                    },
+                    width: "48px",
+                    minWidth: 0,
+                    height: "48px",
+                    padding: 2,
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid ${theme.palette.common.white}`,
+                    "&:hover": { border: "1px solid transparent" },
+                    visibility:
+                      activeStep === maxSteps - 1 ? "hidden" : "visible",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
-                />
+                >
+                  <KeyboardArrowRight
+                    sx={{ color: (theme) => theme.palette.common.white }}
+                  />
+                </Button>
               </Box>
+              <MobileStepper
+                variant="dots"
+                steps={maxSteps}
+                position="static"
+                activeStep={activeStep}
+                nextButton={null}
+                backButton={null}
+                sx={{
+                  background: "transparent",
+                  marginTop: "24px",
+                  "& .MuiMobileStepper-dot": {
+                    width: "34px",
+                    height: "5px",
+                    borderRadius: "3px",
+                    background: "#D9D9D9",
+                  },
+                  "& .MuiMobileStepper-dotActive": {
+                    width: "94px",
+                    height: "5px",
+                    borderRadius: "3px",
+                    background: "#D9D9D9",
+                  },
+                }}
+              />
 
               <Box
                 sx={{
@@ -519,7 +503,10 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       },
                     }}
                   >
-                    <Typography>{row.description}</Typography>
+                    // переробити на інпут //
+                    <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                      {row.description}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>

@@ -346,10 +346,9 @@ function DetailsModal(props) {
                     border: (theme) =>
                       `1px solid  ${theme.palette.common.white}`,
                     "&:hover": {
-                      border: (theme) =>
-                        `1px solid ${theme.palette.action.disabledBackground}`,
+                      background: (theme) => theme.palette.common.white,
                       "& > p": {
-                        color: (theme) => theme.palette.secondary.dark,
+                        color: (theme) => theme.palette.primary.main,
                       },
                     },
                   }}
@@ -368,10 +367,9 @@ function DetailsModal(props) {
                     border: (theme) =>
                       `1px solid  ${theme.palette.common.white} `,
                     "&:hover": {
-                      border: (theme) =>
-                        `1px solid ${theme.palette.action.disabledBackground}`,
+                      background: (theme) => theme.palette.common.white,
                       "& > p": {
-                        color: (theme) => theme.palette.secondary.dark,
+                        color: (theme) => theme.palette.primary.main,
                       },
                     },
                   }}

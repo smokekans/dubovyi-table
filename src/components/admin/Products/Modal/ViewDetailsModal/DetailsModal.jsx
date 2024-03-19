@@ -153,28 +153,19 @@ function DetailsModal(props) {
         overflow: "scroll",
         overflowY: "hidden",
         overflowX: "hidden",
-        // height: "content-box",
         height: "719px",
         width: "1128px",
         display: "block",
-        // padding: "28px 32px 56px 32px",
-        // backgroundColor: "rgb(50, 78, 189)",
-        // borderRadius: "50px 0px 0px 50px",
       }}
     >
       <Box
         sx={{
           width: "1064px",
-          // height: "719px",
-          // padding: "28px 32px 56px 32px",
-          // bgcolor: "#324EBD",
           borderRadius: "50px 0px 0px 50px",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "rgb(50, 78, 189)",
           padding: "28px 32px 56px 32px",
-
-          // gap: "32px",
           alignItems: "center",
           textAlign: "center",
         }}
@@ -246,7 +237,7 @@ function DetailsModal(props) {
                   justifyContent: "center",
                   height: "273px",
                   width: "538px",
-                  // marginTop: 4,
+                  marginTop: 4,
                 }}
               >
                 <Button
@@ -276,7 +267,6 @@ function DetailsModal(props) {
                     width: "410px",
                     height: "273px",
                     margin: "0 auto",
-                    // marginTop: 4,
                     borderRadius: 5,
                     background: `url(${row.photos[activeStep]})`,
                     backgroundSize: "cover",
@@ -320,13 +310,13 @@ function DetailsModal(props) {
                     width: "34px",
                     height: "5px",
                     borderRadius: "3px",
-                    background: "#D9D9D9",
+                    background: (theme) => theme.palette.secondary.light,
                   },
                   "& .MuiMobileStepper-dotActive": {
                     width: "94px",
                     height: "5px",
                     borderRadius: "3px",
-                    background: "#D9D9D9",
+                    background: (theme) => theme.palette.secondary.light,
                   },
                 }}
               />

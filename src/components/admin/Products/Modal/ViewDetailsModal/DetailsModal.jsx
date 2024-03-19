@@ -17,6 +17,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import useGetColor from "hook/useGetColor";
 import useGetCategory from "hook/useGetCategory";
 import useGetMaterial from "hook/useGetMaterial";
+import { deleteProduct } from "services/fetchData";
 
 const keyMessages = {
   quantity: "В наявності",
@@ -44,7 +45,9 @@ const desiredOrder = [
   "warranty",
 ];
 
-function DetailsModal({ openDetails, setOpenDetails, row }) {
+function DetailsModal(props) {
+  const { openDetails, setOpenDetails, handleDeleteItem, row } = props;
+
   const [setContainerWidth] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
@@ -131,6 +134,11 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleDelete = async () => {
+    const productToDelete = [{ id: row.id }];
+    await handleDeleteItem(productToDelete, setOpenDetails);
   };
 
   return (
@@ -345,7 +353,7 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       },
                     },
                   }}
-                  // onClick={() => handleClose()}
+                  onClick={() => handleDelete()}
                 >
                   <Typography
                     sx={{ color: (theme) => theme.palette.common.white }}

@@ -111,7 +111,7 @@ export default function CheckboxFiltration({ formik, fields }) {
               disabled={inStock || missing}
             />
           }
-          label="Архів"
+          label="Видалені"
         />
       </FormGroup>
     </FormControl>

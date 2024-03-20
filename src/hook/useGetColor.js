@@ -8,6 +8,7 @@ async function loadColorInfo(colorId, dispatch) {
     const response = await axios.get(
       BASE_URL + GET_ALL_COLORS + `?id=${colorId}`
     );
+
     const data = response.data;
     dispatch(setColors(data));
     return data.name;

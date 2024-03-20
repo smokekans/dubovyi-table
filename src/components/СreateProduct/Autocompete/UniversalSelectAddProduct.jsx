@@ -56,8 +56,27 @@ export default function UniversalSelectAddProduct({ fields, formik, options }) {
         PaperComponent={({ children }) => (
           <Paper
             sx={{
-              overflow: "auto",
+              overflowY: "scroll",
               maxHeight: "234px",
+              scrollPadding: "20px",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+                scrollPadding: "20px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "transparent",
+                scrollPadding: "20px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "#D9D9D9",
+                scrollPadding: "20px",
+
+                borderRadius: 1,
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                background: "#AAA",
+                scrollPadding: "20px",
+              },
             }}
           >
             {children}

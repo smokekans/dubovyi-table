@@ -8,17 +8,8 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { styles } from "./CalendarFiltration.styles";
 
 export default function CalendarFiltration({ formik }) {
-  const today = dayjs();
-  const firstDayOfYear = dayjs().startOf("year");
-
-  const [startDate, setStartDate] = React.useState(firstDayOfYear);
-  const [endDate, setEndDate] = React.useState(today);
-
-  React.useEffect(() => {
-    formik.setFieldValue("startDate", startDate.format("DD.MM.YYYY"));
-    formik.setFieldValue("endDate", endDate.format("DD.MM.YYYY"));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, endDate]);
+  const firstDayOfYear = dayjs("2023-01-01");
+  const { values, setFieldValue } = formik;
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
       <Typography variant="h4">Вибірка товарів доданих в період</Typography>
@@ -31,12 +22,15 @@ export default function CalendarFiltration({ formik }) {
         }
       >
         <xDatePickers.DatePicker
-          value={startDate}
-          onChange={(newValue) => setStartDate(newValue)}
+          value={dayjs(values.startDate, "DD.MM.YYYY")}
+          onChange={(newValue) =>
+            setFieldValue("startDate", newValue.format("DD.MM.YYYY"))
+          }
           format="DD.MM.YYYY"
           disableFuture
           views={["year", "month", "day"]}
           minDate={firstDayOfYear}
+          dayOfWeekFormatter={(_day, weekday) => `${weekday.format("dd")}`}
           slots={{ openPickerIcon: CalendarTodayIcon }}
           sx={styles.datePicker}
         />
@@ -48,12 +42,14 @@ export default function CalendarFiltration({ formik }) {
           }}
         />
         <xDatePickers.DatePicker
-          value={endDate}
-          onChange={(newValue) => setEndDate(newValue)}
+          value={dayjs(values.endDate, "DD.MM.YYYY")}
+          onChange={(newValue) =>
+            setFieldValue("endDate", newValue.format("DD.MM.YYYY"))
+          }
           format="DD.MM.YYYY"
           views={["year", "month", "day"]}
           disableFuture
-          minDate={startDate}
+          minDate={dayjs(values.startDate, "DD.MM.YYYY")}
           dayOfWeekFormatter={(_day, weekday) => `${weekday.format("dd")}`}
           slots={{ openPickerIcon: CalendarTodayIcon }}
           sx={styles.datePicker}

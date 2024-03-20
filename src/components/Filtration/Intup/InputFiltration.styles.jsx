@@ -31,11 +31,6 @@ export const styles = {
       py: 1,
       pr: 2,
     },
-    "&:-webkit-autofill": {
-      backgroundColor: "transparent",
-      "-webkit-box-shadow": "0 0 0 1000px white inset !important",
-      color: "inherit",
-    },
   },
   inputLabel: {
     color: (theme) => theme.palette.primary.main,

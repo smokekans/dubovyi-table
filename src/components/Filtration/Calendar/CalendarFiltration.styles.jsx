@@ -1,12 +1,17 @@
 export const styles = {
   datePicker: {
     width: "150px",
+    py: 1,
+    px: 2,
     "&.MuiInputBase-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
       {
         border: (theme) => `1px solid ${theme.palette.common.black}`,
+        py: 1,
+        px: 2,
       },
     ".css-6rw2jl-MuiInputBase-input-MuiOutlinedInput-input": {
       py: 1,
+
       pl: 2,
     },
     ".MuiIconButton-edgeEnd": {

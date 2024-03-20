@@ -1,25 +1,24 @@
 import React from "react";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 function DeleteSelectedItems({ selected, handleOpenDeleteModal }) {
   return (
     <Button
+      onClick={() => handleOpenDeleteModal()}
+      startIcon={
+        <DeleteOutlineOutlinedIcon sx={{ width: "24px", height: "24px" }} />
+      }
       disabled={selected.length > 0 ? false : true}
       sx={{
-        display: "flex",
-        gap: 1,
-        padding: 1,
+        borderRadius: 5,
+        color: (theme) => theme.palette.common.black,
+        cursor: "pointer",
+        height: "40px",
         textTransform: "none",
-        color:
-          selected.length > 0
-            ? (theme) => theme.palette.common.black
-            : (theme) => theme.palette.secondary.dark,
-        borderRadius: selected.length > 0 ? 5 : 0,
-        cursor: selected.length > 0 ? "pointer" : "default",
-        "&:disabled": {
-          color: (theme) => theme.palette.action.disabledBackground,
-        },
+        textDecoration: "none",
+        minWidth: "178px",
+        p: 1,
         "&:hover": {
           background:
             selected.length > 0
@@ -27,10 +26,8 @@ function DeleteSelectedItems({ selected, handleOpenDeleteModal }) {
               : "none",
         },
       }}
-      onClick={() => handleOpenDeleteModal()}
     >
-      <DeleteOutlineOutlinedIcon sx={{ width: "24px", height: "24px" }} />
-      <Typography>Видалити обрані</Typography>
+      Видалити обрані
     </Button>
   );
 }

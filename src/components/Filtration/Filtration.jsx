@@ -5,41 +5,15 @@ import AutocompleteFiltration from "components/Filtration/Autocomplete/Autocompl
 import { useSelector } from "react-redux";
 import { getEnums } from "redux/enums/enumsSelectors";
 import { fields } from "utils/fields";
-import { useFormik } from "formik";
 import CheckboxFiltration from "components/Filtration/Checkbox/CheckboxFiltration";
 import InputFiltration from "components/Filtration/Intup/InputFiltration";
-import { FiltrationSchema } from "./FiltrationSchema";
 import { styles } from "./Intup/InputFiltration.styles";
 
-export default function Filtration({ setActiveFiltration }) {
+export default function Filtration({ setActiveFiltration, formik }) {
   const enums = useSelector(getEnums);
 
-  const formik = useFormik({
-    initialValues: {
-      direction: "DESC",
-      page: 1,
-      size: 10,
-      sortBy: "id",
-      categoryId: null,
-      colorId: null,
-      materialId: null,
-      inStock: false,
-      isDeleted: false,
-      missing: false,
-      maxPrice: null,
-      minPrice: null,
-      startDate: null,
-      endDate: null,
-    },
-    validationSchema: FiltrationSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      resetForm();
-      setActiveFiltration(false);
-    },
-  });
   return (
-    <Box sx={{ width: "100%", mt: 4 }}>
+    <Box sx={{ width: "870px", mt: 4 }}>
       <Box component="form" onSubmit={formik.handleSubmit}>
         <CalendarFiltration formik={formik} />
         <Box

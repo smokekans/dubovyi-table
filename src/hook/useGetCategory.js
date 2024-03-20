@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategories } from "redux/enums/enumsSlice";
-import { BASE_URL, CATEGORY_BY_ID } from "utils/url";
+import { BASE_URL, GET_ALL_CATEGORIES } from "utils/url";
 
 async function loadCategoryInfo(categoryId, dispatch) {
   try {
     const response = await axios.get(
-      BASE_URL + CATEGORY_BY_ID + `?id=${categoryId}`
+      BASE_URL + GET_ALL_CATEGORIES + `?id=${categoryId}`
     );
     const data = response.data;
     dispatch(setCategories(data));

@@ -17,7 +17,6 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import useGetColor from "hook/useGetColor";
 import useGetCategory from "hook/useGetCategory";
 import useGetMaterial from "hook/useGetMaterial";
-import { deleteProduct } from "services/fetchData";
 
 const keyMessages = {
   quantity: "В наявності",

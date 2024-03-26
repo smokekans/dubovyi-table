@@ -14,10 +14,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import useGetColor from "hook/useGetColor";
-import useGetCategory from "hook/useGetCategory";
-import useGetMaterial from "hook/useGetMaterial";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getEnums } from "redux/enums/enumsSelectors";
+import { upperCaseFirstLetterEnumName } from "services/upperCaseFirstLetterEnumName";
 
 const keyMessages = {
   quantity: "В наявності",
@@ -47,14 +47,22 @@ const desiredOrder = [
 
 function DetailsModal(props) {
   const { openDetails, setOpenDetails, handleDeleteItem, row } = props;
+  const enums = useSelector(getEnums);
 
   const [setContainerWidth] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
   const updateLink = `/admin/create-product?${row.id}`;
-  const color = useGetColor(row.colorId);
-  const category = useGetCategory(row.categoryId);
-  const material = useGetMaterial(row.materialId);
+
+  const category = upperCaseFirstLetterEnumName(
+    enums.ECategories,
+    row.categoryId
+  );
+  const material = upperCaseFirstLetterEnumName(
+    enums.EMaterials,
+    row.materialId
+  );
+  const color = upperCaseFirstLetterEnumName(enums.EColors, row.colorId);
 
   const containerRef = useRef(null);
   const maxSteps = row.photos.length;

@@ -374,7 +374,7 @@ export default function ProductsAdminPage() {
             setTotalItems={setTotalItem}
             selected={selected}
             setSelected={setSelected}
-            order={formik.values.order}
+            order={formik.values.direction}
             setOrder={(value) => formik.setFieldValue("direction", value)}
             orderBy={formik.values.sortBy}
             setOrderBy={(value) => formik.setFieldValue("sortBy", value)}

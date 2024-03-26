@@ -190,7 +190,6 @@ function ProductItem(props) {
       <BasicModal
         open={open}
         setOpen={setOpen}
-        // handleDeleteItem={() => handleDeleteItem([{ id: row.id }], setOpen)}
         handleDeleteItem={handleDeleteItem}
         id={row.id}
       />

@@ -9,11 +9,14 @@ import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlin
 
 import BasicModal from "./Modal/DeleteModal/BasicModal";
 import DetailsModal from "./Modal/ViewDetailsModal/DetailsModal";
+import { useNavigate } from "react-router-dom";
 
 function ProductItem(props) {
   const { row, index, handleDeleteItem, selected, setSelected } = props;
   const [open, setOpen] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleOpenDeleteModal = (e) => {
     e.stopPropagation();
@@ -23,6 +26,11 @@ function ProductItem(props) {
   const handleOpenDetailsModal = (e) => {
     e.stopPropagation();
     setOpenDetails(true);
+  };
+
+  const handleEditProduct = (e) => {
+    e.stopPropagation();
+    navigate(`/admin/create-product?${row.id}`);
   };
 
   const handleClick = (event, id) => {
@@ -168,7 +176,10 @@ function ProductItem(props) {
               Переглянути
               <ArrowRightOutlinedIcon sx={{ width: "24px", height: "24px" }} />
             </Box>
-            <EditOutlinedIcon sx={{ width: "24px", height: "24px" }} />
+            <EditOutlinedIcon
+              sx={{ width: "24px", height: "24px" }}
+              onClick={(e) => handleEditProduct(e)}
+            />
             <DeleteOutlineOutlinedIcon
               sx={{ width: "24px", height: "24px" }}
               onClick={(e) => handleOpenDeleteModal(e)}

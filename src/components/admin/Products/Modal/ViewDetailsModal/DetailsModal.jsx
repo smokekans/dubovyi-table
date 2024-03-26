@@ -191,7 +191,6 @@ function DetailsModal(props) {
           />
         </Box>
         <Typography
-          id="modal-modal-title"
           variant="h3"
           sx={{
             color: (theme) => theme.palette.text.secondary,
@@ -220,7 +219,6 @@ function DetailsModal(props) {
               }}
             >
               <Typography
-                // id="modal-modal-title"
                 variant="h3"
                 sx={{
                   color: (theme) => theme.palette.text.secondary,
@@ -229,7 +227,6 @@ function DetailsModal(props) {
                 {row.name}
               </Typography>
               <Typography
-                // id="modal-modal-title"
                 variant="h4"
                 sx={{
                   color: (theme) => theme.palette.text.secondary,
@@ -374,7 +371,6 @@ function DetailsModal(props) {
                   }}
                   component={Link}
                   to={updateLink}
-                  // onClick={() => handleDeleteItem()}
                 >
                   <Typography
                     sx={{ color: (theme) => theme.palette.text.secondary }}
@@ -497,7 +493,6 @@ function DetailsModal(props) {
                       paddingRight: 2,
                     }}
                   >
-                    // переробити на інпут //
                     <Typography sx={{ whiteSpace: "pre-wrap" }}>
                       {row.description}
                     </Typography>

@@ -7,5 +7,13 @@ export default function CurrentAdminTab() {
   const pathWithoutAdmin = location.pathname.replace(/^\/admin\//, "");
   const currentItem = items.find((item) => item.path === pathWithoutAdmin);
 
-  return <Box>{currentItem.content}</Box>;
+  return (
+    <Box
+      sx={{
+        borderLeft: "1px solid green",
+      }}
+    >
+      {currentItem.content}
+    </Box>
+  );
 }

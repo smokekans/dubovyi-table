@@ -187,6 +187,7 @@ function ProductItem(props) {
         <DetailsModal
           openDetails={openDetails}
           setOpenDetails={setOpenDetails}
+          handleDeleteItem={handleDeleteItem}
           row={row}
         />
       ) : null}

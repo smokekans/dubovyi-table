@@ -45,7 +45,9 @@ const desiredOrder = [
   "warranty",
 ];
 
-function DetailsModal({ openDetails, setOpenDetails, row }) {
+function DetailsModal(props) {
+  const { openDetails, setOpenDetails, handleDeleteItem, row } = props;
+
   const [setContainerWidth] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
@@ -135,6 +137,11 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const handleDelete = async () => {
+    const productToDelete = [{ id: row.id }];
+    await handleDeleteItem(productToDelete, setOpenDetails);
+  };
+
   return (
     <Modal
       open={openDetails}
@@ -147,28 +154,19 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
         overflow: "scroll",
         overflowY: "hidden",
         overflowX: "hidden",
-        // height: "content-box",
         height: "719px",
         width: "1128px",
         display: "block",
-        // padding: "28px 32px 56px 32px",
-        // backgroundColor: "rgb(50, 78, 189)",
-        // borderRadius: "50px 0px 0px 50px",
       }}
     >
       <Box
         sx={{
           width: "1064px",
-          // height: "719px",
-          // padding: "28px 32px 56px 32px",
-          // bgcolor: "#324EBD",
           borderRadius: "50px 0px 0px 50px",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "rgb(50, 78, 189)",
           padding: "28px 32px 56px 32px",
-
-          // gap: "32px",
           alignItems: "center",
           textAlign: "center",
         }}
@@ -209,6 +207,8 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                 height: "100%",
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Typography
@@ -233,73 +233,93 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
 
               <Box
                 sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   height: "273px",
-                  maxWidth: "410px",
-                  width: "100%",
-                  margin: "0 auto",
+                  width: "538px",
                   marginTop: 4,
-                  borderRadius: 5,
-                  background: `url(${row.photos[activeStep]})`,
                 }}
-              ></Box>
+              >
+                <Button
+                  size="small"
+                  onClick={handleBack}
+                  sx={{
+                    width: "48px",
+                    minWidth: 0,
+                    height: "48px",
+                    padding: 2,
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid ${theme.palette.common.white}`,
+                    "&:hover": { border: "1px solid transparent" },
+                    visibility: activeStep === 0 ? "hidden" : "visible",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <KeyboardArrowLeft
+                    sx={{ color: (theme) => theme.palette.common.white }}
+                  />
+                </Button>
+
+                <Box
+                  sx={{
+                    width: "410px",
+                    height: "273px",
+                    margin: "0 auto",
+                    borderRadius: 5,
+                    background: `url(${row.photos[activeStep]})`,
+                    backgroundSize: "cover",
+                  }}
+                ></Box>
+
+                <Button
+                  size="small"
+                  onClick={handleNext}
+                  sx={{
+                    width: "48px",
+                    minWidth: 0,
+                    height: "48px",
+                    padding: 2,
+                    borderRadius: 5,
+                    border: (theme) =>
+                      `1px solid ${theme.palette.common.white}`,
+                    "&:hover": { border: "1px solid transparent" },
+                    visibility:
+                      activeStep === maxSteps - 1 ? "hidden" : "visible",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <KeyboardArrowRight
+                    sx={{ color: (theme) => theme.palette.common.white }}
+                  />
+                </Button>
+              </Box>
               <MobileStepper
                 variant="dots"
                 steps={maxSteps}
                 position="static"
                 activeStep={activeStep}
-                nextButton={
-                  // activeStep === maxSteps - 1 ? null : (
-                  <Button
-                    size="small"
-                    onClick={handleNext}
-                    disabled={activeStep === maxSteps - 1}
-                    sx={{
-                      width: "48px",
-                      minWidth: 0,
-                      height: "48px",
-                      padding: 2,
-                      borderRadius: 5,
-                      border: (theme) =>
-                        `1px solid ${theme.palette.common.white}`,
-                    }}
-                  >
-                    {/* {theme.direction === "rtl" ? (
-                  <KeyboardArrowLeft />
-                ) : ( */}
-                    <KeyboardArrowRight
-                      sx={{ color: (theme) => theme.palette.common.white }}
-                    />
-                    {/* )} */}
-                  </Button>
-                  // )
-                }
-                backButton={
-                  // activeStep === 0 ? null : (
-                  <Button
-                    size="small"
-                    onClick={handleBack}
-                    disabled={activeStep === 0}
-                    style={{
-                      width: "48px",
-                      minWidth: 0,
-                      height: "48px",
-                      padding: 2,
-                      borderRadius: 5,
-                      border: (theme) =>
-                        `1px solid ${theme.palette.common.white}`,
-                    }}
-                  >
-                    {/* {theme.direction === "rtl" ? (
-                  <KeyboardArrowRight />
-                ) : ( */}
-                    <KeyboardArrowLeft
-                      sx={{ color: (theme) => theme.palette.common.white }}
-                    />
-                    {/* )} */}
-                  </Button>
-                  // )
-                }
-                sx={{ background: "none" }}
+                nextButton={null}
+                backButton={null}
+                sx={{
+                  background: "transparent",
+                  marginTop: "24px",
+                  "& .MuiMobileStepper-dot": {
+                    width: "34px",
+                    height: "5px",
+                    borderRadius: "3px",
+                    background: (theme) => theme.palette.secondary.light,
+                  },
+                  "& .MuiMobileStepper-dotActive": {
+                    width: "94px",
+                    height: "5px",
+                    borderRadius: "3px",
+                    background: (theme) => theme.palette.secondary.light,
+                  },
+                }}
               />
 
               <Box
@@ -317,14 +337,13 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                     border: (theme) =>
                       `1px solid  ${theme.palette.common.white}`,
                     "&:hover": {
-                      border: (theme) =>
-                        `1px solid ${theme.palette.action.disabledBackground}`,
+                      background: (theme) => theme.palette.common.white,
                       "& > p": {
-                        color: (theme) => theme.palette.secondary.dark,
+                        color: (theme) => theme.palette.primary.main,
                       },
                     },
                   }}
-                  // onClick={() => handleClose()}
+                  onClick={() => handleDelete()}
                 >
                   <Typography
                     sx={{ color: (theme) => theme.palette.common.white }}
@@ -339,10 +358,9 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                     border: (theme) =>
                       `1px solid  ${theme.palette.common.white} `,
                     "&:hover": {
-                      border: (theme) =>
-                        `1px solid ${theme.palette.action.disabledBackground}`,
+                      background: (theme) => theme.palette.common.white,
                       "& > p": {
-                        color: (theme) => theme.palette.secondary.dark,
+                        color: (theme) => theme.palette.primary.main,
                       },
                     },
                   }}
@@ -471,11 +489,7 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       paddingRight: 2,
                     }}
                   >
-                    <Typography
-                      sx={{
-                        whiteSpace: "pre-wrap",
-                      }}
-                    >
+                    <Typography sx={{ whiteSpace: "pre-wrap" }}>
                       {row.description}
                     </Typography>
                   </Box>

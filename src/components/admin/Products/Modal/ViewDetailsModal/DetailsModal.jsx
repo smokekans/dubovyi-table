@@ -489,8 +489,21 @@ function DetailsModal(props) {
                       height: "100%",
                       flexWrap: "wrap",
                       overflowWrap: "break-word",
-                      overflowY: "auto",
                       paddingRight: 2,
+                      overflowY: "scroll",
+                      "&::-webkit-scrollbar": {
+                        width: "8px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        background: "transparent",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: "#D9D9D9",
+                        borderRadius: 1,
+                      },
+                      "&::-webkit-scrollbar-thumb:hover": {
+                        background: "#AAA",
+                      },
                     }}
                   >
                     <Typography sx={{ whiteSpace: "pre-wrap" }}>

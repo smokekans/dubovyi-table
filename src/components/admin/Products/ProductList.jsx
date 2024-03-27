@@ -113,10 +113,7 @@ function ProductList(props) {
       abortControllerRef.current?.abort();
       abortControllerRef.current = new AbortController();
       try {
-        const { response } = await getProductList(
-          formikValues,
-          abortControllerRef
-        );
+        const response = await getProductList(formikValues, abortControllerRef);
         setTotalPages(response.totalPages);
         setTotalItems(response.totalItems);
         setRows(response.data);

@@ -471,7 +471,13 @@ function DetailsModal({ openDetails, setOpenDetails, row }) {
                       paddingRight: 2,
                     }}
                   >
-                    <Typography>{row.description}</Typography>
+                    <Typography
+                      sx={{
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {row.description}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>

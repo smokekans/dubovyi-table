@@ -18,7 +18,11 @@ import { getEnumsList } from "redux/enums/enumsOperations";
 import Filtration from "components/Filtration/Filtration";
 import SearchIcon from "@mui/icons-material/Search";
 import ProductList from "components/admin/Products/ProductList";
-import { deleteProduct, getProductList } from "services/fetchProductsData";
+import {
+  deleteProduct,
+  getProductByName,
+  getProductList,
+} from "services/fetchProductsData";
 import { ROWS_PER_PAGE } from "utils/constans";
 import FiltrationDisplay from "components/Filtration/FiltrationDisplay";
 import { useSelector } from "react-redux";
@@ -59,6 +63,7 @@ export default function ProductsAdminPage() {
       maxPrice: "",
       startDate: firstDayOfYear.format("DD.MM.YYYY"),
       endDate: today.format("DD.MM.YYYY"),
+      name: null,
     },
     validationSchema: FiltrationSchema,
     onSubmit: (values) => {
@@ -68,10 +73,6 @@ export default function ProductsAdminPage() {
     },
   });
 
-  console.log("===================itemsFiltration=================");
-  console.log(itemsFiltration);
-  console.log("====================================");
-
   useEffect(() => {
     const fetchData = async () => {
       abortControllerRef.current?.abort();
@@ -79,10 +80,10 @@ export default function ProductsAdminPage() {
 
       setLoading(true);
       try {
-        const response = await getProductList(
-          formik.values,
-          abortControllerRef
-        );
+        const response = formik.values.name
+          ? await getProductByName(formik.values, abortControllerRef)
+          : await getProductList(formik.values, abortControllerRef);
+
         setTotalPage(response.totalPages);
         setTotalItem(response.totalItems);
         setRows(response.data);
@@ -146,166 +147,192 @@ export default function ProductsAdminPage() {
     setItemsFiltration(null);
   };
 
-  console.log("====================================");
-  console.log(itemsFiltration);
-  console.log("====================================");
-
   return (
-    <Box>
-      <Box sx={{ width: 1 }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-          }}
-        >
-          <Typography variant="h3">Товари</Typography>
-          {!activeFiltration && (
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                columnGap: 3,
-              }}
-            >
-              <Button
-                startIcon={
-                  <FileDownloadOutlinedIcon
-                    sx={{ width: "24px", height: "24px" }}
-                  />
-                }
-                component={Link}
-                sx={{
-                  padding: "18px 40px",
-                  borderRadius: 5,
-                  height: "56px",
-                  backgroundColor: (theme) => theme.palette.primary.main,
-                  textDecoration: "none",
-                  color: (theme) => theme.palette.common.white,
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: (theme) => theme.palette.common.white,
-                    color: (theme) => theme.palette.primary.main,
-                    border: (theme) =>
-                      `1px solid ${theme.palette.primary.main}`,
-                  },
-                }}
-              >
-                Імпортувати
-              </Button>
-              <Button
-                startIcon={
-                  <AddOutlinedIcon sx={{ width: "24px", height: "24px" }} />
-                }
-                component={Link}
-                to="/admin/create-product"
-                sx={{
-                  padding: "18px 40px",
-                  borderRadius: 5,
-                  border: (theme) => `1px solid ${theme.palette.primary.main}`,
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  height: "56px",
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: (theme) => theme.palette.primary.main,
-                    color: (theme) => theme.palette.common.white,
-                  },
-                }}
-              >
-                Новий товар
-              </Button>
-            </Box>
-          )}
-        </Box>
+    <Box
+      sx={{
+        width: 1,
+        borderLeft: (theme) => `2px solid ${theme.palette.primary.dark}`,
+        pl: "22px",
+        height: activeFiltration ? "fit-content" : "auto",
+      }}
+    >
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+        }}
+      >
+        <Typography variant="h3">Товари</Typography>
         {!activeFiltration && (
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              columnGap: 3,
             }}
           >
-            <TextField
-              id="input-search"
-              focused
-              fullWidth
-              color="secondary"
-              placeholder="Пошук"
+            <Button
+              startIcon={
+                <FileDownloadOutlinedIcon
+                  sx={{ width: "24px", height: "24px" }}
+                />
+              }
+              component={Link}
               sx={{
-                height: "40px",
-                borderRadius: "25px",
-                my: 4,
-                "& .MuiOutlinedInput-input": {
-                  py: "8px",
+                padding: "18px 40px",
+                borderRadius: 5,
+                height: "56px",
+                backgroundColor: (theme) => theme.palette.primary.main,
+                textDecoration: "none",
+                color: (theme) => theme.palette.common.white,
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: (theme) => theme.palette.common.white,
+                  color: (theme) => theme.palette.primary.main,
+                  border: (theme) => `1px solid ${theme.palette.primary.main}`,
                 },
-                "& .MuiOutlinedInput-root, .MuiInputBase-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: (theme) => theme.palette.common.black,
-                    borderWidth: "1px",
-                  },
-                },
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment
-                    position="start"
-                    sx={{ color: (theme) => theme.palette.common.black }}
-                  >
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "space-between",
-                width: "100%",
               }}
             >
-              <Box sx={{ display: "flex", gap: 1 }}>
-                {!itemsFiltration ? (
-                  <Button
-                    sx={{
-                      padding: "8px 16px",
-                      borderRadius: 5,
-                      backgroundColor: (theme) => theme.palette.primary.dark,
-                      color: (theme) => theme.palette.common.black,
-                      cursor: "pointer",
-                      height: "40px",
-                      textTransform: "none",
-                      textDecoration: "none",
-                      "&:hover": {
-                        background: (theme) => theme.palette.secondary.light,
-                      },
-                    }}
-                  >
-                    Усі товари
-                  </Button>
-                ) : (
-                  <FiltrationDisplay
-                    itemsFiltration={itemsFiltration}
-                    setItemsFiltration={setItemsFiltration}
-                    enums={enums}
-                    formik={formik}
-                  />
-                )}
-                <Box
+              Імпортувати
+            </Button>
+            <Button
+              startIcon={
+                <AddOutlinedIcon sx={{ width: "24px", height: "24px" }} />
+              }
+              component={Link}
+              to="/admin/create-product"
+              sx={{
+                padding: "18px 40px",
+                borderRadius: 5,
+                border: (theme) => `1px solid ${theme.palette.primary.main}`,
+                textDecoration: "none",
+                cursor: "pointer",
+                height: "56px",
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: (theme) => theme.palette.primary.main,
+                  color: (theme) => theme.palette.common.white,
+                },
+              }}
+            >
+              Новий товар
+            </Button>
+          </Box>
+        )}
+      </Box>
+      {!activeFiltration && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <TextField
+            id="name"
+            focused
+            fullWidth
+            color="secondary"
+            placeholder="Пошук"
+            value={formik.values.name || ""}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            sx={{
+              height: "40px",
+              borderRadius: "25px",
+              my: 4,
+              "& .MuiOutlinedInput-input": {
+                py: "8px",
+              },
+              "& .MuiOutlinedInput-root, .MuiInputBase-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: (theme) => theme.palette.common.black,
+                  borderWidth: "1px",
+                },
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment
+                  position="start"
+                  sx={{ color: (theme) => theme.palette.common.black }}
+                >
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box sx={{ display: "flex", gap: 1 }}>
+              {!itemsFiltration ? (
+                <Button
                   sx={{
-                    display: "flex",
-                    alignItems: "flex-start",
+                    padding: "8px 16px",
+                    borderRadius: 5,
+                    backgroundColor: (theme) => theme.palette.primary.dark,
+                    color: (theme) => theme.palette.common.black,
+                    cursor: "pointer",
+                    height: "40px",
+                    textTransform: "none",
+                    textDecoration: "none",
+                    "&:hover": {
+                      background: (theme) => theme.palette.secondary.light,
+                    },
                   }}
                 >
+                  Усі товари
+                </Button>
+              ) : (
+                <FiltrationDisplay
+                  itemsFiltration={itemsFiltration}
+                  setItemsFiltration={setItemsFiltration}
+                  enums={enums}
+                  formik={formik}
+                />
+              )}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Button
+                  startIcon={
+                    <FilterListIcon sx={{ width: "24px", height: "24px" }} />
+                  }
+                  onClick={() => {
+                    formik.setFieldValue("page", 0);
+                    setActiveFiltration(true);
+                  }}
+                  sx={{
+                    padding: "8px",
+                    borderRadius: 5,
+                    color: (theme) => theme.palette.common.black,
+                    cursor: "pointer",
+                    height: "40px",
+                    textTransform: "none",
+                    textDecoration: "none",
+                    "&:hover": {
+                      background: (theme) => theme.palette.secondary.light,
+                    },
+                  }}
+                >
+                  Фільтри
+                </Button>
+                {itemsFiltration && (
                   <Button
                     startIcon={
-                      <FilterListIcon sx={{ width: "24px", height: "24px" }} />
+                      <CloseOutlinedIcon
+                        sx={{ width: "24px", height: "24px" }}
+                      />
                     }
-                    onClick={() => {
-                      formik.setFieldValue("page", 0);
-                      setActiveFiltration(true);
-                    }}
                     sx={{
                       padding: "8px",
                       borderRadius: 5,
@@ -318,77 +345,54 @@ export default function ProductsAdminPage() {
                         background: (theme) => theme.palette.secondary.light,
                       },
                     }}
+                    onClick={handleClear}
                   >
-                    Фільтри
+                    Скинути
                   </Button>
-                  {itemsFiltration && (
-                    <Button
-                      startIcon={
-                        <CloseOutlinedIcon
-                          sx={{ width: "24px", height: "24px" }}
-                        />
-                      }
-                      sx={{
-                        padding: "8px",
-                        borderRadius: 5,
-                        color: (theme) => theme.palette.common.black,
-                        cursor: "pointer",
-                        height: "40px",
-                        textTransform: "none",
-                        textDecoration: "none",
-                        "&:hover": {
-                          background: (theme) => theme.palette.secondary.light,
-                        },
-                      }}
-                      onClick={handleClear}
-                    >
-                      Скинути
-                    </Button>
-                  )}
-                </Box>
+                )}
               </Box>
-              <DeleteSelectedItems
-                selected={selected}
-                handleOpenDeleteModal={handleOpenDeleteModal}
-              />
             </Box>
+            <DeleteSelectedItems
+              selected={selected}
+              handleOpenDeleteModal={handleOpenDeleteModal}
+            />
           </Box>
-        )}
-        {activeFiltration ? (
-          <Filtration
-            setActiveFiltration={setActiveFiltration}
-            setItemsFiltration={setItemsFiltration}
-            formik={formik}
-          />
-        ) : (
-          <ProductList
-            rowsdata={rows}
-            setRows={setRows}
-            totalPages={totalPage}
-            totalItems={totalItem}
-            formikValues={formik.values}
-            rowsPerPage={formik.values.size}
-            page={formik.values.page}
-            setPage={(value) => formik.setFieldValue("page", value)}
-            setTotalPages={setTotalPage}
-            setTotalItems={setTotalItem}
-            selected={selected}
-            setSelected={setSelected}
-            order={formik.values.order}
-            setOrder={(value) => formik.setFieldValue("direction", value)}
-            orderBy={formik.values.sortBy}
-            setOrderBy={(value) => formik.setFieldValue("sortBy", value)}
-            loading={loading}
-            error={error}
-          />
-        )}
-
-        <BasicModal
-          open={open}
-          setOpen={setOpen}
-          handleDeleteItem={() => handleDeleteSelectedItem(selected, setOpen)}
+        </Box>
+      )}
+      {activeFiltration ? (
+        <Filtration
+          setActiveFiltration={setActiveFiltration}
+          setItemsFiltration={setItemsFiltration}
+          formik={formik}
         />
-      </Box>
+      ) : (
+        <ProductList
+          rowsdata={rows}
+          setRows={setRows}
+          totalPages={totalPage}
+          totalItems={totalItem}
+          formikValues={formik.values}
+          rowsPerPage={formik.values.size}
+          page={formik.values.page}
+          setPage={(value) => formik.setFieldValue("page", value)}
+          setTotalPages={setTotalPage}
+          setTotalItems={setTotalItem}
+          selected={selected}
+          setSelected={setSelected}
+          order={formik.values.direction}
+          setOrder={(value) => formik.setFieldValue("direction", value)}
+          orderBy={formik.values.sortBy}
+          setOrderBy={(value) => formik.setFieldValue("sortBy", value)}
+          loading={loading}
+          error={error}
+        />
+      )}
+
+      <BasicModal
+        open={open}
+        setOpen={setOpen}
+        handleDeleteItem={() => handleDeleteSelectedItem(selected, setOpen)}
+      />
     </Box>
   );
 }

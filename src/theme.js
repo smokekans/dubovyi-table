@@ -339,6 +339,9 @@ const theme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
+          "input:-webkit-autofill": {
+            "-webkit-background-clip": "text !important",
+          },
           "&.MuiOutlinedInput-root": {
             paddingRight: 0,
             "&.Mui-focused": {

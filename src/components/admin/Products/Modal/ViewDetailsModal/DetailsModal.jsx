@@ -14,10 +14,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import useGetColor from "hook/useGetColor";
-import useGetCategory from "hook/useGetCategory";
-import useGetMaterial from "hook/useGetMaterial";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getEnums } from "redux/enums/enumsSelectors";
+import { upperCaseFirstLetterEnumName } from "services/upperCaseFirstLetterEnumName";
 
 const keyMessages = {
   quantity: "В наявності",
@@ -47,14 +47,22 @@ const desiredOrder = [
 
 function DetailsModal(props) {
   const { openDetails, setOpenDetails, handleDeleteItem, row } = props;
+  const enums = useSelector(getEnums);
 
   const [setContainerWidth] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
   const updateLink = `/admin/create-product?${row.id}`;
-  const color = useGetColor(row.colorId);
-  const category = useGetCategory(row.categoryId);
-  const material = useGetMaterial(row.materialId);
+
+  const category = upperCaseFirstLetterEnumName(
+    enums.ECategories,
+    row.categoryId
+  );
+  const material = upperCaseFirstLetterEnumName(
+    enums.EMaterials,
+    row.materialId
+  );
+  const color = upperCaseFirstLetterEnumName(enums.EColors, row.colorId);
 
   const containerRef = useRef(null);
   const maxSteps = row.photos.length;
@@ -183,7 +191,6 @@ function DetailsModal(props) {
           />
         </Box>
         <Typography
-          id="modal-modal-title"
           variant="h3"
           sx={{
             color: (theme) => theme.palette.text.secondary,
@@ -212,7 +219,6 @@ function DetailsModal(props) {
               }}
             >
               <Typography
-                // id="modal-modal-title"
                 variant="h3"
                 sx={{
                   color: (theme) => theme.palette.text.secondary,
@@ -221,7 +227,6 @@ function DetailsModal(props) {
                 {row.name}
               </Typography>
               <Typography
-                // id="modal-modal-title"
                 variant="h4"
                 sx={{
                   color: (theme) => theme.palette.text.secondary,
@@ -366,7 +371,6 @@ function DetailsModal(props) {
                   }}
                   component={Link}
                   to={updateLink}
-                  // onClick={() => handleDeleteItem()}
                 >
                   <Typography
                     sx={{ color: (theme) => theme.palette.text.secondary }}
@@ -485,8 +489,21 @@ function DetailsModal(props) {
                       height: "100%",
                       flexWrap: "wrap",
                       overflowWrap: "break-word",
-                      overflowY: "auto",
                       paddingRight: 2,
+                      overflowY: "scroll",
+                      "&::-webkit-scrollbar": {
+                        width: "8px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        background: "transparent",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: "#D9D9D9",
+                        borderRadius: 1,
+                      },
+                      "&::-webkit-scrollbar-thumb:hover": {
+                        background: "#AAA",
+                      },
                     }}
                   >
                     <Typography sx={{ whiteSpace: "pre-wrap" }}>

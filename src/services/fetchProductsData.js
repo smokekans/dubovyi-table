@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, PRODUCTS, PRODUCT_BY_ID } from "utils/url";
+import { BASE_URL, PRODUCTS, PRODUCT_BY_ID, PRODUCT_BY_NAME } from "utils/url";
 
 axios.defaults.baseURL = "https://woodcrafts.pp.ua";
 
@@ -61,6 +61,25 @@ export const getProductList = async (
   params.append("dateTo", endDate);
 
   const url = `${BASE_URL}${PRODUCTS}?${params.toString()}`;
+
+  const response = await axios.get(url, {
+    signal: abortControllerRef.current?.signal,
+  });
+  const { data, totalPages, totalItems } = response.data;
+  return { data, totalPages, totalItems };
+};
+
+export const getProductByName = async (
+  { page, size, sortBy, direction, name },
+  abortControllerRef
+) => {
+  const params = new URLSearchParams();
+  params.append("page", page);
+  params.append("size", size);
+  params.append("sortBy", sortBy);
+  params.append("direction", direction);
+
+  const url = `${BASE_URL}${PRODUCT_BY_NAME}/${name}?${params.toString()}`;
 
   const response = await axios.get(url, {
     signal: abortControllerRef.current?.signal,

@@ -24,6 +24,7 @@ import {
   createProduct,
   getProductById,
   updateProduct,
+  deleteProduct,
 } from "services/fetchProductsData";
 import Loader from "components/Loader/Loader";
 
@@ -113,6 +114,12 @@ export default function FormCreateProduct() {
     updatedImages[index] = null;
     setImages(updatedImages);
     setActiveImage(updatedImages[0]);
+  };
+
+  const handleDeleteProduct = async () => {
+    const productToDelete = [{ id: location.search.slice(1) }];
+    await deleteProduct(productToDelete);
+    navigate("/admin/products");
   };
 
   const onDragEnd = (result) => {
@@ -456,6 +463,7 @@ export default function FormCreateProduct() {
                       color: (theme) => theme.palette.primary.main,
                     },
                   }}
+                  onClick={handleDeleteProduct}
                 >
                   Видалити
                 </Button>

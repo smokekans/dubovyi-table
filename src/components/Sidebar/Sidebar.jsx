@@ -33,11 +33,11 @@ export default function Sidebar() {
       <Drawer
         sx={{
           position: "static",
-          width: "330px",
+          width: "274px",
           mb: "322px",
           "& .MuiDrawer-paper": {
             position: "static",
-            width: "330px",
+            width: "274px",
             maxHeight: "100%",
             borderRight: 0,
             mb: "510px",
@@ -54,7 +54,7 @@ export default function Sidebar() {
             justifyContent: "center",
             alignItems: "center",
             display: "flex",
-            mx: 5,
+            mr: "41px",
             p: 4,
             gap: 4,
           }}
@@ -99,7 +99,7 @@ export default function Sidebar() {
           ))}
         </List>
       </Drawer>
-      <Toolbar />
+      <Toolbar sx={{ p: 0 }} />
       <Outlet />
     </Box>
   );

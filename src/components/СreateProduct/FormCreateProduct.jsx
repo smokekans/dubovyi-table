@@ -83,13 +83,42 @@ export default function FormCreateProduct() {
       warranty: null,
     },
     validationSchema: ProductSchema,
-    onSubmit: (values, { resetForm }) => {
+    // onSubmit: (values, { resetForm }) => {
+    //   console.log(values);
+    //   location.search
+    //     ? updateProduct(location.search.slice(1), values)
+    //     : createProduct(values);
+    //   resetForm();
+
+    //   navigate("/admin/products");
+    // },
+    onSubmit: async (values, { resetForm }) => {
       console.log(values);
-      location.search
-        ? updateProduct(location.search.slice(1), values)
-        : createProduct(values);
-      resetForm();
-      navigate("/admin/products");
+      try {
+        if (location.search) {
+          const success = await updateProduct(location.search.slice(1), values);
+          if (success) {
+            console.log("Product updated successfully");
+            resetForm();
+            navigate("/admin/products");
+          } else {
+            console.log("Product update failed");
+          }
+        } else {
+          const success = await createProduct(values);
+          if (success) {
+            console.log("Product created successfully");
+            resetForm();
+            navigate("/admin/products");
+          } else {
+            console.log("Product creation failed");
+          }
+        }
+        resetForm();
+        navigate("/admin/products");
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
     },
   });
 

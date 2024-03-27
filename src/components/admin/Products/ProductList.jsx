@@ -142,16 +142,22 @@ function ProductList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsdata, order, orderBy]);
 
-  const handleExportSelectedItems = () => {};
-
-  console.log("====================================");
-  console.log(selected);
-  console.log("====================================");
+  const handleExportSelectedItems = () => {
+    // const data = [
+    //   ["name", "age"],
+    //   ["my", 22],
+    //   ["you", 21],
+    // ];
+  };
 
   return (
     <Box sx={{ width: "100%", marginTop: "60px" }}>
       <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
-        <TableContainer sx={{ overflow: "hidden" }}>
+        <TableContainer
+          sx={{
+            overflow: "hidden",
+          }}
+        >
           {!loading ? (
             <Table sx={{ minWidth: 870 }} aria-labelledby="tableTitle">
               <Head
@@ -194,7 +200,7 @@ function ProductList(props) {
           }
           onClick={handleExportSelectedItems}
           sx={{
-            mt: 5,
+            mt: 4,
             p: "18px 40px",
             borderRadius: 5,
             height: "56px",
@@ -221,12 +227,18 @@ function ProductList(props) {
             alignItems: "center",
             justifyContent: "space-between",
             borderTop: (theme) => `1px solid ${theme.palette.secondary.dark}`,
-            marginTop: "60px",
+            marginTop: 5,
             paddingTop: 1,
           }}
         >
-          <Typography>
-            Сторінка
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "flex-end",
+              gap: 1,
+            }}
+          >
+            <Typography>Сторінка</Typography>
             <Input
               type="number"
               value={displayedPage}
@@ -242,13 +254,16 @@ function ProductList(props) {
                   displayedPage <= totalPages
                     ? "1px solid #030C0D"
                     : "1px solid #D13634",
-                "& input[type=number]::-webkit-outer-spin-button": {
+                "&[type=number]::-webkit-outer-spin-button, ": {
                   "-webkit-appearance": "none",
                   margin: 0,
                 },
                 "& input[type=number]::-webkit-inner-spin-button": {
                   "-webkit-appearance": "none",
                   margin: 0,
+                },
+                "input[type=number]": {
+                  "-moz-appearance": "textfield",
                 },
                 "& input": { textAlign: "center", padding: 0 },
                 "&.MuiInput-underline:before": {
@@ -258,9 +273,9 @@ function ProductList(props) {
                   borderBottom: "none !important",
                 },
               }}
-            />{" "}
-            з {totalPages ? totalPages : "1"}
-          </Typography>
+            />
+            <Typography> з {totalPages ? totalPages : "1"}</Typography>
+          </Box>
           <TablePagination
             component="div"
             count={Number(totalItems)}

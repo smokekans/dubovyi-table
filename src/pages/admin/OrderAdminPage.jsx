@@ -47,7 +47,12 @@ export default function OrderAdminPage() {
   }, [page, order, orderBy]);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        borderLeft: (theme) => `2px solid ${theme.palette.primary.dark}`,
+        pl: "22px",
+      }}
+    >
       <Typography variant="h3">Замовлення</Typography>
       <OrderList
         rowsdata={rows}

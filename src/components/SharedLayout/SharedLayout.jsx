@@ -30,7 +30,9 @@ export default function SharedLayout() {
       <Header />
       <Box
         component="main"
-        sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
+        sx={{
+          backgroundColor: (theme) => theme.palette.background.paper,
+        }}
       >
         <Suspense fallback={<Loader />}>
           <Outlet />

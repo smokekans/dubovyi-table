@@ -10,7 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import TablePaginationAction from "./TablePaginationAction";
+import TablePaginationActions from "components/Pagination/TablePaginationActions";
 import Head from "./Head";
 import OrderItem from "./OrderItem";
 import {
@@ -201,7 +201,7 @@ function OrderList(props) {
               rowsPerPage={ROWS_PER_PAGE}
               rowsPerPageOptions={[]}
               labelDisplayedRows={() => ""}
-              ActionsComponent={TablePaginationAction}
+              ActionsComponent={TablePaginationActions}
             />
           </Box>
         </Paper>

@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import TablePaginationActions from "./TablePaginationActions";
+import TablePaginationActions from "components/Pagination/TablePaginationActions";
 import Head from "./Table/Head";
 import ProductItem from "./ProductItem";
 import {

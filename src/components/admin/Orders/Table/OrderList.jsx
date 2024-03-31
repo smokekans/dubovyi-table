@@ -1,7 +1,8 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
   Button,
+  Input,
   Paper,
   Table,
   TableBody,
@@ -42,8 +43,33 @@ function OrderList(props) {
     error,
   } = props;
   const abortControllerRef = useRef(null);
+  const [displayedPage, setDisplayedPage] = useState(1);
 
-  const displayedPage = page + 1;
+  useEffect(() => {
+    setDisplayedPage(page + 1);
+  }, [page]);
+
+  const goToPage = (e) => {
+    const keyCode = e.keyCode || e.which;
+
+    if (
+      (keyCode >= 48 && keyCode <= 57) ||
+      (keyCode >= 96 && keyCode <= 105) ||
+      keyCode === 8 ||
+      keyCode === 46 ||
+      keyCode === 13
+    ) {
+      if (keyCode === 13) {
+        const IntPage = parseInt(e.target.value);
+        if (IntPage >= 1 && IntPage <= totalPages) {
+          const newPage = IntPage - 1;
+          setPage(newPage);
+        }
+      }
+    } else {
+      e.preventDefault();
+    }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "ASC";
@@ -190,9 +216,51 @@ function OrderList(props) {
               paddingTop: 1,
             }}
           >
-            <Typography>
-              Сторінка: {displayedPage} з {totalPages ? totalPages : "1"}
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-end",
+                gap: 1,
+              }}
+            >
+              <Typography>Сторінка</Typography>
+              <Input
+                type="number"
+                value={displayedPage}
+                onChange={(e) => setDisplayedPage(e.target.value)}
+                onKeyDown={(e) => goToPage(e)}
+                sx={{
+                  width: "45px",
+                  height: "24px",
+                  padding: "4px 8px 0px 8px",
+                  margin: "0 8px",
+                  borderRadius: "4px",
+                  border:
+                    displayedPage <= totalPages
+                      ? "1px solid #030C0D"
+                      : "1px solid #D13634",
+                  "&[type=number]::-webkit-outer-spin-button, ": {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                  "& input[type=number]::-webkit-inner-spin-button": {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                  "input[type=number]": {
+                    "-moz-appearance": "textfield",
+                  },
+                  "& input": { textAlign: "center", padding: 0 },
+                  "&.MuiInput-underline:before": {
+                    borderBottom: "none !important",
+                  },
+                  "&.MuiInput-underline:after": {
+                    borderBottom: "none !important",
+                  },
+                }}
+              />
+              <Typography> з {totalPages ? totalPages : "1"}</Typography>
+            </Box>
             <TablePagination
               component="div"
               count={Number(totalItems)}

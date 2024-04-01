@@ -90,7 +90,7 @@ export const getProductByName = async (
 
 export const getProductById = async (id) => {
   try {
-    const { data } = await axios.get(BASE_URL + PRODUCT_BY_ID + `/${id}`);
+    const { data } = await axios.get(BASE_URL + PRODUCT_BY_ID + `?ids=${id}`);
     return data;
   } catch (error) {
     return error.message;

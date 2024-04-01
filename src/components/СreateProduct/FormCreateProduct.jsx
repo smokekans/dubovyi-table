@@ -54,7 +54,7 @@ export default function FormCreateProduct() {
     const currentProductById = async () => {
       try {
         const data = await getProductById(location.search.slice(1));
-        formik.setValues(data);
+        formik.setValues(data[0]);
         setLoading(false);
       } catch (error) {
         console.log(error);

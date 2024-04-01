@@ -131,6 +131,12 @@ function ProductList(props) {
     try {
       await deleteProduct(id ? id : selected);
       await fetchData();
+      if (selected) {
+        const newSelected = selected.filter(
+          (item) => !id.some((f) => f.id === item.id)
+        );
+        setSelected(newSelected);
+      }
       setOpen(false);
     } catch (error) {
       console.log(error);

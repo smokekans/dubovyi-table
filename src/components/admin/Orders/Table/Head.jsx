@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-// import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 
@@ -57,13 +56,20 @@ function Head(props) {
     totalItems,
   } = props;
   const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
+    if (property !== "details") onRequestSort(event, property);
   };
 
   const CustomSortIcon = ({ direction, columnId, ...props }) => {
     return orderBy === columnId ? (
-      direction === "desc" ? (
-        <ArrowUpwardIcon sx={{ width: 24, height: 24, marginLeft: 1 }} />
+      direction === "DESC" ? (
+        <ArrowUpwardIcon
+          sx={{
+            width: 24,
+            height: 24,
+            marginLeft: 1,
+            color: (theme) => theme.palette.primary.main,
+          }}
+        />
       ) : (
         <ArrowDownwardIcon
           sx={{
@@ -95,9 +101,6 @@ function Head(props) {
               />
             }
             checkedIcon={
-              // <CheckBoxOutlinedIcon
-              //   sx={{ color: (theme) => theme.palette.primary.main }}
-              // />
               <SelectAllOutlinedIcon
                 sx={{ color: (theme) => theme.palette.primary.main }}
               />

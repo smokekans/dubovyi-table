@@ -11,6 +11,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
 const headCells = [
   {
@@ -99,11 +100,11 @@ function Head(props) {
               />
             }
             indeterminateIcon={
-              <SelectAllOutlinedIcon
+              <IndeterminateCheckBoxIcon
                 sx={{ color: (theme) => theme.palette.primary.main }}
               />
             }
-            indeterminate={numSelected > 0 && numSelected < rowCount}
+            indeterminate={numSelected > 0 && numSelected < totalItems}
             checked={rowCount > 0 && numSelected === totalItems}
             onChange={onSelectAllClick}
             inputProps={{

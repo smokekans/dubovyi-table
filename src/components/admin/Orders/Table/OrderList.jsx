@@ -123,6 +123,12 @@ function OrderList(props) {
     try {
       await deleteOrder(id ? id : selected);
       await fetchData();
+      if (selected) {
+        const newSelected = selected.filter(
+          (item) => !id.some((f) => f.id === item.id)
+        );
+        setSelected(newSelected);
+      }
     } catch (error) {
       console.log(error);
     }

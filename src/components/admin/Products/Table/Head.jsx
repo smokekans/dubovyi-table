@@ -62,7 +62,14 @@ function Head(props) {
   const CustomSortIcon = ({ direction, columnId, ...props }) => {
     return orderBy === columnId ? (
       direction === "DESC" ? (
-        <ArrowUpwardIcon sx={{ width: 24, height: 24, marginLeft: 1 }} />
+        <ArrowUpwardIcon
+          sx={{
+            width: 24,
+            height: 24,
+            marginLeft: 1,
+            color: (theme) => theme.palette.primary.main,
+          }}
+        />
       ) : (
         <ArrowDownwardIcon
           sx={{

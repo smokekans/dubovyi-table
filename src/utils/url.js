@@ -1,4 +1,5 @@
-export const BASE_URL = `https://woodcrafts.pp.ua`;
+// export const BASE_URL = `https://woodcrafts.pp.ua`;
+export const BASE_URL = `http://woodcrafts-env.eba-czzhdwzr.eu-north-1.elasticbeanstalk.com`;
 
 export const PRODUCTS = `/products`;
 export const GET_ALL_CATEGORIES = `/categories`;

@@ -102,6 +102,12 @@ export default function ProductsAdminPage() {
     };
 
     fetchData();
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values]);
 

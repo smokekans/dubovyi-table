@@ -1,9 +1,9 @@
 import axios from "axios";
 import { BASE_URL, PRODUCTS, PRODUCT_BY_ID, PRODUCT_BY_NAME } from "utils/url";
 
-// axios.defaults.baseURL = "https://woodcrafts.pp.ua";
-axios.defaults.baseURL =
-  "http://woodcrafts-env.eba-czzhdwzr.eu-north-1.elasticbeanstalk.com";
+axios.defaults.baseURL = "https://woodcrafts.pp.ua";
+// axios.defaults.baseURL =
+//   "http://woodcrafts-env.eba-czzhdwzr.eu-north-1.elasticbeanstalk.com";
 
 export const getAllProductsForSelect = async (
   totalItems,

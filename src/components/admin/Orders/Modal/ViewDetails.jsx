@@ -28,14 +28,15 @@ function ViewDetails(props) {
         overflow: "scroll",
         overflowY: "hidden",
         overflowX: "hidden",
-        height: "719px",
+        height: "1045px",
         width: "1143px",
+        // width: "1255px",
         display: "block",
       }}
     >
       <Box
         sx={{
-          width: "1031px",
+          width: "1061px",
           borderRadius: "50px 0px 0px 50px",
           display: "flex",
           flexDirection: "column",

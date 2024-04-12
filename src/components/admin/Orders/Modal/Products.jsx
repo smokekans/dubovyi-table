@@ -46,7 +46,8 @@ function Products({ products }) {
         textAlign: "center",
         borderRadius: "25px",
         background: "#FAF9FB",
-        width: "1031px",
+        // width: "1031px",
+        width: "1079px",
         padding: "16px 24px",
       }}
     >

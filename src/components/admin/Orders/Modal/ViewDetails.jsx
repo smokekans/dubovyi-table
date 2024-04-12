@@ -24,19 +24,20 @@ function ViewDetails(props) {
       style={{
         position: "absolute",
         top: "13%",
-        left: "26%",
+        left: "17%",
         overflow: "scroll",
         overflowY: "hidden",
         overflowX: "hidden",
         height: "1045px",
-        width: "1143px",
-        // width: "1255px",
+        // width: "1143px",
+        width: "1255px",
         display: "block",
       }}
     >
       <Box
         sx={{
-          width: "1061px",
+          // width: "1061px",
+          width: "1143px",
           borderRadius: "50px 0px 0px 50px",
           display: "flex",
           flexDirection: "column",
@@ -46,7 +47,7 @@ function ViewDetails(props) {
           //   textAlign: "center",
         }}
       >
-        <Box sx={{ position: "absolute", top: "2%", left: "96%" }}>
+        <Box sx={{ position: "absolute", top: "2%", left: "92%" }}>
           <CloseIcon
             sx={{
               width: "24px",

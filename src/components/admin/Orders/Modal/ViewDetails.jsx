@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button, Box, Typography } from "@mui/material";
+import { Modal, Button, Box, Typography, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { getStatusStyles } from "utils/orderStatusStyle";
@@ -120,6 +120,46 @@ function ViewDetails(props) {
         <Formik>
           <FormData row={row} />
         </Formik>
+
+        <Box
+          sx={{
+            width: "505px",
+            mt: "28px",
+            // mr: "30px",
+            marginLeft: "auto",
+          }}
+        >
+          <Divider
+            orientation="horizontal"
+            sx={{
+              borderColor: "#BDCAFF",
+              borderWidth: "1px",
+              width: "100%",
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: "8px",
+              color: "#FAF9FB",
+            }}
+          >
+            <Typography>Оплачено</Typography>
+            <Typography>{} ₴</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: "8px",
+              color: "#FAF9FB",
+            }}
+          >
+            <Typography variant="h4">Сума до оплати</Typography>
+            <Typography variant="h4">{} ₴</Typography>
+          </Box>
+        </Box>
 
         <Box
           sx={{

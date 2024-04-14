@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -18,6 +19,7 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 
 function Products({ products }) {
   const enums = useSelector(getEnums);
+  const navigate = useNavigate();
 
   const ProductName = (product) => {
     const material = upperCaseFirstLetterEnumName(
@@ -36,6 +38,11 @@ function Products({ products }) {
     const result = qty * price;
     return parseFloat(result.toFixed(2));
   }
+
+  const handleNavToProduct = (e, id) => {
+    e.stopPropagation();
+    navigate(`/admin/create-product?${id}`);
+  };
 
   return (
     <Box
@@ -112,7 +119,12 @@ function Products({ products }) {
                   ₴
                 </TableCell>
                 <TableCell>
-                  <ArrowOutwardIcon />
+                  <ArrowOutwardIcon
+                    sx={{ "&:hover": { cursor: "pointer" } }}
+                    onClick={(e) =>
+                      handleNavToProduct(e, product.productDto.id)
+                    }
+                  />
                 </TableCell>
               </TableRow>
             ))}

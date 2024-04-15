@@ -11,15 +11,24 @@ import {
   TableContainer,
   Paper,
   Divider,
+  Input,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getEnums } from "redux/enums/enumsSelectors";
 import { upperCaseFirstLetterEnumName } from "services/upperCaseFirstLetterEnumName";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { FieldArray } from "formik";
 
-function Products({ products }) {
+function Products({ formik, isEdit }) {
+  const { values, handleChange } = formik;
+  // debugger;
   const enums = useSelector(getEnums);
   const navigate = useNavigate();
+
+  const handleChangeTotal = (quantity, price, index) => {
+    const total = quantity * price;
+    formik.setFieldValue(`products[${index}].price`, total);
+  };
 
   const ProductName = (product) => {
     const material = upperCaseFirstLetterEnumName(
@@ -102,32 +111,75 @@ function Products({ products }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.values.products.map((product, index) => (
-              <TableRow key={product.productDto.id} sx={{ height: "40px" }}>
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                <TableCell>{product.productDto.id}</TableCell>
-                {ProductName(product.productDto)}
-                <TableCell>{product.productDto.quantity}</TableCell>
-                <TableCell>{product.productDto.price}</TableCell>
-                <TableCell>
-                  {priceRow(
-                    product.productDto.quantity,
-                    product.productDto.price
-                  )}{" "}
-                  ₴
-                </TableCell>
-                <TableCell>
-                  <ArrowOutwardIcon
-                    sx={{ "&:hover": { cursor: "pointer" } }}
-                    onClick={(e) =>
-                      handleNavToProduct(e, product.productDto.id)
-                    }
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+            <FieldArray
+              name="products"
+              render={({ push, remove }) => (
+                <>
+                  {values.products.map((product, index) => (
+                    <TableRow key={product.id} sx={{ height: "40px" }}>
+                      <TableCell component="th" scope="row">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell>{product.id}</TableCell>
+                      {ProductName(product.productDto)}
+                      <TableCell>
+                        <Input
+                          type="number"
+                          readOnly={!isEdit}
+                          disableUnderline={true}
+                          name={`products[${index}].quantity`}
+                          value={product.quantity}
+                          onChange={(event) => {
+                            formik.setFieldValue(
+                              `products[${index}].quantity`,
+                              event.target.value
+                            );
+                            handleChangeTotal(
+                              event.target.value,
+                              product.productDto.price,
+                              index
+                            );
+                          }}
+                          sx={{
+                            width: "60px",
+                            borderRadius: !isEdit ? "0px" : "5px",
+                            border: !isEdit ? "none" : "1px solid #AAA",
+                            padding: !isEdit ? "0px" : "8px",
+                            "& .MuiOutlinedInput-root, .MuiInputBase-root": {
+                              padding: "0px",
+                            },
+                            "& .MuiInputBase-input": {
+                              padding: "0px",
+                            },
+                            "&[type=number]::-webkit-outer-spin-button, ": {
+                              "-webkit-appearance": "none",
+                              margin: 0,
+                            },
+                            "& input[type=number]::-webkit-inner-spin-button": {
+                              "-webkit-appearance": "none",
+                              margin: 0,
+                            },
+                            "input[type=number]": {
+                              "-moz-appearance": "textfield",
+                            },
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>{product.productDto.price}</TableCell>
+                      <TableCell>
+                        {priceRow(product.quantity, product.productDto.price)} ₴
+                      </TableCell>
+                      <TableCell>
+                        <ArrowOutwardIcon
+                          sx={{ "&:hover": { cursor: "pointer" } }}
+                          onClick={(e) => handleNavToProduct(e, product.id)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              )}
+            />
           </TableBody>
         </Table>
       </TableContainer>
@@ -151,7 +203,7 @@ function Products({ products }) {
           sx={{ display: "flex", justifyContent: "space-between", mt: "8px" }}
         >
           <Typography>Сума за товари</Typography>
-          <Typography>{products.values.totalPrice} ₴</Typography>
+          <Typography>{values.totalPrice} ₴</Typography>
         </Box>
       </Box>
     </Box>

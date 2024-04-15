@@ -136,7 +136,7 @@ function FormData({ row, handleClose, setOpen }) {
 
         <Grid container spacing={2} sx={{ mt: "24px" }}>
           <Grid item xs={12}>
-            <Products products={formik} />
+            <Products formik={formik} isEdit={isEdit} />
           </Grid>
           <Grid item xs={6}>
             <CustomerData formik={formik} isEdit={isEdit} />

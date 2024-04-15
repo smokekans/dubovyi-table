@@ -249,16 +249,26 @@ function FormData({ row, handleClose }) {
               <Typography>Архівувати</Typography>
             </Button>
             <Button
+              disabled={isEdit ? false : true}
               sx={{
                 borderRadius: 5,
                 padding: "18px 40px",
-                background: "#FAF9FB",
+                background: isEdit ? "#FAF9FB" : "#AAA",
                 height: "56px",
-                color: "#324EBD",
                 textDecoration: "none",
+                "&:hover": {
+                  background: isEdit ? "#789DD1" : null,
+                  "& >p": { color: isEdit ? "#FAF9FB" : null },
+                },
               }}
             >
-              <Typography>Зберегти зміни</Typography>
+              <Typography
+                sx={{
+                  color: isEdit ? "#324EBD" : "#FAF9FB",
+                }}
+              >
+                Зберегти зміни
+              </Typography>
             </Button>
           </Box>
         </Box>

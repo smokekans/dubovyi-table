@@ -6,6 +6,8 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Input,
+  TextField,
 } from "@mui/material";
 
 const keyMessages = {
@@ -16,8 +18,9 @@ const keyMessages = {
 };
 const desiredOrder = ["firstName", "phone", "email", "comment"];
 
-function CustomerData({ formik }) {
-  const userName = `${formik.values.firstName} ${formik.values.secondName}`;
+function CustomerData({ formik, isEdit }) {
+  const { values, handleChange } = formik;
+  const userName = `${values.firstName} ${values.secondName}`;
 
   return (
     <Box
@@ -53,7 +56,7 @@ function CustomerData({ formik }) {
         }}
       >
         {desiredOrder.map((key) => {
-          if (keyMessages[key] && formik.values[key]) {
+          if (keyMessages[key] && values[key]) {
             return (
               <ListItem
                 sx={{
@@ -82,10 +85,33 @@ function CustomerData({ formik }) {
                     alignSelf: "end",
                   }}
                 />
-                <ListItemText
+                {/* <ListItemText
                   primary={key === "firstName" ? userName : formik.values[key]}
                   sx={{
                     flex: "none",
+                  }}
+                /> */}
+                <Input
+                  label="No Wrap Input"
+                  disableUnderline={true}
+                  maxRows={2}
+                  multiline
+                  readOnly={!isEdit}
+                  name={key}
+                  value={key === "firstName" ? userName : values[key]}
+                  onChange={handleChange}
+                  sx={{
+                    // width: "200px",
+                    // whiteSpace: "nowrap",
+                    borderRadius: !isEdit ? "0px" : "5px",
+                    border: !isEdit ? "none" : "1px solid #AAA",
+                    padding: !isEdit ? "0px" : "8px",
+                    "& .MuiOutlinedInput-root, .MuiInputBase-root": {
+                      padding: "0px",
+                    },
+                    "& .MuiInputBase-input": {
+                      padding: "0px",
+                    },
                   }}
                 />
               </ListItem>

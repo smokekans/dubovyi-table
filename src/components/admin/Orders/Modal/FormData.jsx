@@ -228,6 +228,10 @@ function FormData({ row, handleClose }) {
                 height: "56px",
                 color: "#324EBD",
                 textDecoration: "none",
+                "&:hover": {
+                  background: "#789DD1",
+                  "& >p": { color: "#FAF9FB" },
+                },
               }}
             >
               <Typography>Редагувати</Typography>

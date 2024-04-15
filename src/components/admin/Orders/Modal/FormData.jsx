@@ -9,7 +9,7 @@ import StatusSelect from "./StatusSelect";
 import CloseIcon from "@mui/icons-material/Close";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 
-function FormData({ row, handleClose }) {
+function FormData({ row, handleClose, setOpen }) {
   const formik = useFormik({
     initialValues: {
       firstName: row.userDto.firstName,
@@ -29,6 +29,11 @@ function FormData({ row, handleClose }) {
   const [paymentStatus, setPaymentStatus] = useState("Не оплачено");
   const [totalAmount, setTotalAmount] = useState(formik.values.totalPrice);
   const [isEdit, setIsEdit] = useState(false);
+
+  const handleOpenDeleteModal = (e) => {
+    //   e.stopPropagation();
+    setOpen(true);
+  };
 
   const getTotalAmount = () => {
     // const amount = formik.values.totalPrice - formik.values.payment;
@@ -251,6 +256,7 @@ function FormData({ row, handleClose }) {
 
           <Box sx={{ display: "flex", gap: "24px" }}>
             <Button
+              onClick={(e) => handleOpenDeleteModal(e)}
               sx={{
                 borderRadius: 5,
                 border: "1px solid #FAF9FB",
@@ -268,6 +274,7 @@ function FormData({ row, handleClose }) {
               <Typography>Архівувати</Typography>
             </Button>
             <Button
+              type="submit"
               disabled={isEdit ? false : true}
               sx={{
                 borderRadius: 5,

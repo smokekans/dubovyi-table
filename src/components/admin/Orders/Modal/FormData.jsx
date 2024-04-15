@@ -172,17 +172,38 @@ function FormData({ row, handleClose, setOpen }) {
           >
             <Typography>Оплачено</Typography>
             <Input
+              type="number"
+              disableUnderline={true}
               readOnly={!isEdit}
               value={formik.values.payment}
+              inputProps={{ style: { textAlign: "right" } }}
               onChange={(event) => {
                 formik.setFieldValue("payment", event.target.value);
                 getTotalAmount();
               }}
               sx={{
-                borderRadius: "5px",
-                border: "1px solid #AAA",
-                padding: "8px",
+                borderRadius: !isEdit ? "0px" : "5px",
+                border: !isEdit ? "none" : "1px solid #AAA",
+                padding: !isEdit ? "0px" : "8px",
                 minWidth: "52px",
+                color: "#FAF9FB",
+                "& .MuiOutlinedInput-root, .MuiInputBase-root": {
+                  padding: "0px",
+                },
+                "& .MuiInputBase-input": {
+                  padding: "0px",
+                },
+                "&[type=number]::-webkit-outer-spin-button, ": {
+                  "-webkit-appearance": "none",
+                  margin: 0,
+                },
+                "& input[type=number]::-webkit-inner-spin-button": {
+                  "-webkit-appearance": "none",
+                  margin: 0,
+                },
+                "input[type=number]": {
+                  "-moz-appearance": "textfield",
+                },
               }}
             />
           </Box>

@@ -244,6 +244,10 @@ function FormData({ row, handleClose }) {
                 color: (theme) => theme.palette.common.white,
                 backgroundColor: (theme) => theme.palette.primary.main,
                 textDecoration: "none",
+                "&:hover": {
+                  background: "#FAF9FB",
+                  "& >p": { color: "#324EBD" },
+                },
               }}
             >
               <Typography>Архівувати</Typography>

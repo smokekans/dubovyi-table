@@ -205,7 +205,13 @@ function FormData({ row, handleClose }) {
           <Box sx={{ display: "flex", gap: "24px" }}>
             <Button
               startIcon={
-                <LocalPrintshopIcon sx={{ width: "24px", height: "24px" }} />
+                <LocalPrintshopIcon
+                  className="icon"
+                  sx={{
+                    width: "24px",
+                    height: "24px",
+                  }}
+                />
               }
               sx={{
                 borderRadius: 5,
@@ -215,6 +221,11 @@ function FormData({ row, handleClose }) {
                 color: (theme) => theme.palette.common.white,
                 backgroundColor: (theme) => theme.palette.primary.main,
                 textDecoration: "none",
+                "&:hover": {
+                  background: "#FAF9FB",
+                  "& >p": { color: "#324EBD" },
+                  "& .icon": { color: "#324EBD" },
+                },
               }}
             >
               <Typography>Друкувати</Typography>

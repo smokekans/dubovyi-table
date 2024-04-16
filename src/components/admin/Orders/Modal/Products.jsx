@@ -12,16 +12,17 @@ import {
   Paper,
   Divider,
   Input,
+  IconButton,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getEnums } from "redux/enums/enumsSelectors";
 import { upperCaseFirstLetterEnumName } from "services/upperCaseFirstLetterEnumName";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { FieldArray } from "formik";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { FieldArray, Form } from "formik";
 
 function Products({ formik, isEdit }) {
   const { values, handleChange } = formik;
-  // debugger;
   // const [totalProductLine, setTotalProductLine] = useState(0);
   const enums = useSelector(getEnums);
   const navigate = useNavigate();
@@ -130,90 +131,104 @@ function Products({ formik, isEdit }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            <FieldArray
-              name="products"
-              render={({ push, remove }) => (
-                <>
-                  {values.products.map((product, index) => (
-                    <TableRow key={product.id} sx={{ height: "40px" }}>
-                      <TableCell component="th" scope="row">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell>{product.id}</TableCell>
-                      {ProductName(product.productDto)}
-                      <TableCell>
-                        <Input
-                          type="number"
-                          readOnly={!isEdit}
-                          disableUnderline={true}
-                          name={`products[${index}].quantity`}
-                          value={product.quantity}
-                          onChange={(event) => {
-                            formik.setFieldValue(
-                              `products[${index}].quantity`,
-                              event.target.value
-                            );
-                            // Call handleChangeTotal with current values, formik, and index
-                            handleChangeTotal(
-                              values,
-                              formik,
-                              index,
-                              event.target.value
-                            );
-                          }}
-                          // onChange={(event) => {
-                          //   formik.setFieldValue(
-                          //     `products[${index}].quantity`,
-                          //     event.target.value
-                          //   );
-                          //   handleChangeTotal(
-                          //     event.target.value,
-                          //     product.productDto.price,
-                          //     index,
-                          //     formik.handleChange
-                          //   );
-                          // }}
-                          sx={{
-                            width: "60px",
-                            borderRadius: !isEdit ? "0px" : "5px",
-                            border: !isEdit ? "none" : "1px solid #AAA",
-                            padding: !isEdit ? "0px" : "8px",
-                            "& .MuiOutlinedInput-root, .MuiInputBase-root": {
-                              padding: "0px",
-                            },
-                            "& .MuiInputBase-input": {
-                              padding: "0px",
-                            },
-                            "&[type=number]::-webkit-outer-spin-button, ": {
-                              "-webkit-appearance": "none",
-                              margin: 0,
-                            },
-                            "& input[type=number]::-webkit-inner-spin-button": {
-                              "-webkit-appearance": "none",
-                              margin: 0,
-                            },
-                            "input[type=number]": {
-                              "-moz-appearance": "textfield",
-                            },
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell>{product.productDto.price}</TableCell>
-                      <TableCell>
-                        {parseFloat(product.totalProductLineAmount.toFixed(2))}{" "}
-                        ₴
-                      </TableCell>
-                      <TableCell>
-                        <ArrowOutwardIcon
-                          sx={{ "&:hover": { cursor: "pointer" } }}
-                          onClick={(e) => handleNavToProduct(e, product.id)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </>
-              )}
-            />
+            <FieldArray name="products">
+              {({ remove }) => {
+                const onRemoveClick = (index) => {
+                  const updatedProducts = [...values.products];
+                  updatedProducts.splice(index, 1);
+                  formik.setFieldValue("products", updatedProducts);
+                };
+                return (
+                  <>
+                    {values.products &&
+                      values.products.map((product, index) => (
+                        <TableRow
+                          key={index}
+                          index={index}
+                          sx={{ height: "40px" }}
+                        >
+                          <TableCell component="th" scope="row">
+                            <IconButton
+                              onClick={() => onRemoveClick(index)}
+                              style={{ display: !isEdit ? "none" : null }}
+                            >
+                              <RemoveIcon
+                                sx={{
+                                  width: "24px",
+                                  height: "24px",
+                                  color: "#030C0D",
+                                }}
+                              />
+                            </IconButton>
+                            {index + 1}
+                          </TableCell>
+                          <TableCell>{product.id}</TableCell>
+                          {ProductName(product.productDto)}
+                          <TableCell>
+                            <Input
+                              type="number"
+                              readOnly={!isEdit}
+                              disableUnderline={true}
+                              name={`products[${index}].quantity`}
+                              value={product.quantity}
+                              onChange={(event) => {
+                                formik.setFieldValue(
+                                  `products[${index}].quantity`,
+                                  event.target.value
+                                );
+                                handleChangeTotal(
+                                  values,
+                                  formik,
+                                  index,
+                                  event.target.value
+                                );
+                              }}
+                              sx={{
+                                width: "60px",
+                                borderRadius: !isEdit ? "0px" : "5px",
+                                border: !isEdit ? "none" : "1px solid #AAA",
+                                padding: !isEdit ? "0px" : "8px",
+                                "& .MuiOutlinedInput-root, .MuiInputBase-root":
+                                  {
+                                    padding: "0px",
+                                  },
+                                "& .MuiInputBase-input": {
+                                  padding: "0px",
+                                },
+                                "&[type=number]::-webkit-outer-spin-button, ": {
+                                  "-webkit-appearance": "none",
+                                  margin: 0,
+                                },
+                                "& input[type=number]::-webkit-inner-spin-button":
+                                  {
+                                    "-webkit-appearance": "none",
+                                    margin: 0,
+                                  },
+                                "input[type=number]": {
+                                  "-moz-appearance": "textfield",
+                                },
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>{product.productDto.price}</TableCell>
+                          <TableCell>
+                            {parseFloat(
+                              product.totalProductLineAmount.toFixed(2)
+                            )}{" "}
+                            ₴
+                          </TableCell>
+                          <TableCell>
+                            <ArrowOutwardIcon
+                              sx={{ "&:hover": { cursor: "pointer" } }}
+                              onClick={(e) => handleNavToProduct(e, product.id)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </>
+                );
+              }}
+            </FieldArray>
           </TableBody>
         </Table>
       </TableContainer>

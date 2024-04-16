@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -22,12 +22,31 @@ import { FieldArray } from "formik";
 function Products({ formik, isEdit }) {
   const { values, handleChange } = formik;
   // debugger;
+  // const [totalProductLine, setTotalProductLine] = useState(0);
   const enums = useSelector(getEnums);
   const navigate = useNavigate();
 
-  const handleChangeTotal = (quantity, price, index) => {
-    const total = quantity * price;
-    formik.setFieldValue(`products[${index}].price`, total);
+  useEffect(() => {
+    handleChangeTotalPrice(values, formik);
+  }, [values.products]);
+
+  const handleChangeTotalPrice = (values, formik) => {
+    let totalPrice = 0;
+    values.products.forEach((product) => {
+      totalPrice += product.totalProductLineAmount;
+    });
+
+    formik.setFieldValue("totalPrice", parseFloat(totalPrice.toFixed(2)));
+  };
+
+  const handleChangeTotal = (values, formik, index, quantity) => {
+    const product = values.products[index];
+    const totalProductLine = quantity * product.productDto.price;
+
+    formik.setFieldValue(
+      `products[${index}].totalProductLineAmount`,
+      totalProductLine
+    );
   };
 
   const ProductName = (product) => {
@@ -134,12 +153,26 @@ function Products({ formik, isEdit }) {
                               `products[${index}].quantity`,
                               event.target.value
                             );
+                            // Call handleChangeTotal with current values, formik, and index
                             handleChangeTotal(
-                              event.target.value,
-                              product.productDto.price,
-                              index
+                              values,
+                              formik,
+                              index,
+                              event.target.value
                             );
                           }}
+                          // onChange={(event) => {
+                          //   formik.setFieldValue(
+                          //     `products[${index}].quantity`,
+                          //     event.target.value
+                          //   );
+                          //   handleChangeTotal(
+                          //     event.target.value,
+                          //     product.productDto.price,
+                          //     index,
+                          //     formik.handleChange
+                          //   );
+                          // }}
                           sx={{
                             width: "60px",
                             borderRadius: !isEdit ? "0px" : "5px",
@@ -167,7 +200,8 @@ function Products({ formik, isEdit }) {
                       </TableCell>
                       <TableCell>{product.productDto.price}</TableCell>
                       <TableCell>
-                        {priceRow(product.quantity, product.productDto.price)} ₴
+                        {parseFloat(product.totalProductLineAmount.toFixed(2))}{" "}
+                        ₴
                       </TableCell>
                       <TableCell>
                         <ArrowOutwardIcon

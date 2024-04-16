@@ -1,5 +1,5 @@
 import { Form, useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomerData from "./CustomerData";
 import Products from "./Products";
 import { Grid, Button, Box, Typography, Divider, Input } from "@mui/material";
@@ -35,11 +35,15 @@ function FormData({ row, handleClose, setOpen }) {
     setOpen(true);
   };
 
+  useEffect(() => {
+    getTotalAmount();
+  }, [formik.values.totalPrice]);
+
   const getTotalAmount = () => {
     // const amount = formik.values.totalPrice - formik.values.payment;
     // const amount = formik.values.totalPrice - 0;
     // debugger;
-    const amount = formik.values.totalPrice - formik.values.payment;
+    const amount = formik.values.totalPrice - Number(formik.values.payment);
     setTotalAmount(amount);
     if (amount === 0) {
       setPaymentStatus("Оплачено");

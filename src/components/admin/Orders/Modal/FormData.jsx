@@ -18,7 +18,7 @@ function FormData({ row, handleClose, setOpen }) {
       email: row.userDto.email,
       products: row.productLinesDto,
       totalPrice: row.totalPrice,
-      payment: !row.payment ? 0 : row.payment,
+      totalPayment: row.totalPayment,
       comment: row.comment,
       paidStatus: row.paidStatus,
     },
@@ -41,17 +41,23 @@ function FormData({ row, handleClose, setOpen }) {
     getTotalAmount();
   }, [formik.values.totalPrice]);
 
-  const getTotalAmount = () => {
+  const getTotalAmount = (e) => {
     // const amount = formik.values.totalPrice - formik.values.payment;
     // const amount = formik.values.totalPrice - 0;
     // debugger;
-    const amount = formik.values.totalPrice - Number(formik.values.payment);
-    setTotalAmount(amount);
-    // if (amount === 0) {
-    //   setPaymentStatus("Оплачено");
-    // } else {
-    //   setPaymentStatus("Не оплачено");
-    // }
+    if (e) {
+      formik.handleChange({
+        target: { name: "totalPayment", value: e.target.value },
+      });
+      const amount = formik.values.totalPrice - Number(e.target.value);
+      //   debugger;
+      setTotalAmount(amount);
+      // if (amount === 0) {
+      //   setPaymentStatus("Оплачено");
+      // } else {
+      //   setPaymentStatus("Не оплачено");
+      // }
+    }
   };
 
   return (
@@ -179,13 +185,15 @@ function FormData({ row, handleClose, setOpen }) {
             <Typography>Оплачено</Typography>
             <Input
               type="number"
+              name="totalPayment"
               disableUnderline={true}
               readOnly={!isEdit}
-              value={formik.values.payment}
+              value={formik.values.totalPayment}
               inputProps={{ style: { textAlign: "right" } }}
               onChange={(event) => {
-                formik.setFieldValue("payment", event.target.value);
-                getTotalAmount();
+                // formik.setFieldValue("totalPayment", event.target.value);
+                // debugger;
+                getTotalAmount(event);
               }}
               sx={{
                 borderRadius: !isEdit ? "0px" : "5px",

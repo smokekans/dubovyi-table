@@ -130,7 +130,7 @@ function OrderItem(props) {
             borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
           }}
         >
-          {row.orderDate}
+          {row.creationDate}
         </TableCell>
         <TableCell
           sx={{

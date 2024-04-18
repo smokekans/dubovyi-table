@@ -19,6 +19,8 @@ function FormData({ row, handleClose, setOpen }) {
       products: row.productLinesDto,
       totalPrice: row.totalPrice,
       payment: !row.payment ? 0 : row.payment,
+      comment: row.comment,
+      paidStatus: row.paidStatus,
     },
     onSubmit: (values) => {
       console.log(values);
@@ -26,7 +28,7 @@ function FormData({ row, handleClose, setOpen }) {
     },
   });
 
-  const [paymentStatus, setPaymentStatus] = useState("Не оплачено");
+  //   const [paymentStatus, setPaymentStatus] = useState("Не оплачено");
   const [totalAmount, setTotalAmount] = useState(formik.values.totalPrice);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -45,11 +47,11 @@ function FormData({ row, handleClose, setOpen }) {
     // debugger;
     const amount = formik.values.totalPrice - Number(formik.values.payment);
     setTotalAmount(amount);
-    if (amount === 0) {
-      setPaymentStatus("Оплачено");
-    } else {
-      setPaymentStatus("Не оплачено");
-    }
+    // if (amount === 0) {
+    //   setPaymentStatus("Оплачено");
+    // } else {
+    //   setPaymentStatus("Не оплачено");
+    // }
   };
 
   return (
@@ -108,7 +110,7 @@ function FormData({ row, handleClose, setOpen }) {
                 color: (theme) => theme.palette.text.secondary,
               }}
             >
-              Останнє оновлення {row.updateDate}
+              Останнє оновлення {row.updatedAt}
             </Typography>
           </Box>
 
@@ -131,7 +133,7 @@ function FormData({ row, handleClose, setOpen }) {
                   color: (theme) => theme.palette.text.secondary,
                 }}
               >
-                {paymentStatus}
+                {formik.values.paidStatus ? "Оплачено" : "Не оплачено"}
               </Typography>
             </Box>
             <StatusSelect orderStatus={row.status} />

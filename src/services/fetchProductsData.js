@@ -76,7 +76,8 @@ export const getProductList = async (
 };
 
 export const getProductByName = async (
-  { page, size, sortBy, direction, name },
+  { page = 0, size = 7, sortBy = "id", direction = "DESC", name },
+  // { page, size, sortBy, direction, name },
   abortControllerRef
 ) => {
   const params = new URLSearchParams();
@@ -91,19 +92,19 @@ export const getProductByName = async (
     signal: abortControllerRef.current?.signal,
   });
 
-  if (response.status !== 200) {
-    throw new Error(`Error: ${response.statusText}`);
-  }
-
   const { data, totalPages, totalItems } = response.data;
   return { data, totalPages, totalItems };
 };
 
-export const getProductById = async (id) => {
+export const getProductById = async (id, abortControllerRef) => {
   try {
-    const { data } = await axios.get(BASE_URL + PRODUCT_BY_ID + `?ids=${id}`);
+    const { data } = await axios.get(BASE_URL + PRODUCT_BY_ID + `?ids=${id}`, {
+      signal: abortControllerRef.current?.signal,
+    });
+
     return data;
   } catch (error) {
+    debugger;
     return error.message;
   }
 };

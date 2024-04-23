@@ -21,6 +21,7 @@ function FormData({ row, handleClose, setOpen }) {
       totalPayment: row.totalPayment,
       comment: row.comment,
       paidStatus: row.paidStatus,
+      orderId: row.id,
     },
     onSubmit: (values) => {
       console.log(values);
@@ -39,24 +40,19 @@ function FormData({ row, handleClose, setOpen }) {
 
   useEffect(() => {
     getTotalAmount();
-  }, [formik.values.totalPrice]);
+  }, [formik.values.totalPrice, formik.values.totalPayment]);
 
-  const getTotalAmount = (e) => {
-    // const amount = formik.values.totalPrice - formik.values.payment;
-    // const amount = formik.values.totalPrice - 0;
+  const getTotalAmount = () => {
+    const amount = parseFloat(
+      formik.values.totalPrice - formik.values.totalPayment
+    ).toFixed(2);
+
+    setTotalAmount(amount);
     // debugger;
-    if (e) {
-      formik.handleChange({
-        target: { name: "totalPayment", value: e.target.value },
-      });
-      const amount = formik.values.totalPrice - Number(e.target.value);
-      //   debugger;
-      setTotalAmount(amount);
-      // if (amount === 0) {
-      //   setPaymentStatus("Оплачено");
-      // } else {
-      //   setPaymentStatus("Не оплачено");
-      // }
+    if (formik.values.totalPrice === Number(formik.values.totalPayment)) {
+      formik.setFieldValue("paidStatus", true);
+    } else {
+      formik.setFieldValue("paidStatus", false);
     }
   };
 
@@ -131,7 +127,7 @@ function FormData({ row, handleClose, setOpen }) {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: "25px",
-                background: "#D13634",
+                background: formik.values.paidStatus ? "#7CA75F" : "#D13634",
               }}
             >
               <Typography
@@ -191,9 +187,7 @@ function FormData({ row, handleClose, setOpen }) {
               value={formik.values.totalPayment}
               inputProps={{ style: { textAlign: "right" } }}
               onChange={(event) => {
-                // formik.setFieldValue("totalPayment", event.target.value);
-                // debugger;
-                getTotalAmount(event);
+                formik.setFieldValue("totalPayment", event.target.value);
               }}
               sx={{
                 borderRadius: !isEdit ? "0px" : "5px",

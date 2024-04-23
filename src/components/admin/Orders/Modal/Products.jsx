@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -9,7 +9,6 @@ import {
   TableCell,
   TableBody,
   TableContainer,
-  Paper,
   Divider,
   Input,
   IconButton,
@@ -19,11 +18,11 @@ import { getEnums } from "redux/enums/enumsSelectors";
 import { upperCaseFirstLetterEnumName } from "services/upperCaseFirstLetterEnumName";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { FieldArray, Form } from "formik";
+import { FieldArray } from "formik";
+import AddNewRow from "./AddNewRow";
 
 function Products({ formik, isEdit }) {
-  const { values, handleChange } = formik;
-  // const [totalProductLine, setTotalProductLine] = useState(0);
+  const { values } = formik;
   const enums = useSelector(getEnums);
   const navigate = useNavigate();
 
@@ -62,11 +61,6 @@ function Products({ formik, isEdit }) {
       </TableCell>
     );
   };
-
-  function priceRow(qty, price) {
-    const result = qty * price;
-    return parseFloat(result.toFixed(2));
-  }
 
   const handleNavToProduct = (e, id) => {
     e.stopPropagation();
@@ -162,7 +156,7 @@ function Products({ formik, isEdit }) {
                             </IconButton>
                             {index + 1}
                           </TableCell>
-                          <TableCell>{product.id}</TableCell>
+                          <TableCell>{product.productDto.id}</TableCell>
                           {ProductName(product.productDto)}
                           <TableCell>
                             <Input
@@ -225,6 +219,7 @@ function Products({ formik, isEdit }) {
                           </TableCell>
                         </TableRow>
                       ))}
+                    {isEdit ? <AddNewRow formik={formik} /> : null}
                   </>
                 );
               }}

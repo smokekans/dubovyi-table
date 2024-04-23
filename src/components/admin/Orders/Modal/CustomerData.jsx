@@ -7,7 +7,7 @@ import {
   ListItemText,
   Divider,
   Input,
-  TextField,
+  Tooltip,
 } from "@mui/material";
 
 const keyMessages = {
@@ -55,70 +55,130 @@ function CustomerData({ formik, isEdit }) {
           padding: 0,
         }}
       >
-        {desiredOrder.map((key) => {
-          if (keyMessages[key] && values[key]) {
-            return (
-              <ListItem
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  padding: 0,
-                }}
-              >
-                <ListItemText
-                  primary={keyMessages[key]}
-                  sx={{
-                    flex: "none",
-                    margin: 0,
-                    "& > span": {
-                      fontSize: "13px",
-                      fontWeight: "600",
-                      letterSpacing: "1.3px",
-                      lineHeight: "normal",
-                      textTransform: "uppercase",
-                    },
-                  }}
-                ></ListItemText>
-                <ListItemText
-                  sx={{
-                    borderBottom: "1px dashed #324EBD",
-                    alignSelf: "end",
-                  }}
-                />
-                {/* <ListItemText
-                  primary={key === "firstName" ? userName : formik.values[key]}
-                  sx={{
-                    flex: "none",
-                  }}
-                /> */}
+        {desiredOrder.map((key) => (
+          <ListItem
+            key={key}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: 0,
+              position: "relative",
+            }}
+          >
+            <ListItemText
+              primary={keyMessages[key]}
+              sx={{
+                flex: "none",
+                margin: 0,
+                "& > span": {
+                  fontSize: "13px",
+                  fontWeight: "600",
+                  letterSpacing: "1.3px",
+                  lineHeight: "normal",
+                  textTransform: "uppercase",
+                },
+              }}
+            ></ListItemText>
+            <ListItemText
+              sx={{
+                borderBottom: "1px dashed #324EBD",
+                alignSelf: "end",
+              }}
+            />
+            {values[key].length > 100 ? (
+              <>
                 <Input
                   label="No Wrap Input"
                   disableUnderline={true}
-                  maxRows={2}
+                  maxRows={key === "comment" ? 3 : 2}
                   multiline
                   readOnly={!isEdit}
                   name={key}
                   value={key === "firstName" ? userName : values[key]}
                   onChange={handleChange}
                   sx={{
-                    // width: "200px",
-                    // whiteSpace: "nowrap",
+                    maxWidth: "300px",
+                    width: !isEdit
+                      ? `${values[key].length * 10}px`
+                      : `${values[key].length * 10 + 18}px`,
                     borderRadius: !isEdit ? "0px" : "5px",
                     border: !isEdit ? "none" : "1px solid #AAA",
                     padding: !isEdit ? "0px" : "8px",
+                    paddingRight: !isEdit ? "8px" : "8px",
                     "& .MuiOutlinedInput-root, .MuiInputBase-root": {
                       padding: "0px",
                     },
                     "& .MuiInputBase-input": {
                       padding: "0px",
+                      overflowY: isEdit ? "scroll" : "hidden",
+                      "&::-webkit-scrollbar": {
+                        width: "8px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        background: "transparent",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: "#D9D9D9",
+                        borderRadius: 1,
+                      },
+                      "&::-webkit-scrollbar-thumb:hover": {
+                        background: "#AAA",
+                        cursor: "pointer",
+                      },
                     },
                   }}
                 />
-              </ListItem>
-            );
-          }
-          return null;
-        })}
+                {!isEdit ? (
+                  <Tooltip title={values[key]} arrow>
+                    <Box
+                      component="span"
+                      sx={{
+                        position: "absolute",
+                        bottom: 0,
+                        right: 0,
+                        fontWeight: "bold",
+                        fontSize: "20px",
+                        margin: "2px",
+                        marginBottom: !isEdit ? "0px" : "8px",
+                        color: "#AAA",
+                        cursor: "pointer",
+                      }}
+                    >
+                      ...
+                    </Box>
+                  </Tooltip>
+                ) : null}
+              </>
+            ) : (
+              <Input
+                label="No Wrap Input"
+                disableUnderline={true}
+                maxRows={key === "comment" ? 3 : 2}
+                multiline
+                readOnly={!isEdit}
+                name={key}
+                value={key === "firstName" ? userName : values[key]}
+                onChange={handleChange}
+                sx={{
+                  maxWidth: "300px",
+                  width: !isEdit
+                    ? `${values[key].length * 10}px`
+                    : `${values[key].length * 10 + 18}px`,
+                  borderRadius: !isEdit ? "0px" : "5px",
+                  border: !isEdit ? "none" : "1px solid #AAA",
+                  padding: !isEdit ? "0px" : "8px",
+                  "& .MuiOutlinedInput-root, .MuiInputBase-root": {
+                    padding: "0px",
+                  },
+                  "& .MuiInputBase-input": {
+                    padding: "0px",
+                    textAlign: "right",
+                  },
+                }}
+              />
+            )}
+          </ListItem>
+        ))}
       </List>
     </Box>
   );

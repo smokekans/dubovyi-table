@@ -110,7 +110,7 @@ function CustomerData({ formik, isEdit }) {
                     },
                     "& .MuiInputBase-input": {
                       padding: "0px",
-                      overflowY: isEdit ? "scroll" : "hidden",
+                      overflow: isEdit ? "auto" : "hidden",
                       "&::-webkit-scrollbar": {
                         width: "8px",
                       },
@@ -123,7 +123,7 @@ function CustomerData({ formik, isEdit }) {
                       },
                       "&::-webkit-scrollbar-thumb:hover": {
                         background: "#AAA",
-                        cursor: "pointer",
+                        cursor: "auto",
                       },
                     },
                   }}

@@ -102,7 +102,7 @@ function Products({ formik, isEdit }) {
             background: "transparent",
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "#D9D9D9",
+            background: "#AAA",
             borderRadius: 1,
           },
           "&::-webkit-scrollbar-thumb:hover": {

@@ -1,5 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TableRow, TableCell, Input, IconButton, Button } from "@mui/material";
+import {
+  TableRow,
+  TableCell,
+  Input,
+  IconButton,
+  Button,
+  Autocomplete,
+  TextField,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import useDebounce from "hook/useDebounce";
 import { getProductById, getProductByName } from "services/fetchProductsData";
@@ -8,6 +20,7 @@ function AddNewRow({ formik }) {
   const { values } = formik;
   const [isDisplay, setIsDisplay] = useState(false);
   const [searchTerm, setSearchTerm] = useState({ key: "", value: "" });
+  const [options, setOptions] = useState([]);
   const [error, setError] = useState();
   const [product, setProduct] = useState({
     orderId: values.orderId,
@@ -40,8 +53,12 @@ function AddNewRow({ formik }) {
             { name: debouncedValue },
             abortControllerRef
           );
-
-          setProduct(response.data);
+          // debugger;
+          setOptions(response.data);
+          // setProduct((prevProduct) => ({
+          //   ...prevProduct,
+          //   productDto: response.data,
+          // }));
         }
 
         setError("");
@@ -103,11 +120,14 @@ function AddNewRow({ formik }) {
   };
 
   const handleSearch = (e) => {
-    const searchKey = e.target.id;
-    const searchValue = e.target.value;
-    setSearchTerm({ key: searchKey, value: searchValue });
+    // debugger;
+    if (e) {
+      const searchKey = e.target.id;
+      const searchValue = e.target.value;
+      setSearchTerm({ key: searchKey, value: searchValue });
+    }
   };
-
+  // debugger;
   return (
     <TableRow>
       <TableCell>
@@ -150,7 +170,55 @@ function AddNewRow({ formik }) {
         />
       </TableCell>
       <TableCell>
-        <Input
+        <Autocomplete
+          id="name"
+          options={options}
+          open={options.length > 0}
+          inputValue={searchTerm.value}
+          onInputChange={(event, newValue) => handleSearch(event)}
+          getOptionLabel={(option) =>
+            option && option.name ? option.name : ""
+          }
+          PaperComponent={({ children }) => (
+            <Paper
+              style={{
+                padding: "32px",
+                border: "1px solid #000",
+                boxShadow: "none",
+                overflow: "auto",
+              }}
+            >
+              {children}
+            </Paper>
+          )}
+          // style={{ "& .MuiAutocomplete-paper": { border: "1px solid #000" } }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="standard"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: null,
+              }}
+            />
+            // <Input
+            //   {...params}
+            //   type="text"
+            //   id="name"
+            //   disableUnderline={true}
+            //   placeholder="Стіл"
+            //   // value={product?.productDto?.name}
+            //   sx={{
+            //     display: !isDisplay ? "none" : null,
+            //     width: "300px",
+            //     borderRadius: "25px",
+            //     padding: "8px 16px",
+            //     border: "1px solid  #030C0D",
+            //   }}
+            // />
+          )}
+        />
+        {/* <Input
           type="text"
           id="name"
           disableUnderline={true}
@@ -164,7 +232,7 @@ function AddNewRow({ formik }) {
             padding: "8px 16px",
             border: "1px solid  #030C0D",
           }}
-        />
+        /> */}
       </TableCell>
       <TableCell>
         <Input
@@ -172,7 +240,7 @@ function AddNewRow({ formik }) {
           value={product?.quantity}
           disableUnderline={true}
           placeholder={
-            product.productDto.quantity
+            product.productDto && product.productDto.quantity
               ? `0-${product?.productDto?.quantity}`
               : "0-12"
           }

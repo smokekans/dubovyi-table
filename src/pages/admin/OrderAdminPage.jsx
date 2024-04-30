@@ -19,8 +19,11 @@ export default function OrderAdminPage() {
   const abortControllerRef = useRef(null);
 
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
+
+      setLoading(true);
       try {
         const response = await getOrderList(
           page,
@@ -44,6 +47,12 @@ export default function OrderAdminPage() {
     };
 
     fetchData();
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, [page, order, orderBy]);
 
   return (

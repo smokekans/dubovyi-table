@@ -17,6 +17,10 @@ export const getOrderList = async (
     }
   );
 
+  if (response.status !== 200) {
+    throw new Error(`Error: ${response.statusText}`);
+  }
+
   const data = await response.data.data;
   const totalPage = response.data.totalPages;
   const totalItem = response.data.totalItems;

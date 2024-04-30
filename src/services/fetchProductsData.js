@@ -1,7 +1,9 @@
 import axios from "axios";
 import { BASE_URL, PRODUCTS, PRODUCT_BY_ID, PRODUCT_BY_NAME } from "utils/url";
 
-axios.defaults.baseURL = "https://woodcrafts.pp.ua";
+// axios.defaults.baseURL = "https://woodcrafts.pp.ua";
+axios.defaults.baseURL =
+  "http://woodcrafts-env.eba-czzhdwzr.eu-north-1.elasticbeanstalk.com";
 
 export const getAllProductsForSelect = async (
   totalItems,
@@ -65,6 +67,10 @@ export const getProductList = async (
   const response = await axios.get(url, {
     signal: abortControllerRef.current?.signal,
   });
+
+  if (response.status !== 200) {
+    throw new Error(`Error: ${response.statusText}`);
+  }
   const { data, totalPages, totalItems } = response.data;
   return { data, totalPages, totalItems };
 };
@@ -84,6 +90,11 @@ export const getProductByName = async (
   const response = await axios.get(url, {
     signal: abortControllerRef.current?.signal,
   });
+
+  if (response.status !== 200) {
+    throw new Error(`Error: ${response.statusText}`);
+  }
+
   const { data, totalPages, totalItems } = response.data;
   return { data, totalPages, totalItems };
 };

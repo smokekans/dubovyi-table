@@ -8,6 +8,8 @@ import PaymentAndDelivery from "./PaymentAndDelivery";
 import StatusSelect from "./StatusSelect";
 import CloseIcon from "@mui/icons-material/Close";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import PdfOrder from "./PrintPdf/PdfOrder";
+import { BlobProvider } from "@react-pdf/renderer";
 
 function FormData({ row, handleClose, setOpen }) {
   const formik = useFormik({
@@ -22,6 +24,7 @@ function FormData({ row, handleClose, setOpen }) {
       comment: row.comment,
       paidStatus: row.paidStatus,
       orderId: row.id,
+      paymentAndDeliveryDto: row.paymentAndDeliveryDto,
     },
     onSubmit: (values) => {
       console.log(values);
@@ -150,7 +153,9 @@ function FormData({ row, handleClose, setOpen }) {
             <CustomerData formik={formik} isEdit={isEdit} />
           </Grid>
           <Grid item xs={6}>
-            <PaymentAndDelivery formik={formik} />
+            {/* <PaymentAndDelivery
+              paymentAndDeliveryDto={formik.values.paymentAndDeliveryDto}
+            /> */}
           </Grid>
         </Grid>
 
@@ -237,33 +242,53 @@ function FormData({ row, handleClose, setOpen }) {
           }}
         >
           <Box sx={{ display: "flex", gap: "24px" }}>
-            <Button
-              startIcon={
-                <LocalPrintshopIcon
-                  className="icon"
-                  sx={{
-                    width: "24px",
-                    height: "24px",
-                  }}
+            <BlobProvider
+              document={
+                <PdfOrder
+                  row={row}
+                  products={formik.values.products}
+                  userData={formik.values.paymentAndDeliveryDto}
+                  totalPrice={formik.values.totalPrice}
+                  formik={formik.values}
+                  totalPayment={formik.values.totalPayment}
                 />
               }
-              sx={{
-                borderRadius: 5,
-                border: "1px solid #FAF9FB",
-                padding: "16px 40px",
-                height: "56px",
-                color: (theme) => theme.palette.common.white,
-                backgroundColor: (theme) => theme.palette.primary.main,
-                textDecoration: "none",
-                "&:hover": {
-                  background: "#FAF9FB",
-                  "& >p": { color: "#324EBD" },
-                  "& .icon": { color: "#324EBD" },
-                },
-              }}
+              filename="order.pdf"
             >
-              <Typography>Друкувати</Typography>
-            </Button>
+              {({ url, blob }) => (
+                <Button
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={
+                    <LocalPrintshopIcon
+                      className="icon"
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                      }}
+                    />
+                  }
+                  sx={{
+                    borderRadius: 5,
+                    border: "1px solid #FAF9FB",
+                    padding: "16px 40px",
+                    height: "56px",
+                    color: (theme) => theme.palette.common.white,
+                    backgroundColor: (theme) => theme.palette.primary.main,
+                    textDecoration: "none",
+                    "&:hover": {
+                      background: "#FAF9FB",
+                      "& >p": { color: "#324EBD" },
+                      "& .icon": { color: "#324EBD" },
+                    },
+                  }}
+                >
+                  <Typography>Друкувати</Typography>
+                </Button>
+              )}
+            </BlobProvider>
+
             <Button
               onClick={() => setIsEdit(!isEdit)}
               sx={{

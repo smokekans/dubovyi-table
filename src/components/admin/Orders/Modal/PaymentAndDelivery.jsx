@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 const keyMessages = {
-  payment: "Оплата",
+  paymentType: "Оплата",
   delivery: "Доставка",
   city: "Місто",
   address: "Адреса",
@@ -17,14 +17,15 @@ const keyMessages = {
 };
 
 const desiredOrder = [
-  "payment",
+  "paymentType",
   "delivery",
   "city",
   "address",
   "deliveryPrice",
 ];
 
-function PaymentAndDelivery({ formik }) {
+function PaymentAndDelivery({ paymentAndDeliveryDto }) {
+  debugger;
   return (
     <Box
       sx={{
@@ -59,7 +60,7 @@ function PaymentAndDelivery({ formik }) {
         }}
       >
         {desiredOrder.map((key) => {
-          if (keyMessages[key] && formik.values[key]) {
+          if (keyMessages[key] && paymentAndDeliveryDto[key]) {
             return (
               <ListItem
                 sx={{
@@ -89,7 +90,7 @@ function PaymentAndDelivery({ formik }) {
                   }}
                 />
                 <ListItemText
-                  primary={formik.values[key]}
+                  primary={paymentAndDeliveryDto[key]}
                   sx={{
                     flex: "none",
                   }}

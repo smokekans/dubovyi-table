@@ -191,7 +191,13 @@ function AddNewRow({ formik }) {
               {children}
             </Paper>
           )}
-          // style={{ "& .MuiAutocomplete-paper": { border: "1px solid #000" } }}
+          sx={{
+            display: !isDisplay ? "none" : null,
+            width: "300px",
+            borderRadius: "25px",
+            padding: "8px 16px",
+            border: "1px solid  #030C0D",
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -199,6 +205,10 @@ function AddNewRow({ formik }) {
               InputProps={{
                 ...params.InputProps,
                 endAdornment: null,
+                disableUnderline: true,
+                placeholder: "Стіл",
+                id: "name",
+                value: product?.productDto?.name,
               }}
             />
             // <Input

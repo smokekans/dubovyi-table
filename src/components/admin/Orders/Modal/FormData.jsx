@@ -14,17 +14,17 @@ import { BlobProvider } from "@react-pdf/renderer";
 function FormData({ row, handleClose, setOpen }) {
   const formik = useFormik({
     initialValues: {
-      firstName: row.userDto.firstName,
-      secondName: row.userDto.secondName,
-      phone: row.userDto.phone,
-      email: row.userDto.email,
-      products: row.productLinesDto,
+      firstName: row.user.firstName,
+      secondName: row.user.secondName,
+      phone: row.user.phone,
+      email: row.user.email,
+      products: row.productLines,
       totalPrice: row.totalPrice,
       totalPayment: row.totalPayment,
       comment: row.comment,
       paidStatus: row.paidStatus,
       orderId: row.id,
-      paymentAndDeliveryDto: row.paymentAndDeliveryDto,
+      paymentAndDelivery: row.paymentAndDelivery,
     },
     onSubmit: (values) => {
       console.log(values);
@@ -153,9 +153,10 @@ function FormData({ row, handleClose, setOpen }) {
             <CustomerData formik={formik} isEdit={isEdit} />
           </Grid>
           <Grid item xs={6}>
-            {/* <PaymentAndDelivery
-              paymentAndDeliveryDto={formik.values.paymentAndDeliveryDto}
-            /> */}
+            <PaymentAndDelivery
+              paymentAndDelivery={formik.values.paymentAndDelivery}
+              isEdit={isEdit}
+            />
           </Grid>
         </Grid>
 

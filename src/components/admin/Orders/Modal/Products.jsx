@@ -41,7 +41,7 @@ function Products({ formik, isEdit }) {
 
   const handleChangeTotal = (values, formik, index, quantity) => {
     const product = values.products[index];
-    const totalProductLine = quantity * product.productDto.price;
+    const totalProductLine = quantity * product.product.price;
 
     formik.setFieldValue(
       `products[${index}].totalProductLineAmount`,
@@ -156,8 +156,8 @@ function Products({ formik, isEdit }) {
                             </IconButton>
                             {index + 1}
                           </TableCell>
-                          <TableCell>{product.productDto.id}</TableCell>
-                          {ProductName(product.productDto)}
+                          <TableCell>{product.product.id}</TableCell>
+                          {ProductName(product.product)}
                           <TableCell>
                             <Input
                               type="number"
@@ -204,7 +204,7 @@ function Products({ formik, isEdit }) {
                               }}
                             />
                           </TableCell>
-                          <TableCell>{product.productDto.price}</TableCell>
+                          <TableCell>{product.product.price}</TableCell>
                           <TableCell>
                             {parseFloat(
                               product.totalProductLineAmount.toFixed(2)

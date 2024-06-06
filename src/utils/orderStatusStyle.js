@@ -2,8 +2,8 @@ export const getStatusStyles = (status) => {
   switch (status) {
     case "Нове":
       return {
-        background: "#324EBD",
-        color: "#FAF9FB",
+        background: "#FAF9FB",
+        color: "#030C0D",
       };
     case "Відправлене":
       return {
@@ -13,12 +13,12 @@ export const getStatusStyles = (status) => {
     case "Отримане":
       return {
         background: "#7CA75F",
-        color: "#030C0D",
+        color: "#FAF9FB",
       };
     case "Скасоване":
       return {
-        background: "rgba(209, 54, 52, 0.25)",
-        color: "#D13634",
+        background: "#D13634",
+        color: "#FAF9FB",
       };
     case "В обробці":
       return {

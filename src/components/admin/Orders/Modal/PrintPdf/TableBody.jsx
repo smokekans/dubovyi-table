@@ -24,21 +24,19 @@ const TableBody = ({ products }) => {
         </View>
         <View style={[styles.tbody, { textAlign: "center" }]}>
           {/* <Text>{product.productDto.id.replace(/^0+(?=\d)/, "")}</Text> */}
-          <Text>{product.productDto.id}</Text>
+          <Text>{product.product.id}</Text>
         </View>
         <View style={[styles.tbody, styles.tbody2]}>
-          <Text>{product.productDto.name} </Text>
+          <Text>{product.product.name} </Text>
         </View>
         <View style={[styles.tbody, { textAlign: "center" }]}>
           <Text>{product.quantity}</Text>
         </View>
         <View style={[styles.tbody, { textAlign: "center" }]}>
-          <Text>{product.productDto.price.toFixed(2)}</Text>
+          <Text>{product.product.price.toFixed(2)}</Text>
         </View>
         <View style={[styles.tbody, { textAlign: "center" }]}>
-          <Text>
-            {(product.productDto.price * product.quantity).toFixed(2)}
-          </Text>
+          <Text>{(product.product.price * product.quantity).toFixed(2)}</Text>
         </View>
       </View>
     </Fragment>

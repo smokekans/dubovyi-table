@@ -6,6 +6,9 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Autocomplete,
+  Paper,
+  TextField,
 } from "@mui/material";
 
 const keyMessages = {
@@ -13,7 +16,7 @@ const keyMessages = {
   delivery: "Доставка",
   city: "Місто",
   address: "Адреса",
-  deliveryPrice: "Сума за доставку",
+  deliveryFee: "Сума за доставку",
 };
 
 const desiredOrder = [
@@ -21,11 +24,16 @@ const desiredOrder = [
   "delivery",
   "city",
   "address",
-  "deliveryPrice",
+  "deliveryFee",
 ];
 
-function PaymentAndDelivery({ paymentAndDeliveryDto }) {
-  debugger;
+const options = [
+  { label: "При отриманні" },
+  { label: "Передплата" },
+  { label: "Оплачено карткою" },
+];
+
+function PaymentAndDelivery({ paymentAndDelivery, isEdit }) {
   return (
     <Box
       sx={{
@@ -60,7 +68,8 @@ function PaymentAndDelivery({ paymentAndDeliveryDto }) {
         }}
       >
         {desiredOrder.map((key) => {
-          if (keyMessages[key] && paymentAndDeliveryDto[key]) {
+          if (keyMessages[key] && paymentAndDelivery[key]) {
+            // debugger;
             return (
               <ListItem
                 sx={{
@@ -89,11 +98,76 @@ function PaymentAndDelivery({ paymentAndDeliveryDto }) {
                     alignSelf: "end",
                   }}
                 />
-                <ListItemText
-                  primary={paymentAndDeliveryDto[key]}
+                <Autocomplete
+                  id={keyMessages[key]}
+                  options={options}
+                  // open={options.length > 0}
+                  inputValue={paymentAndDelivery[key]}
+                  // onInputChange={(event, newValue) => handleSearch(event)}
+                  // getOptionLabel={(option) =>
+                  //   option && option[key] ? option[key] : ""
+                  // }
+                  getOptionLabel={(option) => option.label}
+                  PaperComponent={({ children }) => (
+                    <Paper
+                      style={{
+                        marginLeft: "-8px",
+                        marginTop: "9px",
+                        padding: "16px 24px",
+                        borderRadius: "0px 0px 5px 5px",
+                        borderRight: "1px solid #AAA",
+                        borderBottom: "1px solid  #AAA",
+                        borderLeft: "1px solid #AAA",
+                        boxShadow: "none",
+                        overflowY: "auto",
+                        gap: "8px",
+                        width: `${paymentAndDelivery[key].length * 10 - 15}px`,
+                      }}
+                    >
+                      {children}
+                    </Paper>
+                  )}
                   sx={{
-                    flex: "none",
+                    // display: !isEdit ? "none" : null,
+                    MaxWidth: "300px",
+                    // width: "200px",
+                    width: !isEdit
+                      ? `${paymentAndDelivery[key].length * 10}px`
+                      : `${paymentAndDelivery[key].length * 10 + 18}px`,
+                    border: "1px solid  #030C0D",
+                    borderRadius: !isEdit ? "0px" : "5px",
+                    border: !isEdit ? "none" : "1px solid #AAA",
+                    padding: !isEdit ? "0px" : "8px",
                   }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      InputProps={{
+                        ...params.InputProps,
+                        startAdornment: !isEdit
+                          ? null
+                          : params.InputProps.startAdornment,
+                        endAdornment: !isEdit
+                          ? null
+                          : params.InputProps.endAdornment,
+                        disableUnderline: true,
+                        id: keyMessages[key],
+                        value: paymentAndDelivery[key],
+                        sx: {
+                          padding: "0px !important",
+                          "& .MuiInput-root, .MuiInput-input": {
+                            padding: "0px !important",
+                          },
+                          "& .MuiSvgIcon-root": {
+                            fill: "black !important",
+                            width: "20px",
+                            // height: "4.7px",
+                          },
+                        },
+                      }}
+                    />
+                  )}
                 />
               </ListItem>
             );

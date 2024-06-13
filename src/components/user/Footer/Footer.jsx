@@ -130,16 +130,13 @@ function Footer() {
                   startIcon={item.icon}
                   sx={{
                     color: "#FFF",
-                    "&:hover": { background: "transparent" },
+                    "&:hover": { background: "transparent", color: "#2B9E7F" },
                     padding: 0,
                   }}
                 >
                   <Typography
                     sx={{
                       textTransform: "none",
-                      "&:hover": {
-                        color: "#2B9E7F",
-                      },
                     }}
                   >
                     {item.title}

@@ -1,13 +1,13 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
-import CalendarFiltration from "components/Filtration/Calendar/CalendarFiltration";
-import AutocompleteFiltration from "components/Filtration/Autocomplete/AutocompleteFiltration";
 import { useSelector } from "react-redux";
 import { getEnums } from "redux/enums/enumsSelectors";
-import { fields } from "utils/fields";
-import CheckboxFiltration from "components/Filtration/Checkbox/CheckboxFiltration";
-import InputFiltration from "components/Filtration/Intup/InputFiltration";
 import { styles } from "./Intup/InputFiltration.styles";
+import CheckboxFiltration from "./Checkbox/CheckboxFiltration";
+import InputFiltration from "./Intup/InputFiltration";
+import { fields } from "utils/fields";
+import CalendarFiltration from "./Calendar/CalendarFiltration";
+import AutocompleteFiltration from "./Autocomplete/AutocompleteFiltration";
 
 export default function Filtration({ setActiveFiltration, formik }) {
   const enums = useSelector(getEnums);

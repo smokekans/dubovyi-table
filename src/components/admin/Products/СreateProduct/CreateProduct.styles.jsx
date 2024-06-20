@@ -38,9 +38,26 @@ export const styles = {
     ".MuiInputBase-root": {
       px: 4,
       py: 4,
+      pr: "16px !important",
     },
     ".MuiInputBase-input": {
       height: "100px",
+      overflowY: "scroll",
+      "&::-webkit-scrollbar": {
+        width: "8px",
+      },
+      "&::-webkit-scrollbar-track": {
+        background: "transparent",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        background: "#D9D9D9",
+        borderRadius: 1,
+        cursor: "pointer",
+      },
+      "&::-webkit-scrollbar-thumb:hover": {
+        cursor: "pointer",
+        background: "#AAA",
+      },
     },
     mt: "39px",
     "& .MuiOutlinedInput-root, .MuiInputBase-inputMultiline": {

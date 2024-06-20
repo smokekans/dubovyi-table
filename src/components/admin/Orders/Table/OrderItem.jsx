@@ -6,6 +6,7 @@ import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+import ViewDetails from "../Modal/ViewDetails";
 
 const getStatusStyles = (status) => {
   switch (status) {
@@ -41,7 +42,7 @@ const getStatusStyles = (status) => {
 
 function OrderItem(props) {
   const { row, setSelected, selected, index, handleDelete } = props;
-  const [setOpenDetails] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
 
   const statusStyles = getStatusStyles(row.status);
 
@@ -129,7 +130,7 @@ function OrderItem(props) {
             borderBottom: (theme) => `2px solid ${theme.palette.primary.light}`,
           }}
         >
-          {row.orderDate}
+          {row.creationDate}
         </TableCell>
         <TableCell
           sx={{
@@ -188,13 +189,13 @@ function OrderItem(props) {
         </TableCell>
       </TableRow>
 
-      {/* {openDetails ? (
-        <DetailsModal
+      {openDetails ? (
+        <ViewDetails
           openDetails={openDetails}
           setOpenDetails={setOpenDetails}
           row={row}
         />
-      ) : null} */}
+      ) : null}
     </>
   );
 }

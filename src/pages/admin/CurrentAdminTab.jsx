@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { items } from "../../components/Sidebar/config";
+import { items } from "../../components/admin/Sidebar/config";
 
 export default function CurrentAdminTab() {
   const location = useLocation();

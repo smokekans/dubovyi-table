@@ -11,7 +11,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import TablePaginationActions from "components/Pagination/TablePaginationActions";
+import TablePaginationActions from "components/admin/Pagination/TablePaginationActions";
 import Head from "./Head";
 import OrderItem from "./OrderItem";
 import {
@@ -19,7 +19,7 @@ import {
   getAllOrdersForSelect,
   getOrderList,
 } from "services/fetchOrdersData";
-import Loader from "components/Loader/Loader";
+import Loader from "components/admin/Loader/Loader";
 import EmptyTableRow from "./EmptyTableRow";
 import { ROWS_PER_PAGE } from "utils/constans";
 

@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
-import Header from "../Header/Header";
 import { Suspense } from "react";
 import Loader from "../Loader/Loader";
+import Header from "../Header/Header";
 
 export default function SharedLayout() {
   return (

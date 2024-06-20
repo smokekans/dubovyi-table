@@ -1,6 +1,6 @@
 import { Container, Box, AppBar, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import logo from "../../img/logo-wood-crafts.png";
+import logo from "../../../img/logo-wood-crafts.png";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 export default function Header() {

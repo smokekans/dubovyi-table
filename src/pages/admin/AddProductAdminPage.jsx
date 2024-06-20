@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import FormCreateProduct from "components/СreateProduct/FormCreateProduct";
+import FormCreateProduct from "components/admin/Products/СreateProduct/FormCreateProduct";
 
 export default function AddProductAdminPage() {
   return (

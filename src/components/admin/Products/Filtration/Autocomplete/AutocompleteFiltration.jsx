@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { styles } from "components/Filtration/Autocomplete/AutocompleteFiltration.styles";
+import { styles } from "components/admin/Products/Filtration/Autocomplete/AutocompleteFiltration.styles";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 
@@ -49,17 +49,6 @@ export default function AutocompleteFiltration({ fields, formik, options }) {
             name={fields.name}
             focused
             placeholder={fields.placeholder}
-            // InputProps={{
-            //   ...params.InputProps,
-            //   endAdornment: (
-            //     <>
-            //       {params.InputProps.endAdornment}
-            //       <CheckBoxOutlineBlankOutlinedIcon
-            //         sx={{ overflow: "hidden" }}
-            //       />
-            //     </>
-            //   ),
-            // }}
             sx={styles.textField}
           />
         )}

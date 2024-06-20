@@ -15,7 +15,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useDispatch } from "react-redux";
 import { getEnumsList } from "redux/enums/enumsOperations";
-import Filtration from "components/Filtration/Filtration";
+import Filtration from "components/admin/Products/Filtration/Filtration";
 import SearchIcon from "@mui/icons-material/Search";
 import ProductList from "components/admin/Products/ProductList";
 import {
@@ -24,12 +24,12 @@ import {
   getProductList,
 } from "services/fetchProductsData";
 import { ROWS_PER_PAGE } from "utils/constans";
-import FiltrationDisplay from "components/Filtration/FiltrationDisplay";
 import { useSelector } from "react-redux";
 import { getEnums } from "redux/enums/enumsSelectors";
 import { useFormik } from "formik";
-import { FiltrationSchema } from "components/Filtration/FiltrationSchema";
 import dayjs from "dayjs";
+import { FiltrationSchema } from "components/admin/Products/Filtration/FiltrationSchema";
+import FiltrationDisplay from "components/admin/Products/Filtration/FiltrationDisplay";
 
 export default function ProductsAdminPage() {
   const [activeFiltration, setActiveFiltration] = useState(false);

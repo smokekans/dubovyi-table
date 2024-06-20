@@ -1,3 +1,3 @@
 export default function AssortmentPage() {
-  <>AssortmentPage</>;
+  return <>AssortmentPage</>;
 }

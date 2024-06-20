@@ -18,15 +18,15 @@ import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getEnums } from "redux/enums/enumsSelectors";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import UniversalSelectAddProduct from "components/СreateProduct/Autocompete/UniversalSelectAddProduct";
-import UniversalInputAddProduct from "components/СreateProduct/Input/UniversalIntupAddProduct";
+import UniversalSelectAddProduct from "components/admin/Products/СreateProduct/Autocompete/UniversalSelectAddProduct";
+import UniversalInputAddProduct from "components/admin/Products/СreateProduct/Input/UniversalIntupAddProduct";
 import {
   createProduct,
   getProductById,
   updateProduct,
   deleteProduct,
 } from "services/fetchProductsData";
-import Loader from "components/Loader/Loader";
+import Loader from "components/admin/Loader/Loader";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);

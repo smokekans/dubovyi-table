@@ -19,6 +19,7 @@ function Category() {
     <>
       <Box
         sx={{
+          maxWidth: "257px",
           margin: "0 auto",
           "&:hover": {
             cursor: "pointer",
@@ -68,6 +69,7 @@ function Category() {
       >
         <Box
           sx={{
+            maxWidth: "300px",
             "&:hover": {
               cursor: "pointer",
               "& h2": { color: "#1C7F66" },

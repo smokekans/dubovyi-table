@@ -14,7 +14,7 @@ function Footer() {
       sx={{
         height: "384px",
         background: "#0E352D",
-        marginTop: "100px",
+        marginTop: "72px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

@@ -13,10 +13,12 @@ function Header() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        position: "sticky",
+        position: "fixed",
+        top: 0,
+        zIndex: 1000,
+        width: "100%",
         background: "#FFF",
         height: "101px",
-        marginTop: "100px",
       }}
     >
       <Link to="">

@@ -231,6 +231,7 @@ function Navigation() {
                   height: "230px",
                   width: "251px",
                   objectFit: "cover",
+                  objectPosition: "bottom",
                 }}
               />
             </Box>

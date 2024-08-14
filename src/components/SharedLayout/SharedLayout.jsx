@@ -18,14 +18,8 @@ export default function SharedLayout() {
         )]: {
           width: "100%",
         },
-        [theme.breakpoints.up(theme.breakpoints.values.maxMobile)]: {
-          width: (theme) => theme.breakpoints.values.maxMobile,
-        },
-        [theme.breakpoints.up(theme.breakpoints.values.tablet)]: {
-          width: (theme) => theme.breakpoints.values.tablet,
-        },
         [theme.breakpoints.up(theme.breakpoints.values.desktop)]: {
-          width: (theme) => theme.breakpoints.values.desktop,
+          maxWidth: (theme) => theme.breakpoints.values.desktop,
         },
         mx: "auto",
         pb: 6,

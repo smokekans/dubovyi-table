@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../../img/logo-wood-crafts.png";
@@ -18,7 +18,8 @@ function HeaderUser() {
         top: 0,
         zIndex: 1000,
         width: "100%",
-        background: "#FFF",
+        maxWidth: (theme) => theme.breakpoints.values.desktop,
+        background: "#fff",
         height: "101px",
       }}
     >

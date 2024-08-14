@@ -10,7 +10,6 @@ export default function HomePage() {
   return (
     <Box sx={{ textAlign: "center" }}>
       <Header />
-      Вас вітає WOOD CRAFTS
       <Slider />
       <Category />
       <Footer />

@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import logo from "../../../img/logo-wood-crafts.png";
 import Navigation from "./Navigation";
 import SearchInput from "./SearchInput";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 
-function Header() {
+function HeaderUser() {
   return (
     <Box
       component="header"
@@ -16,7 +17,6 @@ function Header() {
         position: "sticky",
         background: "#FFF",
         height: "101px",
-        marginTop: "100px",
       }}
     >
       <Link to="">
@@ -30,8 +30,11 @@ function Header() {
 
       <SearchInput />
       <Navigation />
+      <Link to="/authorization">
+        <BusinessCenterOutlinedIcon />
+      </Link>
     </Box>
   );
 }
 
-export default Header;
+export default HeaderUser;

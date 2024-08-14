@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -34,7 +35,7 @@ function Copyright(props) {
 
 export default function AuthPage() {
   const [authLog, setAuthLog] = React.useState(true);
-
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -98,6 +99,7 @@ export default function AuthPage() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={() => navigate("/admin/products")}
               >
                 Sign In
               </Button>
@@ -192,6 +194,7 @@ export default function AuthPage() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={() => navigate("/admin/products")}
               >
                 Sign Up
               </Button>

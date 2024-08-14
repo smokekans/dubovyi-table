@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
-  Button,
   Input,
   Paper,
   Table,
@@ -10,7 +9,6 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
-import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import TablePaginationActions from "components/admin/Pagination/TablePaginationActions";
 import Head from "./Table/Head";
 import ProductItem from "./ProductItem";
@@ -22,6 +20,7 @@ import {
 import EmptyTableRow from "./EmptyTableRow";
 import { ROWS_PER_PAGE } from "utils/constans";
 import Loader from "components/admin/Loader/Loader";
+import Export from "./Export/Export";
 
 function ProductList(props) {
   const {
@@ -148,14 +147,6 @@ function ProductList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsdata, order, orderBy]);
 
-  const handleExportSelectedItems = () => {
-    // const data = [
-    //   ["name", "age"],
-    //   ["my", 22],
-    //   ["you", 21],
-    // ];
-  };
-
   return (
     <Box sx={{ width: "100%", marginTop: "60px" }}>
       <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }}>
@@ -199,34 +190,7 @@ function ProductList(props) {
             </>
           )}
         </TableContainer>
-        <Button
-          disabled={!selected.length > 0}
-          startIcon={
-            <FileUploadOutlinedIcon sx={{ width: "24px", height: "24px" }} />
-          }
-          onClick={handleExportSelectedItems}
-          sx={{
-            mt: 4,
-            p: "18px 40px",
-            borderRadius: 5,
-            height: "56px",
-            backgroundColor: (theme) => theme.palette.primary.main,
-            textDecoration: "none",
-            color: (theme) => theme.palette.common.white,
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: (theme) => theme.palette.common.white,
-              color: (theme) => theme.palette.primary.main,
-              border: (theme) => `1px solid ${theme.palette.primary.main}`,
-            },
-            "&:disabled": {
-              backgroundColor: (theme) => theme.palette.common.gray,
-              color: (theme) => theme.palette.common.white,
-            },
-          }}
-        >
-          Експортувати
-        </Button>
+        <Export selected />
         <Box
           sx={{
             display: "flex",

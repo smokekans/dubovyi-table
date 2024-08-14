@@ -1,9 +1,10 @@
 import { Container, Box, AppBar, Typography, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../img/logo-wood-crafts.png";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-export default function Header() {
+export default function HeaderAdmin() {
+  const navigate = useNavigate();
   return (
     <AppBar
       position="fixed"
@@ -22,8 +23,8 @@ export default function Header() {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          px: 5,
           alignItems: "center",
+          maxWidth: "1280px",
         }}
       >
         <Link to="/">
@@ -68,6 +69,7 @@ export default function Header() {
               backgroundColor: (theme) => theme.palette.secondary.dark,
             },
           }}
+          onClick={() => navigate("/")}
         >
           Вихід
         </Button>

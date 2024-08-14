@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/173.ecd66a8c.chunk.js","mappings":"qJAAe,SAASA,IACtB,OAAOC,EAAAA,EAAAA,KAAAC,EAAAA,SAAA,CAAAC,SAAE,kBACX,C","sources":["pages/user/AssortmentPage.jsx"],"sourcesContent":["export default function AssortmentPage() {\n  return <>AssortmentPage</>;\n}\n"],"names":["AssortmentPage","_jsx","_Fragment","children"],"sourceRoot":""}

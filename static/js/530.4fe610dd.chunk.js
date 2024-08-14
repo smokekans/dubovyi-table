@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkwood_crafts=self.webpackChunkwood_crafts||[]).push([[530],{1530:(e,t,a)=>{a.r(t),a.d(t,{default:()=>r});var n=a(7689),c=a(1621);function r(){const e=(0,n.TH)().pathname.replace(/^\/admin\//,"");return c.e.find((t=>t.path===e)).content}}}]);
+//# sourceMappingURL=530.4fe610dd.chunk.js.map

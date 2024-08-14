@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkwood_crafts=self.webpackChunkwood_crafts||[]).push([[173],{5173:(e,r,s)=>{s.r(r),s.d(r,{default:()=>a});var t=s(3329);function a(){return(0,t.jsx)(t.Fragment,{children:"AssortmentPage"})}}}]);
+//# sourceMappingURL=173.ecd66a8c.chunk.js.map

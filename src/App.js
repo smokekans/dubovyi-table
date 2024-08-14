@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import SharedLayout from "./components/admin/SharedLayout/SharedLayout";
+import SharedLayout from "./components/SharedLayout/SharedLayout";
 const HomePage = React.lazy(() => import("./pages/user/HomePage"));
 const AssortmentPage = React.lazy(() => import("./pages/user/AssortmentPage"));
 const AuthPage = React.lazy(() => import("./pages/admin/AuthPage"));

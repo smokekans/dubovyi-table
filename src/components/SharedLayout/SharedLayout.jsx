@@ -1,10 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Box } from "@mui/material";
 import { Suspense } from "react";
-import Loader from "../Loader/Loader";
-import Header from "../Header/Header";
+import Loader from "components/admin/Loader/Loader";
+import HeaderAdmin from "components/admin/Header/Header";
+import HeaderUser from "components/user/Header/Header";
 
 export default function SharedLayout() {
+  const location = useLocation();
+  const adminPage = location.pathname.includes("/admin");
+
   return (
     <Box
       sx={(theme) => ({
@@ -14,20 +18,14 @@ export default function SharedLayout() {
         )]: {
           width: "100%",
         },
-        [theme.breakpoints.up(theme.breakpoints.values.maxMobile)]: {
-          width: (theme) => theme.breakpoints.values.maxMobile,
-        },
-        [theme.breakpoints.up(theme.breakpoints.values.tablet)]: {
-          width: (theme) => theme.breakpoints.values.tablet,
-        },
         [theme.breakpoints.up(theme.breakpoints.values.desktop)]: {
-          width: (theme) => theme.breakpoints.values.desktop,
+          maxWidth: (theme) => theme.breakpoints.values.desktop,
         },
         mx: "auto",
         pb: 6,
       })}
     >
-      <Header />
+      {adminPage ? <HeaderAdmin /> : <HeaderUser />}
       <Box
         component="main"
         sx={{

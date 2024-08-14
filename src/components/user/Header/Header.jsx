@@ -1,11 +1,12 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../../img/logo-wood-crafts.png";
 import Navigation from "./Navigation";
 import SearchInput from "./SearchInput";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 
-function Header() {
+function HeaderUser() {
   return (
     <Box
       component="header"
@@ -17,7 +18,8 @@ function Header() {
         top: 0,
         zIndex: 1000,
         width: "100%",
-        background: "#FFF",
+        maxWidth: (theme) => theme.breakpoints.values.desktop,
+        background: "#fff",
         height: "101px",
       }}
     >
@@ -32,8 +34,11 @@ function Header() {
 
       <SearchInput />
       <Navigation />
+      <Link to="/authorization">
+        <BusinessCenterOutlinedIcon />
+      </Link>
     </Box>
   );
 }
 
-export default Header;
+export default HeaderUser;

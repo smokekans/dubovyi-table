@@ -21,6 +21,7 @@ function CategoryCard({ item }) {
         }}
       >
         <CardHeader
+          style={{ padding: "0px" }}
           title={
             <Typography
               variant="h4"
@@ -39,7 +40,11 @@ function CategoryCard({ item }) {
           height="335px"
           image={table}
           alt="Paella dish"
-          sx={{ transition: "width 0.3s ease-in-out" }}
+          sx={{
+            transition: "width 0.3s ease-in-out",
+            marginTop: "16px",
+            objectPosition: "bottom",
+          }}
         />
       </Card>
     </Link>

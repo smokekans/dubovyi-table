@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal } from "@mui/material";
-import { getStatusStyles } from "utils/orderStatusStyle";
+// import { getStatusStyles } from "utils/orderStatusStyle";
 import { Formik } from "formik";
 import FormData from "./FormData";
 import BasicModal from "components/admin/Products/Modal/DeleteModal/BasicModal";
@@ -9,7 +9,7 @@ function ViewDetails(props) {
   const { openDetails, setOpenDetails, row } = props;
   const [open, setOpen] = useState(false);
 
-  const statusStyles = getStatusStyles(row.status);
+  // const statusStyles = getStatusStyles(row.status);
 
   const handleClose = () => {
     setOpenDetails(false);

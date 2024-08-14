@@ -8,9 +8,6 @@ import {
   Autocomplete,
   TextField,
   Paper,
-  List,
-  ListItem,
-  ListItemText,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import useDebounce from "hook/useDebounce";
@@ -21,7 +18,7 @@ function AddNewRow({ formik }) {
   const [isDisplay, setIsDisplay] = useState(false);
   const [searchTerm, setSearchTerm] = useState({ key: "", value: "" });
   const [options, setOptions] = useState([]);
-  const [error, setError] = useState();
+  const [setError] = useState();
   const [product, setProduct] = useState({
     orderId: values.orderId,
     productDto: {},

@@ -134,7 +134,7 @@ function PaymentAndDelivery({ paymentAndDelivery, isEdit }) {
                     width: !isEdit
                       ? `${paymentAndDelivery[key].length * 10}px`
                       : `${paymentAndDelivery[key].length * 10 + 18}px`,
-                    border: "1px solid  #030C0D",
+                    // border: "1px solid  #030C0D",
                     borderRadius: !isEdit ? "0px" : "5px",
                     border: !isEdit ? "none" : "1px solid #AAA",
                     padding: !isEdit ? "0px" : "8px",

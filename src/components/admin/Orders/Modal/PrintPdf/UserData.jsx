@@ -3,7 +3,6 @@ import { Line, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
-    alignItems: "center",
     marginBottom: 10,
     alignItems: "center",
     // justifyContent: "space-between",

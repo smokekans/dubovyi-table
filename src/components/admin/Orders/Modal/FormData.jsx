@@ -43,6 +43,7 @@ function FormData({ row, handleClose, setOpen }) {
 
   useEffect(() => {
     getTotalAmount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.totalPrice, formik.values.totalPayment]);
 
   const getTotalAmount = () => {

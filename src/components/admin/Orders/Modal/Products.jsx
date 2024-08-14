@@ -28,6 +28,7 @@ function Products({ formik, isEdit }) {
 
   useEffect(() => {
     handleChangeTotalPrice(values, formik);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.products]);
 
   const handleChangeTotalPrice = (values, formik) => {

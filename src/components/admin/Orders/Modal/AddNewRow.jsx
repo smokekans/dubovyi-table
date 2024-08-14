@@ -76,6 +76,7 @@ function AddNewRow({ formik }) {
         abortControllerRef.current.abort();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   const handleAddNewProductRow = () => {

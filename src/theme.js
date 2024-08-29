@@ -4,9 +4,11 @@ const theme = createTheme({
   breakpoints: {
     values: {
       mobile: 320,
+      mobileMain: 375,
       maxMobile: 480,
       tablet: 768,
       desktop: 1280,
+      maxDesktop: 1440,
     },
   },
   palette: {
@@ -340,7 +342,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "input:-webkit-autofill": {
-            "-webkit-background-clip": "text !important",
+            "WebkitBackgroundClip": "text !important",
           },
           "&.MuiOutlinedInput-root": {
             paddingRight: 0,

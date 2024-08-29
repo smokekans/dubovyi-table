@@ -10,21 +10,22 @@ export default function SharedLayout() {
   const adminPage = location.pathname.includes("/admin");
 
   return (
-    <Box
-      sx={(theme) => ({
-        [theme.breakpoints.between(
-          theme.breakpoints.values.mobile,
-          theme.breakpoints.values.maxMobile
-        )]: {
-          width: "100%",
-        },
-        [theme.breakpoints.up(theme.breakpoints.values.desktop)]: {
-          maxWidth: (theme) => theme.breakpoints.values.desktop,
-        },
-        mx: "auto",
-        pb: 6,
-      })}
-    >
+    // <Box
+    //   sx={(theme) => ({
+    //     [theme.breakpoints.between(
+    //       theme.breakpoints.values.mobile,
+    //       theme.breakpoints.values.maxMobile
+    //     )]: {
+    //       width: "100%",
+    //     },
+    //     [theme.breakpoints.up(theme.breakpoints.values.desktop)]: {
+    //       maxWidth: (theme) => theme.breakpoints.values.desktop,
+    //     },
+    //     mx: "auto",
+    //     pb: 6,
+    //   })}
+    // >
+    <>
       {adminPage ? <HeaderAdmin /> : <HeaderUser />}
       <Box
         component="main"
@@ -36,6 +37,7 @@ export default function SharedLayout() {
           <Outlet />
         </Suspense>
       </Box>
-    </Box>
+    </>
+    // </Box>
   );
 }

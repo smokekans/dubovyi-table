@@ -1,15 +1,24 @@
-import { Card, CardHeader, CardMedia, Typography } from "@mui/material";
+import {
+  Card,
+  CardHeader,
+  CardMedia,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import table from "../../../img/table.png";
 
 function CategoryCard({ item }) {
+  const isMobile = useMediaQuery(`(max-width:834px)`);
+  const isTablet = useMediaQuery(`(max-width:1279px)`);
+
   return (
     <Link to="#" style={{ textDecoration: "none" }}>
       <Card
         variant="outlined"
         sx={{
-          width: "409px",
+          width: isMobile ? "100%" : isTablet ? "100%" : "449px",
           maxHeight: "380px",
           borderRadius: 0,
           border: "none",
@@ -44,6 +53,7 @@ function CategoryCard({ item }) {
             transition: "width 0.3s ease-in-out",
             marginTop: "16px",
             objectPosition: "bottom",
+            height: "335px",
           }}
         />
       </Card>

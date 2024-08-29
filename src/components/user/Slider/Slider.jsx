@@ -1,42 +1,71 @@
-import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, useMediaQuery } from "@mui/material";
 import { slides } from "utils/constans";
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  console.log("hi");
+  const isMobile = useMediaQuery(`(max-width:834px)`);
+  const isTablet = useMediaQuery(`(max-width:1279px)`);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prevSlide) =>
+        prevSlide === slides.length - 1 ? 0 : prevSlide + 1
+      );
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSelectSlide = (index) => {
     setCurrentSlide(index);
   };
+
   return (
-    <Box sx={{ position: "relative", width: "100%", overflow: "hidden" }}>
-      {slides.map((slide, index) => (
-        <Box
-          key={slide.id}
-          sx={{
-            display: currentSlide === index ? "block" : "none",
-            textAlign: "center",
-          }}
-        >
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        overflow: "hidden",
+        // paddingX: isTablet ? 0 : "30px",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          transition: "transform 1s ease-in-out",
+          transform: `translateX(-${currentSlide * 100}%)`,
+        }}
+      >
+        {slides.map((slide) => (
           <Box
-            component="img"
+            key={slide.id}
             sx={{
-              width: "100%",
-              maxHeight: "385px",
-              objectFit: "cover",
-              mt: "145px",
+              minWidth: "100%",
+              textAlign: "center",
             }}
-            src={slide.imageUrl}
-            alt={slide.title}
-          />
-        </Box>
-      ))}
+          >
+            <Box
+              component="img"
+              sx={{
+                width: "100%",
+                maxWidth: isMobile ? "480px" : "100%",
+                height: isMobile ? "180px" : "385px",
+                maxHeight: isMobile ? "232px" : "385px",
+                objectFit: "fill",
+                mt: isMobile ? "132px" : "145px",
+              }}
+              src={slide.imageUrl}
+              alt={slide.title}
+            />
+          </Box>
+        ))}
+      </Box>
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
-          mt: "24px",
+          mt: isMobile ? "26px" : isTablet ? "26px" : "24px",
         }}
       >
         {slides.map((_, index) => (

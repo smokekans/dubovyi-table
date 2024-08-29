@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import CategoryCard from "./CategoryCard";
 
@@ -15,11 +15,20 @@ const category = [
 ];
 
 function Category() {
+  const isMobile = useMediaQuery(`(max-width:834px)`);
+  const isTablet = useMediaQuery(`(min-width:835px) and (max-width:1279px)`);
+  const isDesktop = useMediaQuery(`(min-width:1280px)`);
+
   return (
-    <>
+    <Box
+      sx={{
+        margin: "0 auto",
+        paddingX: isMobile ? "16px" : "30px",
+        maxWidth: "100%",
+      }}
+    >
       <Box
         sx={{
-          maxWidth: "257px",
           margin: "0 auto",
           "&:hover": {
             cursor: "pointer",
@@ -30,7 +39,11 @@ function Category() {
       >
         <Typography
           variant="h2"
-          sx={{ fontFamily: "Ruda", fontSize: "48px", marginTop: "100px" }}
+          sx={{
+            fontFamily: "Ruda",
+            fontSize: isMobile ? "32px" : "48px",
+            marginTop: isMobile ? "72px" : isTablet ? "72px" : "100px",
+          }}
         >
           Категорії
         </Typography>
@@ -46,22 +59,35 @@ function Category() {
 
       <Grid
         container
-        rowSpacing={4}
-        columnSpacing={2}
-        columns={{ xs: 12, sm: 6, md: 4 }}
-        sx={{ marginTop: "32px" }}
+        rowSpacing={2}
+        // columnSpacing={{ xs: 2, sm: 2, md: 3 }}
+        sx={{ marginTop: "16px", width: "100%", gap: "16px" }}
       >
         {category.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
+          <Grid
+            item
+            // xs={12}
+            // sm={6}
+            // md={4}
+            key={index}
+            sx={{
+              ...(isTablet &&
+                !isDesktop &&
+                index === category.length - 1 && {
+                  gridColumn: "span 12", // Последняя карточка на планшете занимает весь ряд
+                }),
+              flexGrow: 1,
+            }}
+          >
             <CategoryCard item={item} />
           </Grid>
         ))}
       </Grid>
+
       <Box
         sx={{
           margin: "0 auto",
           marginTop: "96px",
-          width: "714px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -69,7 +95,6 @@ function Category() {
       >
         <Box
           sx={{
-            maxWidth: "300px",
             "&:hover": {
               cursor: "pointer",
               "& h2": { color: "#1C7F66" },
@@ -79,7 +104,7 @@ function Category() {
         >
           <Typography
             variant="h2"
-            sx={{ fontFamily: "Ruda", fontSize: "48px" }}
+            sx={{ fontFamily: "Ruda", fontSize: isMobile ? "32px" : "48px" }}
           >
             Ручна робота
           </Typography>
@@ -93,7 +118,12 @@ function Category() {
           />
         </Box>
         <Typography
-          sx={{ fontFamily: "Ruda", textAlign: "center", marginTop: "24px" }}
+          sx={{
+            fontFamily: "Ruda",
+            textAlign: "center",
+            marginTop: "24px",
+            fontSize: isMobile ? "14px" : "16px",
+          }}
         >
           Наші дерев'яні меблі ручної роботи створені з міцних та натуральних
           матеріалів, що робить їх ідеальними для створення екологічно чистого
@@ -106,7 +136,7 @@ function Category() {
           не лише приваблює гостей, але й піклується про наше спільне майбутнє.
         </Typography>
       </Box>
-    </>
+    </Box>
   );
 }
 

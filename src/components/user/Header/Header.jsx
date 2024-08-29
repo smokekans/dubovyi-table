@@ -17,9 +17,28 @@ function HeaderUser() {
   return (
     <Box
       component="header"
+      // <<<<<<< HEAD
+      // sx={(theme) => ({
+      //   [theme.breakpoints.between(
+      //     theme.breakpoints.values.mobile,
+      //     theme.breakpoints.values.maxMobile
+      //   )]: {
+      //     width: "100%",
+      //   },
+      //   [theme.breakpoints.up(theme.breakpoints.values.desktop)]: {
+      //     width: (theme) => theme.breakpoints.values.desktop,
+      //     maxWidth: (theme) => theme.breakpoints.values.desktop,
+      //   },
+      //   mx: "auto",
+      //   display: "flex",
+      //   alignItems: "center",
+      //   justifyContent: "space-between",
+      // position: "fixed",
+      // =======
       sx={{
         position: "fixed",
         top: 0,
+        left: 0,
         zIndex: 1000,
         width: "100%",
         background: "#fff",
@@ -56,12 +75,10 @@ function HeaderUser() {
 
         {!isMobile && <SearchInput setNavMenuOpen={setNavMenuOpen} />}
         <Navigation isNavVisible={navMenuOpen} />
+        {/* <Link to="/authorization">
+          <BusinessCenterOutlinedIcon />
+        </Link> */}
       </Box>
-      {/* 
-      <Link to="/authorization">
-        <BusinessCenterOutlinedIcon />
-      </Link>
-      */}
     </Box>
   );
 }

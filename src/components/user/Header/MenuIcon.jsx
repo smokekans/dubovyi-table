@@ -1,0 +1,24 @@
+function MenuIcon() {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="icons (&#209;&#129;&#209;&#130;&#208;&#176;&#208;&#189;&#208;&#184;)">
+        <path
+          id="Vector"
+          d="M1 6H26M1 14.3333H26M1 22.6667H26"
+          stroke="#145144"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    </svg>
+  );
+}
+
+export default MenuIcon;

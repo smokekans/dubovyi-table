@@ -4,7 +4,12 @@ import Slider from "components/user/Slider/Slider";
 
 export default function HomePage() {
   return (
-    <Box sx={{ textAlign: "center" }}>
+    <Box
+      sx={{
+        textAlign: "center",
+        margin: "auto 0",
+      }}
+    >
       <Slider />
       <Category />
     </Box>

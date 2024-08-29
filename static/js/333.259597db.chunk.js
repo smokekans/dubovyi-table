@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkwood_crafts=self.webpackChunkwood_crafts||[]).push([[333],{333:(t,e,r)=>{r.r(e),r.d(e,{default:()=>u});var s=r(4554),c=r(890),a=r(3329);function u(){return(0,a.jsxs)(s.Z,{sx:{mt:"150px"},children:["ProductPage",(0,a.jsx)(c.Z,{variant:"h1",children:"Test text product"})]})}}}]);
+//# sourceMappingURL=333.259597db.chunk.js.map

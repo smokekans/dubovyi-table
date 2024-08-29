@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkwood_crafts=self.webpackChunkwood_crafts||[]).push([[173],{5173:(s,t,r)=>{r.r(t),r.d(t,{default:()=>n});var e=r(4554),c=r(1087),o=r(3329);function n(){return(0,o.jsxs)(e.Z,{sx:{mt:"120px"},children:["AssortmentPage",(0,o.jsx)(c.rU,{to:"/assortment/product",children:"Test product"})]})}}}]);
+//# sourceMappingURL=173.9d5c1e6a.chunk.js.map

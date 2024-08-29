@@ -46,7 +46,6 @@ function HeaderUser() {
         boxSizing: "border-box",
         overflowX: "hidden",
       }}
-      stickyHeader
     >
       <Box
         sx={{
@@ -76,12 +75,10 @@ function HeaderUser() {
 
         {!isMobile && <SearchInput setNavMenuOpen={setNavMenuOpen} />}
         <Navigation isNavVisible={navMenuOpen} />
+        {/* <Link to="/authorization">
+          <BusinessCenterOutlinedIcon />
+        </Link> */}
       </Box>
-      {/* 
-      <Link to="/authorization">
-        <BusinessCenterOutlinedIcon />
-      </Link>
-      */}
     </Box>
   );
 }

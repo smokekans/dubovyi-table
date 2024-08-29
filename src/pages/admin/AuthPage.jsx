@@ -27,7 +27,7 @@ export default function AuthPage() {
   return (
     <Box
       sx={{
-        m: "80px 0 160px",
+        m: "160px 0 160px",
       }}
     >
       {authLog ? (

@@ -1,6 +1,7 @@
 import { Box, Divider, Grid, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import CategoryCard from "./CategoryCard";
+import { Link } from "react-router-dom";
 
 const category = [
   "Столи",
@@ -45,7 +46,7 @@ function Category() {
             marginTop: isMobile ? "72px" : isTablet ? "72px" : "100px",
           }}
         >
-          Категорії
+          <Link to="/assortment">Категорії</Link>
         </Typography>
         <Divider
           sx={{

@@ -5,16 +5,12 @@ import { persistor, store } from "./redux/store";
 import App from "./App";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter } from "react-router-dom";
-import theme from "./theme";
-import { ThemeProvider } from "@mui/material";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter basename="/wood-crafts">
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
+        <App />
       </BrowserRouter>
     </PersistGate>
   </Provider>

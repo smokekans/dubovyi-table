@@ -10,18 +10,29 @@ function HeaderUser() {
   return (
     <Box
       component="header"
-      sx={{
+      sx={(theme) => ({
+        [theme.breakpoints.between(
+          theme.breakpoints.values.mobile,
+          theme.breakpoints.values.maxMobile
+        )]: {
+          width: "100%",
+        },
+        [theme.breakpoints.up(theme.breakpoints.values.desktop)]: {
+          width: (theme) => theme.breakpoints.values.desktop,
+          maxWidth: (theme) => theme.breakpoints.values.desktop,
+        },
+        mx: "auto",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        position: "fixed",
+        // position: "fixed",
         top: 0,
+        left: 0,
         zIndex: 1000,
-        width: "100%",
-        maxWidth: (theme) => theme.breakpoints.values.desktop,
         background: "#fff",
         height: "101px",
-      }}
+      })}
+      stickyHeader
     >
       <Link to="">
         <Box

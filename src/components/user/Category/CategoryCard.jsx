@@ -12,9 +12,13 @@ import table from "../../../img/table.png";
 function CategoryCard({ item }) {
   const isMobile = useMediaQuery(`(max-width:834px)`);
   const isTablet = useMediaQuery(`(max-width:1279px)`);
+  const { id, name } = item;
 
   return (
-    <Link to="#" style={{ textDecoration: "none" }}>
+    <Link
+      to={`/assortment?categoryId=${id}`}
+      style={{ textDecoration: "none" }}
+    >
       <Card
         variant="outlined"
         sx={{
@@ -40,7 +44,7 @@ function CategoryCard({ item }) {
                 transition: "color 0.3s ease-in-out",
               }}
             >
-              {item}
+              {name}
             </Typography>
           }
         />
@@ -48,7 +52,7 @@ function CategoryCard({ item }) {
           component="img"
           height="335px"
           image={table}
-          alt="Paella dish"
+          alt={name}
           sx={{
             transition: "width 0.3s ease-in-out",
             marginTop: "16px",

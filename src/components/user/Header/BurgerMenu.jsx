@@ -1,13 +1,5 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  List,
-  ListItem,
-  Typography,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, List, ListItem, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -15,34 +7,25 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import CartIcon from "../../../img/header/cart.svg";
 
 import bg from "../../../img/header/BurgerImage.png";
-import table from "../../../img/header/table.png";
-import table2 from "../../../img/header/table2.png";
-import bed from "../../../img/header/bed.png";
-import nightstand from "../../../img/header/nightstand.png";
-import sofa from "../../../img/header/sofa.png";
-import someElse from "../../../img/header/someElse.png";
-import stool from "../../../img/header/stool.png";
-import stool2 from "../../../img/header/stool2.png";
-import wardrobe from "../../../img/header/wardrobe.png";
 import SearchInput from "./SearchInput";
 import MenuIcon from "./MenuIcon";
 import CloseIcon from "./CloseIcon";
 
-function BurgerMenu({
-  imageSrc,
-  handleMouseEnter,
-  handleMouseLeave,
-  open,
-  anchorEl,
-  setAnchorEl,
-  handleClose,
-  drawerOpen,
-  setDrawerOpen,
-}) {
+function BurgerMenu({ drawerOpen, setDrawerOpen }) {
   const [iconVisible, setIconVisible] = useState(true);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const [openCatalog, setOpenCatalog] = useState(false);
+
+  useEffect(() => {
+    if (drawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [drawerOpen]);
 
   const handleDrawerOpen = () => {
     setIconVisible(false);
@@ -50,6 +33,10 @@ function BurgerMenu({
       setDrawerOpen(!drawerOpen);
       setIconVisible(true);
     }, 300);
+  };
+
+  const handleCatalogToggle = () => {
+    setOpenCatalog(!openCatalog);
   };
 
   return (
@@ -80,219 +67,180 @@ function BurgerMenu({
             top: "92px",
             left: 0,
             width: "100%",
-            height: "-webkit-fill-available",
+            height: "calc(100% - 92px)",
             backgroundColor: "#fff",
             zIndex: 1000,
-            overflowY: "hidden",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
           }}
         >
-          <List
+          <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              marginTop: "29px",
-              alignItems: "center",
-              justifyContent: "center",
+              flexGrow: 1,
+              overflowY: "auto",
             }}
           >
-            <ListItem sx={{ textAlign: "center", justifyContent: "center" }}>
-              <SearchInput />
-            </ListItem>
+            <List
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                marginTop: "29px",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 10,
+              }}
+            >
+              <ListItem sx={{ textAlign: "center", justifyContent: "center" }}>
+                <SearchInput />
+              </ListItem>
 
-            <ListItem sx={{ textAlign: "center", justifyContent: "center" }}>
-              <Button
-                endIcon={
-                  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-                }
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
+              <ListItem
                 sx={{
-                  color: "black",
-                  padding: 0,
-                  "&:hover": {
-                    background: "transparent",
-                    color: "#BBC252",
-                  },
+                  textAlign: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "24px",
+                  zIndex: 10,
+                  marginTop: "72px",
                 }}
               >
-                <Typography
+                <Button
+                  endIcon={
+                    openCatalog ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )
+                  }
+                  onClick={handleCatalogToggle}
                   sx={{
-                    textTransform: "none",
+                    color: "black",
+                    padding: 0,
+                    width: "24px",
+                    height: "24px",
                     "&:hover": {
+                      background: "transparent",
                       color: "#BBC252",
                     },
                   }}
                 >
-                  Каталог
-                </Typography>
-              </Button>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      textTransform: "none",
+                      fontSize: "32px",
+                      "&:hover": {
+                        color: "#BBC252",
+                      },
+                    }}
+                  >
+                    Каталог
+                  </Typography>
+                </Button>
 
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-                sx={{
-                  marginTop: "38px",
-                  ".MuiPaper-root": { borderRadius: "0px" },
-                  ".MuiMenuItem-root": {
-                    padding: 0,
-                    minHeight: 0,
-                    "&:hover": {
-                      background: "transparent",
-                      color: "#2B9E7F",
-                    },
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "250px",
-                    background: "light-grey",
-                    padding: "16px",
-                  }}
-                >
+                {openCatalog && (
                   <Box
                     sx={{
                       display: "flex",
                       flexDirection: "column",
-                      gap: "16px",
+                      gap: "24px",
+                      marginTop: "10px",
+                      paddingLeft: "16px",
                     }}
                   >
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(table)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Столи
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(stool2)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Стільці
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(wardrobe)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Шафи
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(bed)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Ліжка
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(nightstand)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Тумбочки
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(table2)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Столики
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(stool)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Табуретки
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(sofa)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Дивани
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleClose}
-                      onMouseEnter={() => handleMouseEnter(someElse)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Інше
-                    </MenuItem>
+                    <Typography variant="h4">Столи</Typography>
+                    <Typography variant="h4">Стільці</Typography>
+                    <Typography variant="h4">Шафи</Typography>
+                    <Typography variant="h4">Ліжка</Typography>
+                    <Typography variant="h4">Тумбочки</Typography>
+                    <Typography variant="h4">Столики</Typography>
+                    <Typography variant="h4">Табуретки</Typography>
+                    <Typography variant="h4">Дивани</Typography>
+                    <Typography variant="h4">Інше</Typography>
                   </Box>
-                  <Box
-                    component="img"
-                    alt="category"
-                    src={imageSrc}
+                )}
+              </ListItem>
+
+              <ListItem sx={{ textAlign: "center", justifyContent: "center" }}>
+                <NavLink
+                  to=""
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                  }}
+                >
+                  <Typography
+                    variant="h3"
                     sx={{
-                      height: "100px",
-                      width: "100px",
-                      objectFit: "cover",
-                      objectPosition: "bottom",
+                      textTransform: "none",
+                      fontSize: "32px",
+                      "&:hover": {
+                        color: "#BBC252",
+                      },
                     }}
-                  />
-                </Box>
-              </Menu>
-            </ListItem>
+                  >
+                    Кошик
+                  </Typography>
+                </NavLink>
+              </ListItem>
 
-            <ListItem sx={{ textAlign: "center", justifyContent: "center" }}>
-              <NavLink
-                to=""
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                }}
-              >
-                <Typography
-                  sx={{
-                    textTransform: "none",
-                    "&:hover": {
-                      color: "#BBC252",
-                    },
+              <ListItem sx={{ textAlign: "center", justifyContent: "center" }}>
+                <NavLink
+                  to=""
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
                   }}
                 >
-                  FAQ
-                </Typography>
-              </NavLink>
-            </ListItem>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      textTransform: "none",
+                      fontSize: "32px",
+                      "&:hover": {
+                        color: "#BBC252",
+                      },
+                    }}
+                  >
+                    FAQ
+                  </Typography>
+                </NavLink>
+              </ListItem>
 
-            <ListItem sx={{ textAlign: "center", justifyContent: "center" }}>
-              <NavLink
-                to=""
-                style={{
-                  textDecoration: "none",
-                  color: "black",
+              <ListItem
+                sx={{
+                  textAlign: "center",
+                  justifyContent: "center",
+                  marginBottom: "101px",
                 }}
               >
-                <Typography
-                  sx={{
-                    textTransform: "none",
-                    whiteSpace: "nowrap",
-                    "&:hover": {
-                      color: "#BBC252",
-                    },
+                <NavLink
+                  to=""
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
                   }}
                 >
-                  Про нас
-                </Typography>
-              </NavLink>
-            </ListItem>
-          </List>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      textTransform: "none",
+                      whiteSpace: "nowrap",
+                      fontSize: "32px",
+                      "&:hover": {
+                        color: "#BBC252",
+                      },
+                    }}
+                  >
+                    Про нас
+                  </Typography>
+                </NavLink>
+              </ListItem>
+            </List>
+          </Box>
 
           <Box
             sx={{
@@ -303,7 +251,13 @@ function BurgerMenu({
               bottom: "35px",
             }}
           >
-            <Typography>Всі права захищені &#9675; 2024</Typography>
+            <Typography
+              sx={{
+                fontSize: "11px",
+              }}
+            >
+              Всі права захищені &#9675; 2024
+            </Typography>
           </Box>
 
           <Box

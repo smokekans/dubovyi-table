@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CATEGORIES, COLORS, MATERIALS } from "utils/url";
+import { CATEGORIES, COLORS, MATERIALS, PRODUCTS } from "utils/url";
 
 axios.defaults.baseURL = "https://woodcrafts.pp.ua";
 
@@ -46,11 +46,27 @@ export const getMaterialList = createAsyncThunk(
     }
   }
 );
+
+//та тут була я)
 export const getCategoriesList = createAsyncThunk(
-  CATEGORIES,
+  'categories/getCategoriesList',
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${CATEGORIES}`);
+      console.log("Отримані категорії з бекенду:", data);
+      return data;
+    } catch (error) {
+      // console.error("Помилка при отриманні категорій:", error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchProductsByCategory = createAsyncThunk(
+  'products/fetchByCategory',
+  async (categoryId, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${PRODUCTS}?categoryId=${categoryId}`);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

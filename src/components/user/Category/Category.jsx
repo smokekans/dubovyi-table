@@ -1,24 +1,38 @@
 import { Box, Divider, Grid, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import CategoryCard from "./CategoryCard";
 import { Link } from "react-router-dom";
-
-const category = [
-  "Столи",
-  "Стільці",
-  "Шафи",
-  "Ліжка",
-  "Тумбочки",
-  "Столики",
-  "Табуретки",
-  "Дивани",
-  "Інше",
-];
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoriesList } from "redux/enums/enumsOperations";
+import { getCategories } from "redux/enums/enumsSelectors";
 
 function Category() {
+  const dispatch = useDispatch();
+  const categories = useSelector(getCategories);
+
   const isMobile = useMediaQuery(`(max-width:834px)`);
   const isTablet = useMediaQuery(`(min-width:835px) and (max-width:1279px)`);
   const isDesktop = useMediaQuery(`(min-width:1280px)`);
+
+  const desiredCategories = [
+    "Столи",
+    "Стільці",
+    "Шафи",
+    "Ліжка",
+    "Тумбочки",
+    "Столики",
+    "Табуретки",
+    "Дивани",
+    "Інше",
+  ];
+
+  useEffect(() => {
+    dispatch(getCategoriesList());
+  }, [dispatch]);
+
+  const filteredCategories = categories.filter((item) =>
+    desiredCategories.includes(item.name)
+  );
 
   return (
     <Box
@@ -61,28 +75,30 @@ function Category() {
       <Grid
         container
         rowSpacing={2}
-        // columnSpacing={{ xs: 2, sm: 2, md: 3 }}
         sx={{ marginTop: "16px", width: "100%", gap: "16px" }}
       >
-        {category.map((item, index) => (
-          <Grid
-            item
-            // xs={12}
-            // sm={6}
-            // md={4}
-            key={index}
-            sx={{
-              ...(isTablet &&
-                !isDesktop &&
-                index === category.length - 1 && {
-                  gridColumn: "span 12", // Последняя карточка на планшете занимает весь ряд
-                }),
-              flexGrow: 1,
-            }}
-          >
-            <CategoryCard item={item} />
-          </Grid>
-        ))}
+        {filteredCategories && filteredCategories.length > 0 ? (
+          filteredCategories.map((item, index) => (
+            <Grid
+              item
+              key={item.id}
+              sx={{
+                ...(isTablet &&
+                  !isDesktop &&
+                  index === filteredCategories.length - 1 && {
+                    gridColumn: "span 12",
+                  }),
+                flexGrow: 1,
+              }}
+            >
+              <CategoryCard item={item} />
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="h6" sx={{ textAlign: "center", width: "100%" }}>
+            Категорії не знайдені
+          </Typography>
+        )}
       </Grid>
 
       <Box
@@ -124,6 +140,7 @@ function Category() {
             textAlign: "center",
             marginTop: "24px",
             fontSize: isMobile ? "14px" : "16px",
+            maxWidth: "741px",
           }}
         >
           Наші дерев'яні меблі ручної роботи створені з міцних та натуральних

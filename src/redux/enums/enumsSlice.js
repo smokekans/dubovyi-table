@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEnumsList } from "./enumsOperations";
+import { fetchProductsByCategory, getCategoriesList, getEnumsList } from "./enumsOperations";
 
 const InitialState = {
   ECategories: [],
@@ -13,7 +13,17 @@ const InitialState = {
     { id: 5, name: "1 рік" },
   ],
   EOrderStatus: [],
+
+  products: {
+    items: [],
+    totalPages: 0,
+    totalItems: 0,
+    loading: false,
+    error: null,
+  },
 };
+
+
 
 const enumsSlice = createSlice({
   name: "enums",
@@ -45,6 +55,27 @@ const enumsSlice = createSlice({
           state.EMaterials = payload.materials;
         }
       }
+    });
+    // ось тут влізла
+    builder.addCase(getCategoriesList.fulfilled, (state, { payload }) => {
+      if (Array.isArray(payload)) {
+        state.ECategories = payload;
+      }
+    });
+
+    builder.addCase(fetchProductsByCategory.pending, (state) => {
+      state.products.loading = true;
+      state.products.error = null;
+    });
+    builder.addCase(fetchProductsByCategory.fulfilled, (state, { payload }) => {
+      state.products.loading = false;
+      state.products.items = payload.data;
+      state.products.totalPages = payload.totalPages;
+      state.products.totalItems = payload.totalItems;
+    });
+    builder.addCase(fetchProductsByCategory.rejected, (state, { payload }) => {
+      state.products.loading = false;
+      state.products.error = payload;
     });
   },
 });
